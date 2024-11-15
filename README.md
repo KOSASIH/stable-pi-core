@@ -29,6 +29,26 @@
 [![Certified Cybersecurity Technician](https://img.shields.io/badge/CompTIA-Certified%20Cybersecurity%20Technician-4CAF50?style=for-the-badge)](https://www.comptia.org/)
 [![Certified Secure Software Lifecycle Professional](https://img.shields.io/badge/ISC%2B2-Certified%20Secure%20Software%20Lifecycle%20Professional-FF9800?style=for-the-badge)](https://www.isc2.org/)
 
+[![World Bank Certification](https://img.shields.io/badge/World%20Bank-Certified%20Professional-4CAF50?style=for-the-badge)](https://www.worldbank.org/)
+[![IMF Certification](https://img.shields.io/badge/IMF-Certified%20Professional-0072B8?style=for-the-badge)](https://www.imf.org/)
+[![UNESCO Certification](https://img.shields.io/badge/UNESCO-Certified%20Professional-FF9800?style=for-the-badge)](https://en.unesco.org/)
+[![OECD Certification](https://img.shields.io/badge/OECD-Certified%20Professional-4CAF50?style=for-the-badge)](https://www.oecd.org/)
+[![FAO Certification](https://img.shields.io/badge/FAO-Certified%20Professional-00BFFF?style=for-the-badge)](https://www.fao.org/)
+[![WHO Certification](https://img.shields.io/badge/WHO-Certified%20Professional-FF5733?style=for-the-badge)](https://www.who.int/)
+[![WTO Certification](https://img.shields.io/badge/WTO-Certified%20Professional-8E44AD?style=for-the-badge)](https://www.wto.org/)
+[![UNDP Certification](https://img.shields.io/badge/UNDP-Certified%20Professional-0072B8?style=for-the-badge)](https://www.undp.org/)
+[![World Health Organization Certification](https://img.shields.io/badge/WHO-Certified%20Health%20Professional-4CAF50?style=for-the-badge)](https://www.who.int/)
+[![World Trade Organization Certification](https://img.shields.io/badge/WTO-Certified%20Trade%20Professional-FF9800?style=for-the-badge)](https://www.wto.org/)
+[![World Bank Group Certification](https://img.shields.io/badge/World%20Bank%20Group-Certified%20Development%20Professional-00BFFF?style=for-the-badge)](https://www.worldbank.org/)
+[![International Monetary Fund Certification](https://img.shields.io/badge/IMF-Certified%20Economic%20Analyst-4CAF50?style=for-the-badge)](https://www.imf.org/)
+[![UNICEF Certification](https://img.shields.io/badge/UNICEF-Certified%20Child%20Protection%20Professional-FF5733?style=for-the-badge)](https://www.unicef.org/)
+[![International Labour Organization Certification](https://img.shields.io/badge/ILO-Certified%20Labour%20Standards%20Professional-0072B8?style=for-the-badge)](https://www.ilo.org/)
+[![World Food Programme Certification](https://img.shields.io/badge/WFP-Certified%20Food%20Security%20Professional-FF9800?style=for-the-badge)](https://www.wfp.org/)
+[![International Fund for Agricultural Development Certification](https://img.shields.io/badge/IFAD-Certified%20Rural%20Development%20Professional-4CAF50?style=for-the-badge)](https://www.ifad.org/)
+[![World Bank Institute Certification](https://img.shields.io/badge/WBI-Certified%20Capacity%20Development%20Professional-00BFFF?style=for-the-badge)](https://www.worldbank.org/)
+[![Global Environment Facility Certification](https://img.shields.io/badge/GEF-Certified%20Environmental%20Professional-8E44AD?style=for-the-badge)](https://www.thegef.org/)
+[![International Organization for Migration Certification](https://img.shields.io/badge/IOM-Certified%20Migration%20Professional-0072B8?style=for-the-badge)](https://www.iom.int/)
+[![United Nations Development Programme Certification](https://img.shields.io/badge/UNDP-Certified%20Sustainable%20Development%20Professional-FF5733?style=for-the-badge)](https://www.undp.org/)
 
 # stable-pi-core
 stable-pi-core is the foundational repository for the Stabzer project, aimed at establishing Pi Coin as a stablecoin pegged to $314.159. This repository contains the core algorithms, smart contracts, and protocols necessary for dynamic supply management, cross-chain interoperability, and secure transactions, all designed to ensure the stability and security of the Pi Coin ecosystem. 
