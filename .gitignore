@@ -1,2 +1,63 @@
-# Google App Engine generated folder
-appengine-generated/
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Flask
+instance/
+.webassets-cache
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+
+# Environment variables
+.env
+*.env
+
+# Database files
+*.sqlite3
+*.db
+
+# Coverage reports
+.coverage
+htmlcov/
+*.cover
+
+# Brownie artifacts
+brownie-config.yaml
+build/
+*.json
+
+# Miscellaneous
+*.DS_Store
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+
+# Operating System files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
