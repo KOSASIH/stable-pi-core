@@ -4,6 +4,10 @@
 
 The **stable-pi-core** project is designed to create a stablecoin ecosystem that leverages advanced blockchain technology. This document provides an overview of the system architecture, including its components and interactions.
 
+## Diagram 
+
+![pi-stable-core-diagram](stable-pi-core.jpeg) 
+
 ## Architecture Components
 
 ### 1. Core Modules
