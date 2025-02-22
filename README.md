@@ -64,7 +64,7 @@
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/KOSASIH/stable-pi-core">Stabzer</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/kosasih-81b46b5a">KOSASIH</a> is licensed under <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">Creative Commons Attribution 4.0 International<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""></a></p>
 
 # stable-pi-core
-stable-pi-core is the foundational repository for the Stabzer project, aimed at establishing Pi Coin as a stablecoin pegged to $314.159. This repository contains the core algorithms, smart contracts, and protocols necessary for dynamic supply management, cross-chain interoperability, and secure transactions, all designed to ensure the stability and security of the Pi Coin ecosystem. 
+stable-pi-core is the foundational repository for the Stabzer project, aimed at establishing Pi Coin as a stablecoin pegged to $314159 (Three hundred fourteen thousand one hundred fifty-nine). This repository contains the core algorithms, smart contracts, and protocols necessary for dynamic supply management, cross-chain interoperability, and secure transactions, all designed to ensure the stability and security of the Pi Coin ecosystem. 
 
 **Join us in revolutionizing digital currency!**
 
@@ -72,7 +72,7 @@ stable-pi-core is the foundational repository for the Stabzer project, aimed at 
 
 ## Project Overview
 
-**stable-pi-core** is the foundational repository for the Stabzer project, aimed at establishing Pi Coin as a stablecoin pegged to a value of $314.159. This project leverages advanced blockchain technology, dynamic supply management, and decentralized governance to create a secure and reliable digital currency.
+**stable-pi-core** is the foundational repository for the Stabzer project, aimed at establishing Pi Coin as a stablecoin pegged to a value of $314159 (Three hundred fourteen thousand one hundred fifty-nine). This project leverages advanced blockchain technology, dynamic supply management, and decentralized governance to create a secure and reliable digital currency.
 
 ## Features
 
