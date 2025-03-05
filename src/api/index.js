@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { deposit, convert, checkBalance } = require('./controllers/conversionController');
+const bridgeRoutes = require('./routes/bridgeRoutes'); // Import the bridge routes
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,6 +17,9 @@ app.use(bodyParser.json());
 app.post('/api/deposit', deposit);
 app.post('/api/convert', convert);
 app.get('/api/balance', checkBalance);
+
+// Bridge routes
+app.use('/api/bridge', bridgeRoutes); // Use the bridge routes under /api/bridge
 
 // Start the server
 app.listen(PORT, () => {
