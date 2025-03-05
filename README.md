@@ -81,6 +81,8 @@ stable-pi-core is the foundational repository for the Stabzer project, aimed at 
 - **Cross-Chain Interoperability**: Seamless interaction with other blockchain networks.
 - **Advanced Security Protocols**: Utilizes cutting-edge cryptographic techniques for secure transactions.
 - **User -Friendly Wallet Solutions**: Intuitive interfaces for easy management of Pi Coin.
+- **Bridge System**: Enables users to deposit, withdraw, and bridge Pi Coin to other blockchain networks, enhancing liquidity and usability across ecosystems.
+- **Dual-Value System**: Supports both a stable value and a market-driven value for Pi Coin, allowing users to benefit from price stability while also participating in market dynamics.
 
 ## Getting Started
 
