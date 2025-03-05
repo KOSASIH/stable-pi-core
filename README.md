@@ -1,3 +1,5 @@
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/KOSASIH/stable-pi-core/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/KOSASIH/stable-pi-core/tree/main)
+
 [![Certified Blockchain Expert](https://img.shields.io/badge/Blockchain%20Council-Certified%20Blockchain%20Expert-4CAF50?style=for-the-badge)](https://www.blockchain-council.org/)
 [![Stanford Blockchain Certificate](https://img.shields.io/badge/Stanford%20University-Blockchain%20Certificate-FF5733?style=for-the-badge)](https://online.stanford.edu/courses/sohs-ystanford-blockchain)
 [![Certified FinTech Professional](https://img.shields.io/badge/FinTech%20Certification%20Program-Certified%20FinTech%20Professional-0072B8?style=for-the-badge)](https://www.fintechcertification.org/)
