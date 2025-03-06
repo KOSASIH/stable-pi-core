@@ -73,7 +73,7 @@ class ConversionService {
             const gasEstimate = await this.contract.methods.updateConversionRate(toBN(newRate).toString()).estimateGas({ from: privateKey });
 
             const tx = {
-                from: privateKey,
+                from: privateKey, // This should be the address of the owner, not the private key
                 to: this.contract.options.address,
                 gas: gasEstimate,
                 gasPrice: gasPrice,
