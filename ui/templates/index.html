@@ -14,22 +14,35 @@
         </header>
 
         <main>
-            <section id="chat-container">
-                <h2>AI Assistant</h2>
-                <div id="chat-box" class="chat-box"></div>
+            <section id="chat-container" aria-labelledby="chat-header">
+                <h2 id="chat-header">AI Assistant</h2>
+                <div id="chat-box" class="chat-box" aria-live="polite"></div>
                 <div class="input-group">
-                    <input type="text" id="user-input" placeholder="Ask me anything..." autocomplete="off">
-                    <button onclick="sendMessage()">Send</button>
+                    <input type="text" id="user-input" placeholder="Ask me anything..." autocomplete="off" aria-label="User  input">
+                    <button onclick="sendMessage()" aria-label="Send message">Send</button>
                 </div>
             </section>
 
-            <section id="simulation-container">
-                <h2>Interactive Simulation</h2>
+            <section id="simulation-container" aria-labelledby="simulation-header">
+                <h2 id="simulation-header">Interactive Simulation</h2>
                 <div class="input-group">
-                    <input type="text" id="user-decision" placeholder="Enter your decision (e.g., stake, trade)" autocomplete="off">
-                    <button onclick="runSimulation()">Simulate</button>
+                    <input type="text" id="user-decision" placeholder="Enter your decision (e.g., stake, trade)" autocomplete="off" aria-label="User  decision">
+                    <button onclick="runSimulation()" aria-label="Run simulation">Simulate</button>
                 </div>
-                <div id="simulation-result" class="result-box"></div>
+                <div id="simulation-result" class="result-box" aria-live="polite"></div>
+            </section>
+
+            <section id="dao-container" aria-labelledby="dao-header">
+                <h2 id="dao-header">DAO Management</h2>
+                <div class="input-group">
+                    <input type="text" id="proposal-description" placeholder="Enter proposal description" autocomplete="off" aria-label="Proposal description">
+                    <button onclick="createProposal()" aria-label="Create proposal">Create Proposal</button>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="proposal-id" placeholder="Enter proposal ID to vote" aria-label="Proposal ID">
+                    <button onclick="vote()" aria-label="Vote on proposal">Vote</button>
+                </div>
+                <div id="dao-result" class="result-box" aria-live="polite"></div>
             </section>
         </main>
 
@@ -40,4 +53,4 @@
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
-</html>
+    </html>
