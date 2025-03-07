@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Proposals - Stable Pi Core</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Proposals Management</h1>
+            <p>View and create proposals for the DAO.</p>
+        </header>
+
+        <main>
+            <section id="create-proposal" aria-labelledby="create-proposal-header">
+                <h2 id="create-proposal-header">Create a New Proposal</h2>
+                <div class="input-group">
+                    <input type="text" id="proposal-description" placeholder="Enter proposal description" autocomplete="off" aria-label="Proposal description">
+                    <button onclick="createProposal()" aria-label="Create proposal">Create Proposal</button>
+                </div>
+                <div id="create-result" class="result-box" aria-live="polite"></div>
+            </section>
+
+            <section id="existing-proposals" aria-labelledby="existing-proposals-header">
+                <h2 id="existing-proposals-header">Existing Proposals</h2>
+                <ul id="proposals-list"></ul>
+            </section>
+
+            <section id="vote-section" aria-labelledby="vote-section-header">
+                <h2 id="vote-section-header">Vote on a Proposal</h2>
+                <div class="input-group">
+                    <input type="number" id="proposal-id" placeholder="Enter proposal ID to vote" aria-label="Proposal ID">
+                    <button onclick="vote()" aria-label="Vote on proposal">Vote</button>
+                </div>
+                <div id="vote-result" class="result-box" aria-live="polite"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2023 Stable Pi Core. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        // Function to create a new proposal
+        function createProposal() {
+            const description = document.getElementById('proposal-description').value;
+            fetch('/dao/proposals', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ description: description })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('create-result').innerText = `Proposal created with ID: ${data.proposal_id}`;
+                document.getElementById('proposal-description').value = ''; // Clear input
+                loadProposals(); // Refresh the proposals list
+            })
+            .catch(error => {
+                document.getElementById('create-result').innerText = 'Error creating proposal: ' + error.message;
+            });
+        }
+
+        // Function to load existing proposals
+        function loadProposals() {
+            fetch('/dao/proposals')
+            .then(response => response.json())
+            .then(data => {
+                const proposalsList = document.getElementById('proposals-list');
+                proposalsList.innerHTML = ''; // Clear existing list
+                data.forEach(proposal => {
+                    const listItem = document.createElement('li');
+                    listItem.innerText = `ID: ${proposal.id}, Description: ${proposal.description}, Votes: ${proposal.voteCount}`;
+                    proposalsList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading proposals:', error);
+            });
+        }
+
+        // Function to vote on a proposal
+        function vote() {
+            const proposalId = document.getElementById('proposal-id').value;
+            fetch('/dao/vote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ proposal_id: proposalId })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('vote-result').innerText = 'Vote recorded successfully!';
+                document.getElementById('proposal-id').value = ''; // Clear input
+                loadProposals(); // Refresh the proposals list
+            })
+            .catch(error => {
+                document.getElementById('vote-result').innerText = 'Error voting: ' + error.message;
+            });
+        }
+
+        // Load proposals on page load
+        window.onload = loadProposals;
+    </script>
+</body>
+</html>
