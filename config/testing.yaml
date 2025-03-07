@@ -1,17 +1,44 @@
-# testing.yaml
+# Configuration for the Stable Pi Core testing environment
+
 logging:
-  level: WARNING
+  level: WARNING  # Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 
 database:
-  host: localhost
-  port: 5432
-  user: test_user
-  password: test_password
-  db_name: stable_pi_test
+  host: localhost  # Database host for testing
+  port: 5432       # Database port
+  user: test_user  # Database username for testing
+  password: test_password  # Database password (consider using environment variables for security)
+  db_name: stable_pi_test  # Database name for testing
 
 model_paths:
-  demand_model_path: "models/demand_prediction_model.pkl"
-  asset_model_path: "models/asset_management_model.pkl"
+  demand_model_path: "models/demand_prediction_model.pkl"  # Path to the demand prediction model
+  asset_model_path: "models/asset_management_model.pkl"    # Path to the asset management model
 
 api:
-  base_url: "http://localhost:5000"
+  base_url: "http://localhost:5000"  # Base URL for the API during testing
+
+# Additional configurations for testing
+security:
+  secret_key: "your_testing_secret_key"  # Secret key for session management (consider using environment variables)
+  token_expiration: 3600  # Token expiration time in seconds
+
+# Feature flags for testing
+features:
+  enable_feature_x: true  # Enable or disable specific features for testing
+  enable_feature_y: false
+
+# Email configuration for testing (if applicable)
+email:
+  smtp_server: "smtp.test-email.com"  # SMTP server for sending test emails
+  smtp_port: 587                      # SMTP port
+  smtp_user: "your_email@test.com"    # Email username for testing
+  smtp_password: "your_email_password" # Email password (consider using environment variables)
+
+# External service configurations for testing
+external_services:
+  service_a:
+    api_key: "your_testing_service_a_api_key"  # API key for external service A during testing
+    endpoint: "https://api.test-service-a.com"  # Endpoint for external service A
+  service_b:
+    api_key: "your_testing_service_b_api_key"  # API key for external service B during testing
+    endpoint: "https://api.test-service-b.com"  # Endpoint for external service B
