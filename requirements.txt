@@ -16,3 +16,10 @@ pytest==7.2.0
 
 # NTRU library for quantum-resistant cryptography
 ntru==0.1.0  # Ensure to check for the latest version or specific version you need
+
+# Additional libraries for data visualization (optional)
+matplotlib==3.6.0  # For plotting and visualizing data
+seaborn==0.12.0    # For statistical data visualization
+
+# Optional: dotenv for environment variable management
+python-dotenv==0.20.0  # For loading environment variables from a .env file
