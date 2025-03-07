@@ -2,6 +2,7 @@
 function sendMessage() {
     const userInput = document.getElementById('user-input').value.trim();
     const chatBox = document.getElementById('chat-box');
+    const loadingIndicator = document.getElementById('loading-indicator');
 
     if (userInput === "") {
         alert("Please enter a message.");
@@ -11,6 +12,10 @@ function sendMessage() {
     // Display user message in chat box
     chatBox.innerHTML += `<div>User: ${userInput}</div>`;
     document.getElementById('user-input').value = ''; // Clear input field
+    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+
+    // Show loading indicator
+    loadingIndicator.style.display = 'block';
 
     // Send the message to the server
     fetch('/chat', {
@@ -29,11 +34,14 @@ function sendMessage() {
     .then(data => {
         // Display AI response in chat box
         chatBox.innerHTML += `<div>AI: ${data.response}</div>`;
-        chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
     })
     .catch(error => {
         console.error('Error:', error);
-        chatBox.innerHTML += `<div>AI: Sorry, there was an error processing your request.</div>`;
+        chatBox.innerHTML += `<div>AI: Sorry, there was an error processing your request. Please try again later.</div>`;
+    })
+    .finally(() => {
+        // Hide loading indicator
+        loadingIndicator.style.display = 'none';
         chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
     });
 }
@@ -42,11 +50,15 @@ function sendMessage() {
 function runSimulation() {
     const userDecision = document.getElementById('user-decision').value.trim();
     const simulationResult = document.getElementById('simulation-result');
+    const loadingIndicator = document.getElementById('loading-indicator-sim');
 
     if (userDecision === "") {
         alert("Please enter a decision.");
         return;
     }
+
+    // Show loading indicator
+    loadingIndicator.style.display = 'block';
 
     // Send the decision to the server for simulation
     fetch('/simulate', {
@@ -69,6 +81,10 @@ function runSimulation() {
     })
     .catch(error => {
         console.error('Error:', error);
-        simulationResult.innerHTML = "Sorry, there was an error processing your simulation.";
+        simulationResult.innerHTML = "Sorry, there was an error processing your simulation. Please try again later.";
+    })
+    .finally(() => {
+        // Hide loading indicator
+        loadingIndicator.style.display = 'none';
     });
-}
+            }
