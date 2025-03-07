@@ -1,0 +1,17 @@
+# testing.yaml
+logging:
+  level: WARNING
+
+database:
+  host: localhost
+  port: 5432
+  user: test_user
+  password: test_password
+  db_name: stable_pi_test
+
+model_paths:
+  demand_model_path: "models/demand_prediction_model.pkl"
+  asset_model_path: "models/asset_management_model.pkl"
+
+api:
+  base_url: "http://localhost:5000"
