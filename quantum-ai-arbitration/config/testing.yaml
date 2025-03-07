@@ -1,0 +1,38 @@
+# Testing environment configuration for the Quantum and AI Arbitration Project
+
+# General settings
+app:
+  name: "Quantum and AI Arbitration"
+  version: "1.0.0"
+  debug: true  # Enable debug mode for detailed logging during testing
+
+# Database configuration
+database:
+  uri: "sqlite:///testing.db"  # Use SQLite for testing to keep it lightweight
+  max_connections: 5  # Maximum number of database connections
+
+# Quantum settings
+quantum:
+  backend: "qasm_simulator"  # Use the QASM simulator for testing
+  shots: 512  # Number of shots for quantum simulations during testing
+
+# AI Model settings
+ai:
+  model_path: "./models/testing_model.pkl"  # Path to the testing model
+  threshold: 0.5  # Threshold for predictions during testing
+
+# Logging configuration
+logging:
+  level: "DEBUG"  # Set logging level to DEBUG for detailed output
+  file: "./logs/testing.log"  # Log file path for testing logs
+  format: "%(asctime)s - %(levelname)s - %(message)s"  # Log format
+
+# Fraud detection settings
+fraud_detection:
+  model_path: "./models/fraud_detection_model_test.pkl"  # Path to the fraud detection model for testing
+
+# Risk assessment settings
+risk_assessment:
+  model_path: "./models/risk_assessment_model_test.pkl"  # Path to the risk assessment model for testing
+
+# Additional settings can be added as needed
