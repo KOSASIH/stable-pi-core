@@ -1,0 +1,40 @@
+# Development environment configuration for the Quantum and AI Arbitration Project
+
+# General settings
+app:
+  name: "Quantum and AI Arbitration"
+  version: "1.0.0"
+  debug: true  # Enable debug mode for detailed logging
+
+# Database configuration
+database:
+  uri: "sqlite:///development.db"  # Use SQLite for development
+  username: "dev_user"
+  password: "dev_password"
+  max_connections: 10
+
+# Quantum settings
+quantum:
+  backend: "qasm_simulator"  # Use the QASM simulator for development
+  shots: 1024  # Number of shots for quantum simulations
+
+# AI Model settings
+ai:
+  model_path: "./models/development_model.pkl"  # Path to the development model
+  threshold: 0.5  # Threshold for predictions
+
+# Logging configuration
+logging:
+  level: "DEBUG"  # Set logging level to DEBUG for development
+  file: "./logs/development.log"  # Log file path
+  format: "%(asctime)s - %(levelname)s - %(message)s"  # Log format
+
+# Fraud detection settings
+fraud_detection:
+  model_path: "./models/fraud_detection_model_dev.pkl"  # Path to the fraud detection model
+
+# Risk assessment settings
+risk_assessment:
+  model_path: "./models/risk_assessment_model_dev.pkl"  # Path to the risk assessment model
+
+# Additional settings can be added as needed
