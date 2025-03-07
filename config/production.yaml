@@ -1,17 +1,44 @@
-# production.yaml
+# Configuration for the Stable Pi Core production environment
+
 logging:
-  level: INFO
+  level: INFO  # Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 
 database:
-  host: production-db-host
-  port: 5432
-  user: prod_user
-  password: prod_password
-  db_name: stable_pi_prod
+  host: production-db-host  # Database host (replace with actual production host)
+  port: 5432                 # Database port
+  user: prod_user            # Database username
+  password: prod_password     # Database password (consider using environment variables for security)
+  db_name: stable_pi_prod    # Database name
 
 model_paths:
-  demand_model_path: "models/demand_prediction_model.pkl"
-  asset_model_path: "models/asset_management_model.pkl"
+  demand_model_path: "models/demand_prediction_model.pkl"  # Path to the demand prediction model
+  asset_model_path: "models/asset_management_model.pkl"    # Path to the asset management model
 
 api:
-  base_url: "https://api.stablepi.com"
+  base_url: "https://api.stablepi.com"  # Base URL for the API
+
+# Additional configurations
+security:
+  secret_key: "your_production_secret_key"  # Secret key for session management (consider using environment variables)
+  token_expiration: 3600  # Token expiration time in seconds
+
+# Feature flags for production
+features:
+  enable_feature_x: true  # Enable or disable specific features
+  enable_feature_y: false
+
+# Email configuration for production
+email:
+  smtp_server: "smtp.production-email.com"  # SMTP server for sending emails
+  smtp_port: 587                              # SMTP port
+  smtp_user: "your_email@production.com"     # Email username
+  smtp_password: "your_email_password"       # Email password (consider using environment variables)
+
+# External service configurations for production
+external_services:
+  service_a:
+    api_key: "your_production_service_a_api_key"  # API key for external service A
+    endpoint: "https://api.service-a.com"          # Endpoint for external service A
+  service_b:
+    api_key: "your_production_service_b_api_key"  # API key for external service B
+    endpoint: "https://api.service-b.com"          # Endpoint for external service B
