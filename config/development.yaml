@@ -1,0 +1,17 @@
+# development.yaml
+logging:
+  level: DEBUG
+
+database:
+  host: localhost
+  port: 5432
+  user: dev_user
+  password: dev_password
+  db_name: stable_pi_dev
+
+model_paths:
+  demand_model_path: "models/demand_prediction_model.pkl"
+  asset_model_path: "models/asset_management_model.pkl"
+
+api:
+  base_url: "http://localhost:5000"
