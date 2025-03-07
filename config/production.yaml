@@ -1,0 +1,17 @@
+# production.yaml
+logging:
+  level: INFO
+
+database:
+  host: production-db-host
+  port: 5432
+  user: prod_user
+  password: prod_password
+  db_name: stable_pi_prod
+
+model_paths:
+  demand_model_path: "models/demand_prediction_model.pkl"
+  asset_model_path: "models/asset_management_model.pkl"
+
+api:
+  base_url: "https://api.stablepi.com"
