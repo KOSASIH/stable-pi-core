@@ -6,3 +6,4 @@ pyyaml
 web3
 solcx
 pytest
+ntru  # Add the NTRU library for quantum-resistant cryptography
