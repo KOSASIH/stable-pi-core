@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Stable Pi Core Dashboard</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to Stable Pi Core</h1>
+            <p>Your gateway to quantum-ready blockchain solutions.</p>
+        </header>
+
+        <main>
+            <section id="chat-container">
+                <h2>AI Assistant</h2>
+                <div id="chat-box" class="chat-box"></div>
+                <div class="input-group">
+                    <input type="text" id="user-input" placeholder="Ask me anything..." autocomplete="off">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </section>
+
+            <section id="simulation-container">
+                <h2>Interactive Simulation</h2>
+                <div class="input-group">
+                    <input type="text" id="user-decision" placeholder="Enter your decision (e.g., stake, trade)" autocomplete="off">
+                    <button onclick="runSimulation()">Simulate</button>
+                </div>
+                <div id="simulation-result" class="result-box"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2023 Stable Pi Core. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
