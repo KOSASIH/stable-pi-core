@@ -61,3 +61,10 @@ build/
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+
+# Machine Learning Model Files
+*.pkl  # Ignore pickled model files
+
+# Temporary files
+*.tmp
+*.temp
