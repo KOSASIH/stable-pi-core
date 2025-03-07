@@ -3,7 +3,7 @@ from pegging_algorithm import PeggingMechanism
 
 class TestPeggingMechanism(unittest.TestCase):
     def setUp(self):
-        self.pegging_mechanism = PeggingMechanism(target_price=314.159, adjustment_factor=0.01)
+        self.pegging_mechanism = PeggingMechanism(target_price=314159.00, adjustment_factor=0.01)
 
     def test_initial_supply(self):
         self.assertEqual(self.pegging_mechanism.current_supply, 1000000)
