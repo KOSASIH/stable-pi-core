@@ -1,17 +1,43 @@
-# development.yaml
+# Configuration for the Stable Pi Core development environment
+
 logging:
-  level: DEBUG
+  level: DEBUG  # Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 
 database:
-  host: localhost
-  port: 5432
-  user: dev_user
-  password: dev_password
-  db_name: stable_pi_dev
+  host: localhost  # Database host
+  port: 5432       # Database port
+  user: dev_user   # Database username
+  password: dev_password  # Database password (consider using environment variables for security)
+  db_name: stable_pi_dev  # Database name
 
 model_paths:
-  demand_model_path: "models/demand_prediction_model.pkl"
-  asset_model_path: "models/asset_management_model.pkl"
+  demand_model_path: "models/demand_prediction_model.pkl"  # Path to the demand prediction model
+  asset_model_path: "models/asset_management_model.pkl"    # Path to the asset management model
 
 api:
-  base_url: "http://localhost:5000"
+  base_url: "http://localhost:5000"  # Base URL for the API
+
+# Additional configurations
+security:
+  secret_key: "your_secret_key"  # Secret key for session management (consider using environment variables)
+  token_expiration: 3600  # Token expiration time in seconds
+
+features:
+  enable_feature_x: true  # Enable or disable specific features
+  enable_feature_y: false
+
+# Email configuration (if applicable)
+email:
+  smtp_server: "smtp.example.com"  # SMTP server for sending emails
+  smtp_port: 587                   # SMTP port
+  smtp_user: "your_email@example.com"  # Email username
+  smtp_password: "your_email_password"  # Email password (consider using environment variables)
+
+# External service configurations
+external_services:
+  service_a:
+    api_key: "your_service_a_api_key"  # API key for external service A
+    endpoint: "https://api.service-a.com"  # Endpoint for external service A
+  service_b:
+    api_key: "your_service_b_api_key"  # API key for external service B
+    endpoint: "https://api.service-b.com"  # Endpoint for external service B
