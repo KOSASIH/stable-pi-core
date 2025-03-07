@@ -1,9 +1,18 @@
-numpy
-pandas
-scikit-learn
-joblib
-pyyaml
-web3
-solcx
-pytest
-ntru  # Add the NTRU library for quantum-resistant cryptography
+# Core libraries for data manipulation and machine learning
+numpy==1.23.5
+pandas==1.5.3
+scikit-learn==1.2.0
+joblib==1.2.0
+
+# YAML parsing
+pyyaml==6.0
+
+# Web3 and smart contract interaction
+web3==5.31.0
+solcx==1.0.0
+
+# Testing framework
+pytest==7.2.0
+
+# NTRU library for quantum-resistant cryptography
+ntru==0.1.0  # Ensure to check for the latest version or specific version you need
