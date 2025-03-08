@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR/VR Experience with A-Frame</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe-ar.js"></script>
+    <script src="https://unpkg.com/aframe-extras@6.1.0/dist/aframe-extras.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+        <!-- Define the camera -->
+        <a-entity camera look-controls position="0 1.6 0"></a-entity>
+
+        <!-- Add a light source -->
+        <a-light type="ambient" color="#FFF"></a-light>
+        <a-light type="directional" position="-1 1 1" intensity="0.5"></a-light>
+
+        <!-- Add a ground plane -->
+        <a-plane rotation="-90 0 0" width="10" height="10" color="#7BC8A4" shadow></a-plane>
+
+        <!-- Add a 3D model (Market Item) -->
+        <a-entity id="market-item" 
+                  gltf-model="url(models/market-item.glb)" 
+                  position="0 0.5 -3" 
+                  scale="0.5 0.5 0.5" 
+                  rotation="0 45 0" 
+                  shadow>
+            <a-animation attribute="rotation" 
+                         to="0 405 0" 
+                         dur="10000" 
+                         repeat="indefinite"></a-animation>
+        </a-entity>
+
+        <!-- Add a text label -->
+        <a-text value="Market Item" position="-1 1.5 -3" color="#FFF"></a-text>
+
+        <!-- Add interaction -->
+        <a-entity id="clickable" geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5" 
+                  material="color: #FF0000" position="1 0.25 -3" 
+                  event-set__enter="_event: mouseenter; color: #00FF00" 
+                  event-set__leave="_event: mouseleave; color: #FF0000"
+                  class="clickable">
+        </a-entity>
+
+        <a-entity id="info" text="value: Click the red box to interact; color: #FFF" position="0 2 -3"></a-entity>
+
+        <!-- Add event listener for interaction -->
+        <script>
+            document.querySelector('#clickable').addEventListener('click', function () {
+                const info = document.querySelector('#info');
+                info.setAttribute('text', 'value: You clicked the box!; color: #FFF');
+            });
+        </script>
+    </a-scene>
+</body>
+</html>
