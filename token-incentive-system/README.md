@@ -1,7 +1,5 @@
 # Token Incentive System
 
-![Token Incentive System](https://via.placeholder.com/800x200.png?text=Token+Incentive+System)
-
 A super advanced decentralized application (dApp) that implements a token incentive system with staking mechanisms. This project allows users to stake tokens, earn rewards, and interact with the Ethereum blockchain.
 
 ## Table of Contents
