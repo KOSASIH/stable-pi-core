@@ -49,6 +49,15 @@ brownie-config.yaml
 build/
 *.json
 
+# Node.js / Hardhat
+node_modules/
+package-lock.json
+yarn.lock
+dist/
+build/
+*.log
+*.tsbuildinfo
+
 # Miscellaneous
 *.DS_Store
 *.swp
