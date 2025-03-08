@@ -29,10 +29,11 @@ def initialize_algorithms(config):
 
     # Load historical data for training
     try:
-        historical_data = pd.read_csv('data/historical_data.csv')
+        historical_data = pd.read_csv(config['data']['historical_data_path'])
         supply_adjuster.train_model(historical_data)
         asset_manager.train_model(historical_data)
         demand_model.train_model(historical_data)
+        logging.info('Successfully trained models with historical data.')
     except Exception as e:
         logging.error(f'Error loading historical data: {e}')
         raise
@@ -84,6 +85,9 @@ def main():
     # Adjust allocations based on market conditions
     market_conditions = 1  # Example market condition
     new_allocations = adjust_allocations(asset_manager, current_allocations, market_conditions)
+
+    # Log final allocations
+    logging.info(f'Final Allocations: {new_allocations}')
 
 if __name__ == "__main__":
     main()
