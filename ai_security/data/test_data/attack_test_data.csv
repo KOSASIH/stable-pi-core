@@ -1,0 +1,5 @@
+event_id,source_ip,destination_ip,protocol,bytes_transferred,is_attack
+1,192.168.1.11,192.168.1.110,TCP,600,0
+2,192.168.1.12,192.168.1.111,UDP,350,0
+3,192.168.1.13,192.168.1.112,TCP,1800,1
+4,192.168.1.14,192.168.1.113,ICMP,250,0
