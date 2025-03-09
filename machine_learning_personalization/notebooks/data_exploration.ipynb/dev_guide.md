@@ -130,7 +130,7 @@ Next steps could include further feature engineering, model training, or deeper 
 7. **Correlation Analysis**: Calculates and visualizes the correlation between temperature and humidity.
 
 8. **Conclusion**: Summarizes the findings and suggests next steps for further analysis or modeling.
-
+```
 ### Running the Notebook
 
 1. **Open Jupyter Notebook**:
