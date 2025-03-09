@@ -39,7 +39,7 @@ The system collects data from IoT devices, processes it, and uses machine learni
 1. Clone the repository:
    ```bash
    git clone https://github.com/KOSASIH/stable-pi-core.git
-   cd machine_learning_personalization
+   cd stable-pi-core/machine_learning_personalization
    ```
 
 2. Create a virtual environment (optional but recommended):
