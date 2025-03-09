@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:dt="clr-namespace:System.Data;assembly=System.Data" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="DataProcessing" 
+          DisplayName="Data Processing">
+    <x:Members>
+        <x:Property Name="inputData" Type="InArgument(dt:DataTable)" />
+        <x:Property Name="filteredData" Type="OutArgument(dt:DataTable)" />
+        <x:Property Name="logFilePath" Type="InArgument(x:String)" />
+    </x:Members>
+    <Sequence DisplayName="Data Processing Sequence">
+        <Variable x:TypeArguments="dt:DataTable" Name="tempData" />
+        <Variable x:TypeArguments="s:String" Name="logMessage" />
+        
+        <!-- Initialize Filtered Data -->
+        <Assign DisplayName="Initialize Filtered Data" To="[filteredData]" Value="[New dt:DataTable()]" />
+        
+        <TryCatch DisplayName="Try-Catch for Data Processing">
+            <Try DisplayName="Process Data">
+                <Sequence DisplayName="Data Processing Logic">
+                    <!-- Clone Structure of Input Data -->
+                    <Assign DisplayName="Clone Input Data Structure" To="[tempData]" Value="[inputData.Clone()]" />
+                    
+                    <!-- Filter Data -->
+                    <ForEach x:TypeArguments="dt:DataRow" DisplayName="For Each Row" Values="[inputData.Rows]">
+                        <ActivityAction x:TypeArguments="dt:DataRow">
+                            <Sequence DisplayName="Process Row">
+                                <If DisplayName="Check Condition">
+                                    <If.Condition>
+                                        <InArgument x:TypeArguments="s:Boolean">[item("Status").ToString.Equals("Active")]</InArgument>
+                                    </If.Condition>
+                                    <Then>
+                                        <InvokeMethod DisplayName="Add Row to Filtered Data" TargetType="dt:DataTable" MethodName="ImportRow">
+                                            <Parameters>
+                                                <InArgument x:TypeArguments="dt:DataRow">[item]</InArgument>
+                                            </Parameters>
+                                        </InvokeMethod>
+                                    </Then>
+                                </If>
+                            </Sequence>
+                        </ActivityAction>
+                    </ForEach>
+                    
+                    <Assign DisplayName="Set Filtered Data" To="[filteredData]" Value="[tempData]" />
+                </Sequence>
+            </Try>
+            <Catch x:TypeArguments="s:Exception" DisplayName="Exception Handling">
+                <Sequence>
+                    <Assign DisplayName="Set Log Message" To="[logMessage]" Value="[String.Format('Error processing data: {0}', exception.Message)]" />
+                    <InvokeMethod DisplayName="Log Error" TargetType="System.IO.File" MethodName="AppendAllText">
+                        <Parameters>
+                            <InArgument x:TypeArguments="s:String">[logFilePath]</InArgument>
+                            <InArgument x:TypeArguments="s:String">[String.Format('{0} [ERROR]: {1}{2}', DateTime.Now.ToString('yyyy-MM-dd HH:mm:ss'), logMessage, Environment.NewLine)]</InArgument>
+                        </Parameters>
+                    </InvokeMethod>
+                </Sequence>
+            </Catch>
+        </TryCatch>
+    </Sequence>
+</Workflow>
