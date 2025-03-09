@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { validateAmount, validateCurrency } from '../utils/validation';
 import { usePayments } from '../hooks/usePayments';
 import Notification from './Notification';
+import { SUPPORTED_CURRENCIES } from '../utils/constants';
 
 const PaymentForm = () => {
     const [amount, setAmount] = useState('');
-    const [currency, setCurrency] = useState('USD');
+    const [currency, setCurrency] = useState(SUPPORTED_CURRENCIES[0]); // Default to the first currency
     const { createPayment } = usePayments();
     const [notification, setNotification] = useState(null);
 
@@ -32,9 +33,9 @@ const PaymentForm = () => {
                     required
                 />
                 <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="ETH">ETH</option>
+                    {SUPPORTED_CURRENCIES.map((curr) => (
+                        <option key={curr} value={curr}>{curr}</option>
+                    ))}
                 </select>
                 <button type="submit">Pay</button>
             </form>
