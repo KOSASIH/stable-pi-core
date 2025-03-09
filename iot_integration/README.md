@@ -53,7 +53,7 @@ The project is organized into the following main components:
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/KOSASIH/stable-pi-core.git
-   cd iot_integration
+   cd stable-pi-core/iot_integration
    ```
 
 2. **Install Python Dependencies**:
