@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="TestDataEntry" 
+          DisplayName="Test Data Entry">
+    <Sequence DisplayName="Test Data Entry Sequence">
+        <Variable x:TypeArguments="s:String" Name="inputData" Value="Test Data" />
+        <Variable x:TypeArguments="s:String" Name="enteredData" />
+        
+        <TryCatch DisplayName="Try-Catch for Data Entry Test">
+            <Try DisplayName="Perform Data Entry">
+                <!-- Simulate Data Entry -->
+                <Assign DisplayName="Simulate Data Entry" To="[enteredData]" Value="[inputData]" />
+                
+                <!-- Validate Output -->
+                <If DisplayName="Validate Output">
+                    <If.Condition>
+                        <InArgument x:TypeArguments="s:Boolean">[enteredData.Equals(inputData)]</InArgument>
+                    </If.Condition>
+                    <Then>
+                        <WriteLine DisplayName="Test Passed" Text="Data entry test passed." />
+                    </Then>
+                    <Else>
+                        <WriteLine DisplayName="Test Failed" Text="Data entry test failed." />
+                    </Else>
+                </If>
+            </Try>
+            <Catch x:TypeArguments="s:Exception" DisplayName="Exception Handling">
+                <Sequence>
+                    <WriteLine DisplayName="Log Exception" Text="[String.Format('Error: {0}', exception.Message)]" />
+                </Sequence>
+            </Catch>
+        </TryCatch>
+    </Sequence>
+</Workflow>
