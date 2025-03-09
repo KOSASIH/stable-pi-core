@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="DataEntry" 
+          DisplayName="Data Entry">
+    <x:Members>
+        <x:Property Name="extractedData" Type="InArgument(x:Array(x:String))" />
+    </x:Members>
+    <Sequence DisplayName="Data Entry Sequence">
+        <OpenBrowser DisplayName="Open Browser" Url="http://your-web-application-url.com" BrowserType="Chrome">
+            <Do>
+                <Sequence>
+                    <ForEach x:TypeArguments="x:String" DisplayName="For Each Row" Values="[extractedData]">
+                        <ActivityAction x:TypeArguments="x:String">
+                            <Sequence DisplayName="Process Row">
+                                <Assign DisplayName="Assign Current Row" To="[currentRow]" Value="[item]" />
+                                
+                                <!-- Enter Data into Web Application -->
+                                <TypeInto DisplayName="Type Name" Text="[currentRow(0)]" Selector="<your_selector_for_name>" />
+                                <TypeInto DisplayName="Type Email" Text="[currentRow(1)]" Selector="<your_selector_for_email>" />
+                                <Click DisplayName="Submit" Selector="<your_selector_for_submit_button>" />
+                            </Sequence>
+                        </ActivityAction>
+                    </ForEach>
+                </Sequence>
+            </Do>
+        </OpenBrowser>
+    </Sequence>
+</Workflow>
