@@ -1,0 +1,42 @@
+{
+  "name": "rpa-automation-project",
+  "version": "1.1.0",
+  "description": "An RPA automation project using Node.js for backend processing and integration.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest",
+    "build": "webpack --mode production",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "RPA",
+    "automation",
+    "Node.js",
+    "UiPath"
+  ],
+  "author": "KOSASIH",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.2.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "nodemon": "^2.0.22",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KOSASIH/stable-pi-core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KOSASIH/stable-pi-core/issues"
+  },
+  "homepage": "https://github.com/KOSASIH/stable-pi-core#readme"
+}
