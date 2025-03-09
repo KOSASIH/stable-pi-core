@@ -52,7 +52,7 @@ A super advanced decentralized application (dApp) that implements a token incent
 
    ```bash
    git clone https://github.com/KOSASIH/stable-pi-core.git
-   cd token-incentive-system
+   cd stable-pi-core/token-incentive-system
    ```
 
 2. Install dependencies:
