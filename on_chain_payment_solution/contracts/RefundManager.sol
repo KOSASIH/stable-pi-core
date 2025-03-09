@@ -12,6 +12,7 @@ contract RefundManager is Ownable {
 
     event RefundRequested(uint256 indexed paymentId, address indexed requester);
     event RefundProcessed(uint256 indexed paymentId, address indexed payer, uint256 amount);
+    event RefundDenied(uint256 indexed paymentId, address indexed requester, string reason);
 
     constructor(address _paymentProcessorAddress) {
         paymentProcessor = PaymentProcessor(_paymentProcessorAddress);
@@ -33,5 +34,13 @@ contract RefundManager is Ownable {
 
         paymentProcessor.refundPayment(_paymentId); // Call the refund function in PaymentProcessor
         emit RefundProcessed(_paymentId, payment.payer, payment.amount);
+    }
+
+    function denyRefund(uint256 _paymentId, string memory reason) external onlyOwner {
+        PaymentProcessor.Payment memory payment = paymentProcessor.getPaymentDetails(_paymentId);
+        require(payment.id != 0, "Payment does not exist");
+        require(payment.status == PaymentProcessor.PaymentStatus.Pending, "Payment is not eligible for refund");
+
+        emit RefundDenied(_paymentId, payment.payer, reason);
     }
 }
