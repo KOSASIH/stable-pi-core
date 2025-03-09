@@ -1,0 +1,47 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: #007bff;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+footer {
+    background: #007bff;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+form {
+    margin: 20px;
+}
+
+input, select, button {
+    margin: 5px;
+    padding: 10px;
+}
+
+.notification {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+.notification.success {
+    background-color: #28a745;
+}
+
+.notification.error {
+    background-color: #dc3545;
+}
