@@ -1,0 +1,7 @@
+2023-10-01 10:05:00 [ERROR] Failed to connect to the database.
+2023-10-01 10:05:01 [ERROR] Exception: System.Data.SqlClient.SqlException: Login failed for user 'db_username'.
+2023-10-01 10:05:02 [ERROR] Stack Trace: at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+2023-10-01 10:10:00 [ERROR] Error while extracting data from the web application.
+2023-10-01 10:10:01 [ERROR] Exception: UiPath.Core.SelectorException: Cannot find the UI element corresponding to the selector.
+2023-10-01 10:15:00 [ERROR] Unexpected error occurred during data processing.
+2023-10-01 10:15:01 [ERROR] Exception: System.NullReferenceException: Object reference not set to an instance of an object.
