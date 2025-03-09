@@ -1,0 +1,39 @@
+{
+    "Logging": {
+        "LogLevel": "Info",                     // Level of logging (e.g., Info, Warning, Error)
+        "LogToFile": true,                      // Whether to log messages to a file
+        "LogToConsole": false,                  // Whether to log messages to the console
+        "LogFilePath": "C:\\path\\to\\your\\logs\\log.txt", // Path to the log file
+        "MaxLogFileSize": 10485760              // Maximum log file size in bytes (10 MB)
+    },
+    "UIAutomation": {
+        "RetryInterval": 5,                     // Interval between retries (in seconds)
+        "MaxRetries": 3,                         // Maximum number of retries for UI actions
+        "ElementTimeout": 30,                   // Timeout for waiting for UI elements (in seconds)
+        "UseDefaultSelectors": true               // Whether to use default selectors for UI elements
+    },
+    "DataProcessing": {
+        "EnableDataValidation": true,            // Enable validation for input data
+        "ValidationRules": {
+            "RequiredFields": ["Name", "Email", "Phone"], // List of required fields for validation
+            "EmailFormat": "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", // Regex pattern for validating email format
+            "PhoneFormat": "^\\+?[1-9]\\d{1,14}$" // Regex pattern for validating phone numbers
+        }
+    },
+    "API": {
+        "BaseUrl": "https://api.yourservice.com", // Base URL for API requests
+        "Timeout": 30,                             // Timeout for API requests (in seconds)
+        "RetryCount": 3                            // Number of retries for failed API requests
+    },
+    "Notifications": {
+        "EmailNotifications": {
+            "Enabled": true,                      // Enable email notifications
+            "Recipient": "notify@example.com",    // Recipient email address for notifications
+            "Subject": "RPA Process Notification" // Subject line for notification emails
+        },
+        "SlackNotifications": {
+            "Enabled": false,                     // Enable Slack notifications
+            "WebhookUrl": "https://hooks.slack.com/services/your/webhook/url" // Slack webhook URL
+        }
+    }
+}
