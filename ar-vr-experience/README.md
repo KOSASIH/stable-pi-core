@@ -86,7 +86,7 @@ ar-vr-experience/
 
    ```bash
    git clone https://github.com/KOSASIH/stable-pi-core.git
-   cd ar-vr-experience
+   cd stable-pi-core/ar-vr-experience
    ```
 
 2. **Install Node.js dependencies**:
