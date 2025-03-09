@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="Main" 
+          DisplayName="Main Workflow">
+    <x:Members>
+        <x:Property Name="extractedData" Type="InArgument(x:Array(x:String))" />
+    </x:Members>
+    <Sequence DisplayName="Main Sequence">
+        <TryCatch DisplayName="Try-Catch for Error Handling">
+            <Try DisplayName="Main Process">
+                <Sequence DisplayName="Process Sequence">
+                    <!-- Read Data from Excel -->
+                    <ExcelApplicationScope DisplayName="Excel Application Scope" WorkbookPath="C:\path\to\your\input.xlsx">
+                        <ReadRange DisplayName="Read Data" SheetName="Sheet1" Output="extractedData" />
+                    </ExcelApplicationScope>
+
+                    <!-- Process Each Row -->
+                    <ForEach x:TypeArguments="x:String[]" DisplayName="For Each Row" Values="[extractedData]">
+                        <ActivityAction x:TypeArguments="x:String[]">
+                            <Sequence DisplayName="Process Row">
+                                <Assign DisplayName="Assign Variables" To="[currentRow]" Value="[item]" />
+                                
+                                <!-- Open Browser and Enter Data -->
+                                <OpenBrowser DisplayName="Open Browser" Url="http://your-web-application-url.com" BrowserType="Chrome">
+                                    <Do>
+                                        <Sequence>
+                                            <TypeInto DisplayName="Type Name" Text="[currentRow(0)]" Selector="<your_selector_for_name>" />
+                                            <TypeInto DisplayName="Type Email" Text="[currentRow(1)]" Selector="<your_selector_for_email>" />
+                                            <Click DisplayName="Submit" Selector="<your_selector_for_submit_button>" />
+                                        </Sequence>
+                                    </Do>
+                                </OpenBrowser>
+                            </Sequence>
+                        </ActivityAction>
+                    </ForEach>
+                </Sequence>
+            </Try>
+            <Catch x:TypeArguments="s:Exception" DisplayName="Exception Handling">
+                <Sequence>
+                    <WriteLine DisplayName="Log Error" Text="[exception.Message]" />
+                    <MessageBox DisplayName="Show Error" Text="[exception.Message]" />
+                </Sequence>
+            </Catch>
+        </TryCatch>
+    </Sequence>
+</Workflow>
