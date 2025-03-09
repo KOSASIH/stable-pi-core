@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="ErrorHandling" 
+          DisplayName="Error Handling">
+    <x:Members>
+        <x:Property Name="exception" Type="InArgument(s:Exception)" />
+    </x:Members>
+    <Sequence DisplayName="Error Handling Sequence">
+        <WriteLine DisplayName="Log Error" Text="[exception.Message]" />
+        <WriteLine DisplayName="Log Stack Trace" Text="[exception.StackTrace]" />
+        
+        <MessageBox DisplayName="Show Error" 
+                    Text="An error occurred: [exception.Message]. Please check the logs for more details." 
+                    Button="OK" 
+                    Title="Error" />
+        
+        <!-- Optional: You can add additional actions here, such as sending an email notification -->
+    </Sequence>
+</Workflow>
