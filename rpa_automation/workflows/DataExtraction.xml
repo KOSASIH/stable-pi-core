@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="DataExtraction" 
+          DisplayName="Data Extraction">
+    <x:Members>
+        <x:Property Name="extractedData" Type="OutArgument(x:Array(x:String))" />
+    </x:Members>
+    <Sequence DisplayName="Data Extraction Sequence">
+        <ExcelApplicationScope DisplayName="Excel Application Scope" WorkbookPath="C:\path\to\your\input.xlsx">
+            <ReadRange DisplayName="Read Data" SheetName="Sheet1" Output="extractedData" />
+        </ExcelApplicationScope>
+    </Sequence>
+</Workflow>
