@@ -1,8 +1,0 @@
-2023-10-01 10:00:00 [INFO] Starting the RPA process.
-2023-10-01 10:00:05 [INFO] Reading configuration from Config.xlsx.
-2023-10-01 10:00:10 [INFO] Successfully connected to the database.
-2023-10-01 10:00:15 [INFO] Extracting data from the web application.
-2023-10-01 10:00:20 [INFO] Data extraction completed successfully.
-2023-10-01 10:00:25 [INFO] Processing data for output.
-2023-10-01 10:00:30 [INFO] Writing output to output.xlsx.
-2023-10-01 10:00:35 [INFO] RPA process completed successfully.
