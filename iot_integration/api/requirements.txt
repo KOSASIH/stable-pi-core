@@ -1,0 +1,4 @@
+Flask==2.0.1                # Web framework for building the API
+paho-mqtt==1.5.1            # MQTT client for communication with IoT devices
+web3==5.24.0                # Ethereum library for interacting with the Ethereum blockchain
+python-dotenv==0.19.2       # For loading environment variables from a .env file (optional)
