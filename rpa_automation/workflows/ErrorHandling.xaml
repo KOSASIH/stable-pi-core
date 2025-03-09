@@ -10,16 +10,38 @@
           DisplayName="Error Handling">
     <x:Members>
         <x:Property Name="exception" Type="InArgument(s:Exception)" />
+        <x:Property Name="logFilePath" Type="InArgument(x:String)" />
+        <x:Property Name="emailRecipient" Type="InArgument(x:String)" />
     </x:Members>
     <Sequence DisplayName="Error Handling Sequence">
-        <WriteLine DisplayName="Log Error" Text="[exception.Message]" />
-        <WriteLine DisplayName="Log Stack Trace" Text="[exception.StackTrace]" />
-        
-        <MessageBox DisplayName="Show Error" 
-                    Text="An error occurred: [exception.Message]. Please check the logs for more details." 
-                    Button="OK" 
-                    Title="Error" />
-        
-        <!-- Optional: You can add additional actions here, such as sending an email notification -->
+        <TryCatch DisplayName="Try-Catch for Logging and Notification">
+            <Try DisplayName="Log Error and Notify">
+                <Sequence>
+                    <!-- Log Error to File -->
+                    <WriteTextFile DisplayName="Log Error to File" 
+                                   FilePath="[logFilePath]" 
+                                   Text="[String.Format('{0}: {1}{2}', DateTime.Now.ToString(), exception.Message, Environment.NewLine)]" 
+                                   Append="True" />
+                    
+                    <!-- Show Error Message to User -->
+                    <MessageBox DisplayName="Show Error" 
+                                 Text="An error occurred: [exception.Message]. Please check the logs for more details." 
+                                 Button="OK" 
+                                 Title="Error" />
+                    
+                    <!-- Send Email Notification -->
+                    <SendOutlookMailMessage DisplayName="Send Email Notification" 
+                                             To="[emailRecipient]" 
+                                             Subject="Error Notification" 
+                                             Body="[String.Format('An error occurred in the RPA process: {0}', exception.Message)]" 
+                                             IsBodyHtml="False" />
+                </Sequence>
+            </Try>
+            <Catch x:TypeArguments="s:Exception" DisplayName="Exception Handling">
+                <Sequence>
+                    <WriteLine DisplayName="Log Catch Error" Text="[exception.Message]" />
+                </Sequence>
+            </Catch>
+        </TryCatch>
     </Sequence>
 </Workflow>
