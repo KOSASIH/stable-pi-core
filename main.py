@@ -2,6 +2,14 @@ import logging
 import os
 import pandas as pd
 import yaml
+import json
+import time
+import paho.mqtt.client as mqtt
+from data_processing.analytics.anomaly_detection import detect_anomaly
+from data_processing.analytics.pattern_recognition import PatternRecognizer
+from data_processing.data_collector import collect_data
+from data_processing.data_processor import process_data
+from communication.mqtt_client import MQTTClient
 from algorithms.supply_adjustment import SupplyAdjustment
 from algorithms.asset_management import AssetManagement
 from algorithms.prediction_model import DemandPredictionModel
@@ -85,29 +93,62 @@ def main():
     bridge_system = BridgeSystem()
     dual_value_system = DualValueSystem()
 
-    # Example usage of the models
-    market_price = 105
-    current_supply = 1000
-    other_factors = 1
+    # Initialize MQTT client for communication
+    mqtt_client = MQTTClient(config['mqtt'])
+    mqtt_client.connect()
 
-    # Predict demand
-    predicted_demand = predict_demand(demand_model, market_price, current_supply, other_factors)
+    # Data collection and processing loop
+    recognizer = PatternRecognizer(window_size=5)
 
-    # Current allocations
-    current_allocations = {'Asset_A': 1000, 'Asset_B': 1100}
-    
-    # Adjust allocations based on market conditions
-    market_conditions = 1  # Example market condition
-    new_allocations = adjust_allocations(asset_manager, current_allocations, market_conditions)
+    try:
+        while True:
+            # Collect data from sensors
+            sensor_data = collect_data()  # Implement this function to collect data
+            logging.info(f"Collected sensor data: {sensor_data}")
 
-    # Implement dynamic pegging
-    implement_dynamic_pegging(dynamic_pegging, market_conditions)
+            # Process the collected data
+            if detect_anomaly(sensor_data):
+                logging.warning("Anomaly detected in sensor data.")
+                continue  # Skip processing if anomaly detected
 
-    # Manage decentralized reserve
-    manage_decentralized_reserve(decentralized_reserve)
+            recognizer.add_data(sensor_data['temperature'], sensor_data['humidity'])
+            patterns = recognizer.recognize_patterns()
 
-    # Log final allocations
-    logging.info(f'Final Allocations: {new_allocations}')
+            # Example usage of the models
+            market_price = 105
+            current_supply = 1000
+            other_factors = 1
+
+            # Predict demand
+            predicted_demand = demand_model.predict(market_price, current_supply, other_factors)
+
+            # Current allocations
+            current_allocations = {'Asset_A': 1000, 'Asset_B': 1100}
+            
+            # Adjust allocations based on market conditions
+            market_conditions = 1  # Example market condition
+            new_allocations = asset_manager.adjust_allocations(current_allocations, market_conditions)
+
+            # Implement dynamic pegging
+            implement_dynamic_pegging(dynamic_pegging, market_conditions)
+
+            # Manage decentralized reserve
+            manage_decentralized_reserve(decentralized_reserve)
+
+            # Log final allocations
+            logging.info(f'Final Allocations: {new_allocations}')
+
+            # Publish processed data to MQTT broker
+            mqtt_client.publish("sensor/data", json.dumps(sensor_data))
+            mqtt_client.publish("market/allocations", json.dumps(new_allocations))
+
+            # Sleep for a defined interval before the next iteration
+            time.sleep(config['data']['collection_interval'])
+
+    except KeyboardInterrupt:
+        logging.info("Shutting down the application.")
+    finally:
+        mqtt_client.disconnect()
 
 if __name__ == "__main__":
     main()
