@@ -33,6 +33,11 @@ contract DynamicPegging is Ownable {
         uint256 _mintThreshold,
         uint256 _burnThreshold
     ) {
+        require(_peggedToken != address(0), "Invalid token address");
+        require(_priceOracle != address(0), "Invalid price oracle address");
+        require(_mintThreshold > 0, "Mint threshold must be greater than zero");
+        require(_burnThreshold > 0, "Burn threshold must be greater than zero");
+
         peggedToken = IERC20(_peggedToken);
         priceOracle = _priceOracle;
         mintThreshold = _mintThreshold;
@@ -44,6 +49,7 @@ contract DynamicPegging is Ownable {
      * @param _priceOracle The new price oracle address.
      */
     function updatePriceOracle(address _priceOracle) external onlyOwner {
+        require(_priceOracle != address(0), "Invalid price oracle address");
         priceOracle = _priceOracle;
     }
 
@@ -56,14 +62,40 @@ contract DynamicPegging is Ownable {
         if (currentPrice < mintThreshold) {
             // Mint new tokens if the price is below the mint threshold
             uint256 amountToMint = calculateMintAmount(currentPrice);
-            peggedToken.mint(address(this), amountToMint);
-            emit TokensMinted(address(this), amountToMint);
+            require(amountToMint > 0, "Amount to mint must be greater than zero");
+            // Assuming the peggedToken contract has a mint function
+            _mintTokens(amountToMint);
         } else if (currentPrice > burnThreshold) {
             // Burn tokens if the price is above the burn threshold
             uint256 amountToBurn = calculateBurnAmount(currentPrice);
-            peggedToken.burn(amountToBurn);
-            emit TokensBurned(address(this), amountToBurn);
+            require(amountToBurn > 0, "Amount to burn must be greater than zero");
+            // Assuming the peggedToken contract has a burn function
+            _burnTokens(amountToBurn);
         }
+    }
+
+    /**
+     * @dev Internal function to mint tokens.
+     * @param amount The amount of tokens to mint.
+     */
+    function _mintTokens(uint256 amount) internal {
+        // Call the mint function of the pegged token
+        // Ensure the peggedToken contract has a mint function
+        (bool success, ) = address(peggedToken).call(abi.encodeWithSignature("mint(address,uint256)", address(this), amount));
+        require(success, "Minting failed");
+        emit TokensMinted(address(this), amount);
+    }
+
+    /**
+     * @dev Internal function to burn tokens.
+     * @param amount The amount of tokens to burn.
+     */
+    function _burnTokens(uint256 amount) internal {
+        // Call the burn function of the pegged token
+        // Ensure the peggedToken contract has a burn function
+        (bool success, ) = address(peggedToken).call(abi.encodeWithSignature("burn(uint256)", amount));
+        require(success, "Burning failed");
+        emit TokensBurned(address(this), amount);
     }
 
     /**
@@ -77,12 +109,10 @@ contract DynamicPegging is Ownable {
     }
 
     /**
-     * @dev Calculates the amount of tokens to mint based on the current price.
-     * @param currentPrice The current price in wei.
+     * @dev Calculates the amount of tokens to mint based on the current price * @param currentPrice The current price in wei.
      * @return amountToMint The amount of tokens to mint.
      */
     function calculateMintAmount(uint256 currentPrice) internal view returns (uint256) {
-        // Implement your minting logic here
         return (targetPrice.sub(currentPrice)).mul(1e18).div(targetPrice); // Example calculation
     }
 
@@ -92,7 +122,6 @@ contract DynamicPegging is Ownable {
      * @return amountToBurn The amount of tokens to burn.
      */
     function calculateBurnAmount(uint256 currentPrice) internal view returns (uint256) {
-        // Implement your burning logic here
         return (currentPrice.sub(targetPrice)).mul(1e18).div(targetPrice); // Example calculation
     }
 }
