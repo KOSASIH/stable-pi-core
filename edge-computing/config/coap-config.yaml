@@ -1,0 +1,72 @@
+# coap-config.yaml
+coap:
+  server:
+    host: "0.0.0.0"                  # Bind to all interfaces
+    port: 5683                        # Default CoAP port
+    max_connections: 200              # Maximum number of concurrent connections
+    timeout: 120                       # Timeout for inactive connections (in seconds)
+    security:
+      enabled: true                   # Enable DTLS for secure communication
+      dtls:
+        cipher_suites:
+          - "TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8"  # Recommended cipher suite for DTLS
+          - "TLS_ECDHE_PSK_WITH_AES_128_CCM_8"     # PSK cipher suite for lightweight devices
+        psk_identity: "my_psk_identity"             # Pre-shared key identity
+        psk_key: "my_super_secret_key"               # Pre-shared key (base64 encoded)
+        certificate: "path/to/certificate.pem"       # Path to server certificate
+        private_key: "path/to/private_key.pem"       # Path to server private key
+    resources:
+      - path: "/temperature"          # Resource path for temperature data
+        method: 
+          - "GET"                     # Allowed methods
+          - "POST"                    # Allow posting new temperature data
+        description: "Get temperature readings"
+        observable: true               # Enable observation for this resource
+        max_age: 60                    # Maximum age for cached responses (in seconds)
+      - path: "/humidity"             # Resource path for humidity data
+        method: 
+          - "GET"                     # Allowed methods
+        description: "Get humidity readings"
+        observable: true               # Enable observation for this resource
+        max_age: 60                    # Maximum age for cached responses (in seconds)
+      - path: "/control"              # Resource path for control commands
+        method: 
+          - "PUT"                     # Allowed methods
+        description: "Control device settings"
+        observable: false              # Not observable
+        payload_format: "application/json"  # Expected payload format
+
+  client:
+    default_timeout: 5                # Default timeout for requests (in seconds)
+    retries: 5                         # Number of retries for failed requests
+    observe:
+      enabled: true                    # Enable observation for resources
+      max_observe: 10                  # Maximum number of simultaneous observations
+    security:
+      enabled: true                    # Enable DTLS for secure communication
+      dtls:
+        psk_identity: "my_psk_identity"             # Pre-shared key identity
+        psk_key: "my_super_secret_key"               # Pre-shared key (base64 encoded)
+        certificate: "path/to/client_certificate.pem" # Path to client certificate
+        private_key: "path/to/client_private_key.pem" # Path to client private key
+
+logging:
+  level: "DEBUG"                      # Logging level (DEBUG, INFO, WARN, ERROR)
+  file: "coap_server.log"             # Log file for server logs
+  rotation:
+    enabled: true                     # Enable log rotation
+    max_size: "20MB"                  # Maximum size of log file before rotation
+    max_files: 10                     # Maximum number of rotated log files to keep
+
+# Monitoring and Metrics
+monitoring:
+  enabled: true                       # Enable monitoring
+  metrics_endpoint: "/metrics"        # Endpoint for metrics
+  interval: 30                        # Interval for metrics collection (in seconds)
+
+# Dynamic Resource Management
+dynamic_resources:
+  enabled: true                       # Enable dynamic resource management
+  update_interval: 60                 # Interval for updating resources (in seconds)
+
+# Additional settings can be added as needed
