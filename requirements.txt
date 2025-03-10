@@ -25,5 +25,5 @@ seaborn==0.12.2    # For statistical data visualization
 python-dotenv==0.21.0  # For loading environment variables from a .env file
 
 # Additional libraries for enhanced functionality
-requests==2.31.0  # For making HTTP requests
+requests==2.32.2  # For making HTTP requests
 cryptography==39.0.1  # For secure data handling and encryption
