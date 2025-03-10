@@ -1,130 +1,131 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract DynamicPegging is UUPSUpgradeable, OwnableUpgradeable {
-    // The token that will be pegged (Pi Coin)
-    IERC20 public peggedToken;
+contract DynamicPegging is AccessControl, Pausable {
+    using SafeMath for uint256;
 
-    // Price oracle address
-    address public priceOracle;
+    // State variables
+    IERC20 public stablecoin; // The stablecoin to be pegged
+    AggregatorV3Interface[] internal priceFeeds; // Array of Chainlink price feeds
+    uint256 public targetPrice; // Target price for the stablecoin
+    uint256 public adjustmentFactor; // Factor to adjust supply
+    uint256 public lastAdjustmentTime; // Timestamp of the last adjustment
+    uint256 public adjustmentCooldown; // Cooldown period between adjustments
+    uint256 public priceDeviationThreshold; // Threshold for price deviation
 
-    // Target price for pegging (in wei, $314159.00)
-    uint256 public constant targetPrice = 314159 * 10**18; // Assuming 18 decimals for the token
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant GOVERNANCE_ROLE = keccak256("GOVERNANCE_ROLE");
 
-    // Minting and burning thresholds
-    uint256 public mintThreshold; // Price below which tokens are minted
-    uint256 public burnThreshold; // Price above which tokens are burned
+    event SupplyAdjusted(uint256 newSupply);
+    event PriceUpdated(uint256 newPrice);
+    event AdjustmentCooldownUpdated(uint256 newCooldown);
+    event PriceDeviationThresholdUpdated(uint256 newThreshold);
+    event EmergencyPaused();
+    event EmergencyUnpaused();
 
-    // Event emitted when tokens are minted
-    event TokensMinted(address indexed to, uint256 amount);
-
-    // Event emitted when tokens are burned
-    event TokensBurned(address indexed from, uint256 amount);
-
-    // Initializer function for upgradeable contracts
-    function initialize(
-        address _peggedToken,
-        address _priceOracle,
-        uint256 _mintThreshold,
-        uint256 _burnThreshold
-    ) public initializer {
-        __Ownable_init();
-        peggedToken = IERC20(_peggedToken);
-        priceOracle = _priceOracle;
-        mintThreshold = _mintThreshold;
-        burnThreshold = _burnThreshold;
-    }
-
-    /**
-     * @dev Updates the price oracle address.
-     * @param _priceOracle The new price oracle address.
-     */
-    function updatePriceOracle(address _priceOracle) external onlyOwner {
-        require(_priceOracle != address(0), "Invalid price oracle address");
-        priceOracle = _priceOracle;
-    }
-
-    /**
-     * @dev Adjusts the supply of the pegged token based on the current price.
-     */
-    function adjustSupply() external onlyOwner {
-        uint256 currentPrice = getCurrentPrice();
-
-        if (currentPrice < mintThreshold) {
-            uint256 amountToMint = calculateMintAmount(currentPrice);
-            require(amountToMint > 0, "Amount to mint must be greater than zero");
-            _mintTokens(amountToMint);
-        } else if (currentPrice > burnThreshold) {
-            uint256 amountToBurn = calculateBurnAmount(currentPrice);
-            require(amountToBurn > 0, "Amount to burn must be greater than zero");
-            _burnTokens(amountToBurn);
+    constructor(
+        address _stablecoin,
+        address[] memory _priceFeeds,
+        uint256 _targetPrice,
+        uint256 _adjustmentFactor,
+        uint256 _adjustmentCooldown,
+        uint256 _priceDeviationThreshold
+    ) {
+        stablecoin = IERC20(_stablecoin);
+        for (uint256 i = 0; i < _priceFeeds.length; i++) {
+            priceFeeds.push(AggregatorV3Interface(_priceFeeds[i]));
         }
+        targetPrice = _targetPrice;
+        adjustmentFactor = _adjustmentFactor;
+        adjustmentCooldown = _adjustmentCooldown;
+        priceDeviationThreshold = _priceDeviationThreshold;
+        lastAdjustmentTime = block.timestamp;
+
+        _setupRole(ADMIN_ROLE, msg.sender);
+        _setupRole(GOVERNANCE_ROLE, msg.sender);
     }
 
-    /**
-     * @dev Internal function to mint tokens.
-     * @param amount The amount of tokens to mint.
-     */
-    function _mintTokens(uint256 amount) internal {
-        (bool success, ) = address(peggedToken).call(abi.encodeWithSignature("mint(address,uint256)", address(this), amount));
-        require(success, "Minting failed");
-        emit TokensMinted(address(this), amount);
+    // Function to get the latest price from the Chainlink price feeds
+    function getLatestPrice() public view returns (uint256) {
+        uint256 totalPrice = 0;
+        uint256 validFeeds = 0;
+
+        for (uint256 i = 0; i < priceFeeds.length; i++) {
+            (
+                ,
+                int price,
+                ,
+                ,
+            ) = priceFeeds[i].latestRoundData();
+            if (price > 0) {
+                totalPrice = totalPrice.add(uint256(price));
+                validFeeds++;
+            }
+        }
+
+        require(validFeeds > 0, "No valid price feeds available");
+        return totalPrice.div(validFeeds);
     }
 
-    /**
-     * @dev Internal function to burn tokens.
-     * @param amount The amount of tokens to burn.
-     */
-    function _burnTokens(uint256 amount) internal {
-        (bool success, ) = address(peggedToken).call(abi.encodeWithSignature("burn(uint256)", amount));
-        require(success, "Burning failed");
-        emit TokensBurned(address(this), amount);
+    // Function to adjust the supply of the stablecoin based on the current price
+    function adjustSupply() external onlyRole(ADMIN_ROLE) whenNotPaused {
+        require(block.timestamp >= lastAdjustmentTime + adjustmentCooldown, "Cooldown period not met");
+
+        uint256 currentPrice = getLatestPrice();
+        uint256 currentSupply = stablecoin.totalSupply();
+
+        // Calculate price deviation
+        uint256 priceDeviation = (currentPrice > targetPrice) ? currentPrice.sub(targetPrice) : targetPrice.sub(currentPrice);
+
+        // Adjust supply based on price deviation
+        if (priceDeviation > priceDeviationThreshold) {
+            uint256 adjustmentAmount = (currentSupply.mul(adjustmentFactor)).div(100);
+            if (currentPrice < targetPrice) {
+                stablecoin.mint(address(this), adjustmentAmount); // Mint new tokens
+                emit SupplyAdjusted(currentSupply.add(adjustmentAmount));
+            } else {
+                stablecoin.burn(address(this), adjustmentAmount); // Burn tokens
+                emit SupplyAdjusted(currentSupply.sub(adjustmentAmount));
+            }
+            lastAdjustmentTime = block.timestamp;
+        }
+
+        emit PriceUpdated(currentPrice);
     }
 
-    /**
-     * @dev Retrieves the current price from the price oracle.
-     * @return currentPrice The current price in wei.
-     */
-    function getCurrentPrice() internal view returns (uint256) {
-        // This function should call the price oracle to get the current price
-        // Replace with actual oracle call
-        return 1 ether; // Placeholder for actual oracle call
+    // Governance functions
+    function proposeTargetPrice(uint256 _targetPrice) external onlyRole(GOVERNANCE_ROLE) {
+        targetPrice = _targetPrice;
     }
 
-    /**
-     * @dev Calculates the amount of tokens to mint based on the current price.
-     * @param currentPrice The current price in wei.
-     * @return amountToMint The amount of tokens to mint.
-     */
-    function calculateMintAmount(uint256 currentPrice) internal pure returns (uint256) {
-        return (targetPrice - currentPrice) * 1e18 / targetPrice; // Example calculation
+    function proposeAdjustmentFactor(uint256 _adjustmentFactor) external onlyRole(GOVERNANCE_ROLE) {
+        adjustmentFactor = _adjustmentFactor;
     }
 
-    /**
-     * @dev Calculates the amount of tokens to burn based on the current price.
-     * @param currentPrice The current price in wei.
-     * @return amountToBurn The amount of tokens to burn.
-     */
-    function calculateBurnAmount(uint256 currentPrice) internal pure returns (uint256) {
-        return (currentPrice - targetPrice) * 1e18 / targetPrice; // Example calculation
+    function proposeAdjustmentCooldown(uint256 _adjustmentCooldown) external onlyRole(GOVERNANCE_ROLE) {
+        adjustmentCooldown = _adjustmentCooldown;
+        emit AdjustmentCooldownUpdated(_adjustmentCooldown);
     }
 
-    /**
-     * @dev Function to authorize upgrades.
-     */
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+    function proposePriceDeviationThreshold(uint256 _priceDeviationThreshold) external onlyRole(GOVERNANCE_ROLE) {
+        priceDeviationThreshold = _priceDeviationThreshold;
+        emit PriceDeviationThresholdUpdated(_priceDeviationThreshold);
+    }
 
-    /**
-     * @dev Function to withdraw tokens mistakenly sent to the contract.
-     * @param tokenAddress The address of the token to withdraw.
-     * @param amount The amount of tokens to withdraw.
-     */
-    function withdrawTokens(address tokenAddress, uint256 amount) external onlyOwner {
-        require(tokenAddress != address(peggedToken), "Cannot withdraw pegged token");
-        IERC20(tokenAddress).transfer(owner(), amount);
+    // Emergency functions
+    function pause() external onlyRole(ADMIN_ROLE) {
+        _pause();
+        emit EmergencyPaused();
+    }
+
+    function unpause() external onlyRole(ADMIN_ROLE) {
+        _unpause();
+        emit EmergencyUnpaused();
     }
 }
