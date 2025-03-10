@@ -1,0 +1,35 @@
+# Edge Device Configuration
+device:
+  id: "edge-device-001"  # Unique identifier for the edge device
+  location: "Warehouse A" # Physical location of the device
+  data_collection_interval: 5  # Interval in seconds for data collection
+  max_data_storage: 1000  # Maximum number of data points to store locally
+
+# Data Processing Configuration
+data_processing:
+  enabled: true  # Enable or disable data processing
+  processing_method: "real-time"  # Options: "real-time", "batch"
+  batch_size: 50  # Number of data points to process in a batch (if batch processing is enabled)
+  anomaly_detection:
+    enabled: true  # Enable or disable anomaly detection
+    threshold: 0.8  # Threshold for anomaly detection (0 to 1)
+    alert_on_anomaly: true  # Send alert if an anomaly is detected
+  pattern_recognition:
+    enabled: true  # Enable pattern recognition
+    model: "pattern_model_v1"  # Name of the model to use for pattern recognition
+    confidence_threshold: 0.75  # Confidence threshold for recognizing patterns
+
+# Logging Configuration
+logging:
+  level: "info"  # Logging level (options: debug, info, warning, error, critical)
+  log_file: "edge_device.log"  # File to log messages
+  max_file_size: 10MB  # Maximum size of the log file before rotation
+  backup_count: 5  # Number of backup log files to keep
+
+# Security Configuration
+security:
+  encryption_enabled: true  # Enable data encryption
+  encryption_method: "AES-256"  # Encryption method to use
+  api_key: "your_api_key_here"  # API key for secure communication with the central server
+  ssl_cert_path: "/path/to/cert.pem"  # Path to SSL certificate for secure connections
+  ssl_key_path: "/path/to/key.pem"  # Path to SSL key for secure connections
