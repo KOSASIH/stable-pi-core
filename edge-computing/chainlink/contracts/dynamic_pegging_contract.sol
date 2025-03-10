@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract DynamicPegging is Ownable {
-    using SafeMath for uint256;
-
+contract DynamicPegging is UUPSUpgradeable, OwnableUpgradeable {
     // The token that will be pegged (Pi Coin)
     IERC20 public peggedToken;
 
@@ -15,7 +13,7 @@ contract DynamicPegging is Ownable {
     address public priceOracle;
 
     // Target price for pegging (in wei, $314159.00)
-    uint256 public targetPrice = 314159 * 10**18; // Assuming 18 decimals for the token
+    uint256 public constant targetPrice = 314159 * 10**18; // Assuming 18 decimals for the token
 
     // Minting and burning thresholds
     uint256 public mintThreshold; // Price below which tokens are minted
@@ -27,17 +25,14 @@ contract DynamicPegging is Ownable {
     // Event emitted when tokens are burned
     event TokensBurned(address indexed from, uint256 amount);
 
-    constructor(
+    // Initializer function for upgradeable contracts
+    function initialize(
         address _peggedToken,
         address _priceOracle,
         uint256 _mintThreshold,
         uint256 _burnThreshold
-    ) {
-        require(_peggedToken != address(0), "Invalid token address");
-        require(_priceOracle != address(0), "Invalid price oracle address");
-        require(_mintThreshold > 0, "Mint threshold must be greater than zero");
-        require(_burnThreshold > 0, "Burn threshold must be greater than zero");
-
+    ) public initializer {
+        __Ownable_init();
         peggedToken = IERC20(_peggedToken);
         priceOracle = _priceOracle;
         mintThreshold = _mintThreshold;
@@ -56,20 +51,16 @@ contract DynamicPegging is Ownable {
     /**
      * @dev Adjusts the supply of the pegged token based on the current price.
      */
-    function adjustSupply() external {
+    function adjustSupply() external onlyOwner {
         uint256 currentPrice = getCurrentPrice();
 
         if (currentPrice < mintThreshold) {
-            // Mint new tokens if the price is below the mint threshold
             uint256 amountToMint = calculateMintAmount(currentPrice);
             require(amountToMint > 0, "Amount to mint must be greater than zero");
-            // Assuming the peggedToken contract has a mint function
             _mintTokens(amountToMint);
         } else if (currentPrice > burnThreshold) {
-            // Burn tokens if the price is above the burn threshold
             uint256 amountToBurn = calculateBurnAmount(currentPrice);
             require(amountToBurn > 0, "Amount to burn must be greater than zero");
-            // Assuming the peggedToken contract has a burn function
             _burnTokens(amountToBurn);
         }
     }
@@ -79,8 +70,6 @@ contract DynamicPegging is Ownable {
      * @param amount The amount of tokens to mint.
      */
     function _mintTokens(uint256 amount) internal {
-        // Call the mint function of the pegged token
-        // Ensure the peggedToken contract has a mint function
         (bool success, ) = address(peggedToken).call(abi.encodeWithSignature("mint(address,uint256)", address(this), amount));
         require(success, "Minting failed");
         emit TokensMinted(address(this), amount);
@@ -91,8 +80,6 @@ contract DynamicPegging is Ownable {
      * @param amount The amount of tokens to burn.
      */
     function _burnTokens(uint256 amount) internal {
-        // Call the burn function of the pegged token
-        // Ensure the peggedToken contract has a burn function
         (bool success, ) = address(peggedToken).call(abi.encodeWithSignature("burn(uint256)", amount));
         require(success, "Burning failed");
         emit TokensBurned(address(this), amount);
@@ -104,16 +91,17 @@ contract DynamicPegging is Ownable {
      */
     function getCurrentPrice() internal view returns (uint256) {
         // This function should call the price oracle to get the current price
-        // For demonstration purposes, we will return a mock price
-        return 1 ether; // Replace with actual oracle call
+        // Replace with actual oracle call
+        return 1 ether; // Placeholder for actual oracle call
     }
 
     /**
-     * @dev Calculates the amount of tokens to mint based on the current price * @param currentPrice The current price in wei.
+     * @dev Calculates the amount of tokens to mint based on the current price.
+     * @param currentPrice The current price in wei.
      * @return amountToMint The amount of tokens to mint.
      */
-    function calculateMintAmount(uint256 currentPrice) internal view returns (uint256) {
-        return (targetPrice.sub(currentPrice)).mul(1e18).div(targetPrice); // Example calculation
+    function calculateMintAmount(uint256 currentPrice) internal pure returns (uint256) {
+        return (targetPrice - currentPrice) * 1e18 / targetPrice; // Example calculation
     }
 
     /**
@@ -121,7 +109,22 @@ contract DynamicPegging is Ownable {
      * @param currentPrice The current price in wei.
      * @return amountToBurn The amount of tokens to burn.
      */
-    function calculateBurnAmount(uint256 currentPrice) internal view returns (uint256) {
-        return (currentPrice.sub(targetPrice)).mul(1e18).div(targetPrice); // Example calculation
+    function calculateBurnAmount(uint256 currentPrice) internal pure returns (uint256) {
+        return (currentPrice - targetPrice) * 1e18 / targetPrice; // Example calculation
+    }
+
+    /**
+     * @dev Function to authorize upgrades.
+     */
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+
+    /**
+     * @dev Function to withdraw tokens mistakenly sent to the contract.
+     * @param tokenAddress The address of the token to withdraw.
+     * @param amount The amount of tokens to withdraw.
+     */
+    function withdrawTokens(address tokenAddress, uint256 amount) external onlyOwner {
+        require(tokenAddress != address(peggedToken), "Cannot withdraw pegged token");
+        IERC20(tokenAddress).transfer(owner(), amount);
     }
 }
