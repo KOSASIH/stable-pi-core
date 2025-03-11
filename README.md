@@ -78,13 +78,35 @@ stable-pi-core is the foundational repository for the Stabzer project, aimed at 
 
 ## Features
 
-- **Dynamic Pegging Mechanism**: Automatically adjusts the supply of Pi Coin to maintain its value.
-- **Decentralized Reserve System**: Backed by a diverse set of assets to ensure stability.
-- **Cross-Chain Interoperability**: Seamless interaction with other blockchain networks.
-- **Advanced Security Protocols**: Utilizes cutting-edge cryptographic techniques for secure transactions.
-- **User -Friendly Wallet Solutions**: Intuitive interfaces for easy management of Pi Coin.
+- **Dynamic Pegging Mechanism**: Automatically adjusts the supply of Pi Coin to maintain its value, ensuring stability in fluctuating market conditions.
+
+- **Decentralized Reserve System**: Backed by a diverse set of assets to ensure stability, providing a robust foundation for the value of Pi Coin.
+
+- **Cross-Chain Interoperability**: Seamless interaction with other blockchain networks, allowing Pi Coin to be used across different ecosystems and enhancing its usability.
+
+- **Advanced Security Protocols**: Utilizes cutting-edge cryptographic techniques for secure transactions, ensuring the safety of user funds and data.
+
+- **User -Friendly Wallet Solutions**: Intuitive interfaces for easy management of Pi Coin, making it accessible for users of all experience levels.
+
 - **Bridge System**: Enables users to deposit, withdraw, and bridge Pi Coin to other blockchain networks, enhancing liquidity and usability across ecosystems.
+
 - **Dual-Value System**: Supports both a stable value and a market-driven value for Pi Coin, allowing users to benefit from price stability while also participating in market dynamics.
+
+- **Governance Mechanism**: Empowers the community to propose and vote on changes to critical parameters, fostering decentralization and user involvement in decision-making.
+
+- **Multi-Oracle Price Feeds**: Aggregates prices from multiple oracles to ensure accuracy and reliability, reducing the risk of single points of failure.
+
+- **Automated Risk Management**: Implements algorithms to assess and mitigate risks associated with price volatility and market fluctuations, enhancing the overall stability of the ecosystem.
+
+- **Incentive Programs**: Offers rewards for users who participate in liquidity provision and governance, encouraging community engagement and investment in the ecosystem.
+
+- **Real-Time Analytics Dashboard**: Provides users with insights into market trends, price movements, and their holdings, enabling informed decision-making.
+
+- **Automated Data Collection and Processing**: Integrates data collection from various sensors and processes it in real-time to inform decision-making and adjustments in the ecosystem.
+
+- **Anomaly Detection**: Implements machine learning algorithms to detect anomalies in data, ensuring the integrity and reliability of the system.
+
+- **Pattern Recognition**: Utilizes advanced analytics to identify patterns in market behavior, aiding in predictive modeling and strategic planning.
 
 ## Getting Started
 
