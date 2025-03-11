@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Advanced DApp</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <img src="images/logo.png" alt="DApp Logo" id="logo">
+            <h1>Welcome to My Advanced DApp</h1>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section id="wallet">
+                <h2>Connect Your Wallet</h2>
+                <button id="connectButton">Connect Wallet</button>
+                <div id="accountInfo" style="display: none;">
+                    <h3>Your Account:</h3>
+                    <p id="account"></p>
+                    <button id="disconnectButton">Disconnect</button>
+                </div>
+            </section>
+            <section id="features">
+                <h2>Features</h2>
+                <ul>
+                    <li>Dynamic Pegging Mechanism</li>
+                    <li>Decentralized Reserve System</li>
+                    <li>Cross-Chain Interoperability</li>
+                    <li>Advanced Security Protocols</li>
+                    <li>User-Friendly Wallet Solutions</li>
+                    <li>Bridge System</li>
+                    <li>Dual-Value System</li>
+                </ul>
+            </section>
+            <section id="about">
+                <h2>About This DApp</h2>
+                <p>This DApp allows users to interact with the Ethereum blockchain seamlessly. You can connect your wallet, view your account, and utilize various features designed for a smooth user experience.</p>
+            </section>
+            <section id="contact">
+                <h2>Contact Us</h2>
+                <p>If you have any questions, feel free to reach out at <a href="mailto:support@mydapp.com">support@mydapp.com</a>.</p>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2023 My Advanced DApp. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
