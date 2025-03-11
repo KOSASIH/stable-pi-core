@@ -1,0 +1,37 @@
+{
+  "MicrosoftAppId": "YOUR_APP_ID",
+  "MicrosoftAppPassword": "YOUR_APP_PASSWORD",
+  "BotEndpoint": "https://YOUR_BOT_ENDPOINT/api/messages",
+  "Luis": {
+    "AppId": "YOUR_LUIS_APP_ID",
+    "EndpointKey": "YOUR_LUIS_ENDPOINT_KEY",
+    "Endpoint": "https://YOUR_LUIS_ENDPOINT"
+  },
+  "QnA": {
+    "KnowledgeBaseId": "YOUR_QNA_KB_ID",
+    "EndpointKey": "YOUR_QNA_ENDPOINT_KEY",
+    "Endpoint": "https://YOUR_QNA_ENDPOINT"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    },
+    "LogFilePath": "logs/bot.log"
+  },
+  "CognitiveServices": {
+    "Speech": {
+      "SubscriptionKey": "YOUR_SPEECH_SERVICE_KEY",
+      "Region": "YOUR_SPEECH_SERVICE_REGION"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=YOUR_SERVER;Database=YOUR_DATABASE;User Id=YOUR_USER;Password=YOUR_PASSWORD;"
+  },
+  "AppSettings": {
+    "Environment": "Development",
+    "EnableDebugging": true,
+    "MaxRetries": 3
+  }
+}
