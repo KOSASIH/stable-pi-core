@@ -1,16 +1,16 @@
 {
-  "MicrosoftAppId": "YOUR_APP_ID",
-  "MicrosoftAppPassword": "YOUR_APP_PASSWORD",
-  "BotEndpoint": "https://YOUR_BOT_ENDPOINT/api/messages",
+  "MicrosoftAppId": "YOUR_ACTUAL_APP_ID",
+  "MicrosoftAppPassword": "YOUR_ACTUAL_APP_PASSWORD",
+  "BotEndpoint": "https://YOUR_ACTUAL_BOT_ENDPOINT/api/messages",
   "Luis": {
-    "AppId": "YOUR_LUIS_APP_ID",
-    "EndpointKey": "YOUR_LUIS_ENDPOINT_KEY",
-    "Endpoint": "https://YOUR_LUIS_ENDPOINT"
+    "AppId": "YOUR_ACTUAL_LUIS_APP_ID",
+    "EndpointKey": "YOUR_ACTUAL_LUIS_ENDPOINT_KEY",
+    "Endpoint": "https://YOUR_ACTUAL_LUIS_ENDPOINT"
   },
   "QnA": {
-    "KnowledgeBaseId": "YOUR_QNA_KB_ID",
-    "EndpointKey": "YOUR_QNA_ENDPOINT_KEY",
-    "Endpoint": "https://YOUR_QNA_ENDPOINT"
+    "KnowledgeBaseId": "YOUR_ACTUAL_QNA_KB_ID",
+    "EndpointKey": "YOUR_ACTUAL_QNA_ENDPOINT_KEY",
+    "Endpoint": "https://YOUR_ACTUAL_QNA_ENDPOINT"
   },
   "Logging": {
     "LogLevel": {
@@ -22,16 +22,28 @@
   },
   "CognitiveServices": {
     "Speech": {
-      "SubscriptionKey": "YOUR_SPEECH_SERVICE_KEY",
-      "Region": "YOUR_SPEECH_SERVICE_REGION"
+      "SubscriptionKey": "YOUR_ACTUAL_SPEECH_SERVICE_KEY",
+      "Region": "YOUR_ACTUAL_SPEECH_SERVICE_REGION"
     }
   },
   "ConnectionStrings": {
-    "DefaultConnection": "Server=YOUR_SERVER;Database=YOUR_DATABASE;User Id=YOUR_USER;Password=YOUR_PASSWORD;"
+    "DefaultConnection": "Server=YOUR_ACTUAL_SERVER;Database=YOUR_ACTUAL_DATABASE;User  Id=YOUR_ACTUAL_USER;Password=YOUR_ACTUAL_PASSWORD;"
   },
   "AppSettings": {
-    "Environment": "Development",
-    "EnableDebugging": true,
-    "MaxRetries": 3
+    "Environment": "Production",
+    "EnableDebugging": false,
+    "MaxRetries": 5,
+    "Timeout": 30000,
+    "EnableTelemetry": true
+  },
+  "FeatureFlags": {
+    "EnableNewFeatures": true,
+    "EnableLogging": true
+  },
+  "Security": {
+    "RequireHttps": true,
+    "AllowedOrigins": [
+      "https://your-allowed-origin.com"
+    ]
   }
 }
