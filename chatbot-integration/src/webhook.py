@@ -5,6 +5,7 @@ from google.cloud import dialogflow_v2 as dialogflow
 from google.api_core.exceptions import InvalidArgument
 from utils.input_handler import sanitize_input
 from utils.response_generator import generate_response
+from intents.greeting_intent import handle_greeting_intent  # Import the greeting intent handler
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
@@ -31,7 +32,12 @@ def handle_webhook():
         user_input = sanitize_input(req.get('queryResult', {}).get('queryText', ''))
         session = sessions_client.session_path(DIALOGFLOW_PROJECT_ID, DIALOGFLOW_SESSION_ID)
 
-        # Send user input to Dialogflow
+        # Check for greeting intent
+        if "greeting" in req.get('queryResult', {}).get('intent', {}).get('displayName', '').lower():
+            bot_response = handle_greeting_intent(user_input)
+            return jsonify({'fulfillmentText': bot_response})
+
+        # Send user input to Dialogflow for other intents
         text_input = dialogflow.TextInput(text=user_input, language_code=DIALOGFLOW_LANGUAGE_CODE)
         query_input = dialogflow.QueryInput(text=text_input)
 
