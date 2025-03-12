@@ -19,6 +19,9 @@ contract PiCoinDynamicPegging is AccessControl, Pausable {
     uint256 public adjustmentCooldown; // Cooldown period between adjustments
     uint256 public priceDeviationThreshold; // Threshold for price deviation
 
+    // Total supply constant
+    uint256 public constant TOTAL_SUPPLY = 100000000000 * 10 ** 18; // 100 billion tokens with 18 decimals
+
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant GOVERNANCE_ROLE = keccak256("GOVERNANCE_ROLE");
 
@@ -86,6 +89,7 @@ contract PiCoinDynamicPegging is AccessControl, Pausable {
         if (priceDeviation > priceDeviationThreshold) {
             uint256 adjustmentAmount = (currentSupply.mul(adjustmentFactor)).div(100);
             if (currentPrice < targetPrice) {
+                require(currentSupply.add(adjustmentAmount) <= TOTAL_SUPPLY, "Exceeds total supply limit");
                 // Mint new tokens (assuming mint function exists in the Pi Coin contract)
                 // piCoin.mint(address(this), adjustmentAmount); 
                 emit SupplyAdjusted(currentSupply.add(adjustmentAmount));
@@ -110,7 +114,7 @@ contract PiCoinDynamicPegging is AccessControl, Pausable {
         emit AdjustmentCooldownUpdated(_adjustmentCooldown);
     }
 
-    function proposePriceDeviationThreshold(uint256 _priceDeviationThreshold) external onlyRole(GOVERNANCE _ROLE) {
+    function proposePriceDeviationThreshold(uint256 _priceDeviationThreshold) external onlyRole(GOVERNANCE_ROLE) {
         priceDeviationThreshold = _priceDeviationThreshold;
         emit PriceDeviationThresholdUpdated(_priceDeviationThreshold);
     }
@@ -154,5 +158,10 @@ contract PiCoinDynamicPegging is AccessControl, Pausable {
     // Function to get the price deviation threshold
     function getPriceDeviationThreshold() external view returns (uint256) {
         return priceDeviationThreshold;
+    }
+
+    // Function to get the total supply limit
+    function getTotalSupplyLimit() external pure returns (uint256) {
+        return TOTAL_SUPPLY;
     }
 }
