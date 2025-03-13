@@ -2,42 +2,52 @@
   "name": "stable-pi-core",
   "version": "1.0.0",
   "description": "Core functionalities for the Stable Pi project, focusing on stability, performance, and blockchain interaction.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "jest",
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "test": "jest --detectOpenHandles --forceExit",
+    "start": "node dist/index.js",
+    "dev": "nodemon --exec ts-node src/index.ts",
     "build": "webpack --mode production",
     "lint": "eslint .",
-    "format": "prettier --write '**/*.js'"
+    "format": "prettier --write '**/*.ts'",
+    "prepare": "husky install",
+    "precommit": "lint-staged"
   },
   "dependencies": {
-    "express": "^4.18.2",                     // Web framework for Node.js
-    "mongoose": "^6.6.5",                     // MongoDB object modeling for Node.js
-    "web3": "^5.32.0",                        // Ethereum JavaScript API
-    "dotenv": "^16.0.3",                      // Environment variable management
-    "axios": "^0.27.2",                       // Promise-based HTTP client for the browser and Node.js
-    "jsonwebtoken": "^9.0.0",                 // JSON Web Token implementation
-    "bcrypt": "^5.1.0",                       // Password hashing library
-    "cors": "^2.8.5",                         // Middleware for enabling CORS
-    "nodemon": "^2.0.22",                     // Utility that monitors for changes in your source and automatically restarts your server
-    "express-validator": "^6.14.0",           // Middleware for validating request data
-    "multer": "^1.4.5-lts.1",                 // Middleware for handling multipart/form-data
-    "socket.io": "^4.5.0",                    // Real-time communication library
-    "lodash": "^4.17.21",                     // Utility library for JavaScript
-    "moment": "^2.29.1",                      // Date manipulation library
-    "chart.js": "^3.9.1",                     // Charting library for data visualization
-    "pusher": "^7.0.0",                       // Real-time messaging service
-    "request": "^2.88.2"                      // Simplified HTTP request library
+    "express": "^4.18.2",
+    "mongoose": "^6.6.5",
+    "web3": "^5.32.0",
+    "dotenv": "^16.0.3",
+    "axios": "^0.27.2",
+    "jsonwebtoken": "^9.0.0",
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "nodemon": "^2.0.22",
+    "express-validator": "^6.14.0",
+    "multer": "^1.4.5-lts.1",
+    "socket.io": "^4.5.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "chart.js": "^3.9.1",
+    "pusher": "^7.0.0",
+    "request": "^2.88.2",
+    "helmet": "^5.0.2",                     // Security middleware for Express
+    "compression": "^1.7.4",                // Middleware to compress response bodies
+    "morgan": "^1.10.0",                    // HTTP request logger middleware
+    "rate-limit": "^1.0.0"                  // Rate limiting middleware
   },
   "devDependencies": {
-    "jest": "^29.0.3",                        // Testing framework
-    "supertest": "^6.3.3",                    // SuperAgent driven library for testing HTTP servers
-    "eslint": "^8.20.0",                      // Linter for JavaScript
-    "prettier": "^2.7.1",                     // Code formatter
-    "webpack": "^5.75.0",                     // Module bundler
-    "webpack-cli": "^4.10.0",                 // CLI for Webpack
-    "webpack-dev-server": "^4.8.0"            // Development server for Webpack
+    "jest": "^29.0.3",
+    "supertest": "^6.3.3",
+    "eslint": "^8.20.0",
+    "prettier": "^2.7.1",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.8.0",
+    "ts-loader": "^9.2.6",                  // TypeScript loader for Webpack
+    "typescript": "^4.8.4",                  // TypeScript for type safety
+    "husky": "^7.0.4",                       // Git hooks for pre-commit
+    "lint-staged": "^12.1.2"                 // Run linters on pre-commit
   },
   "keywords": [
     "node",
@@ -47,7 +57,10 @@
     "mongodb",
     "stable-pi",
     "real-time",
-    "data-visualization"
+    "data-visualization",
+    "typescript",
+    "security",
+    "performance"
   ],
   "author": "KOSASIH",
   "license": "MIT",
@@ -59,4 +72,4 @@
     "url": "https://github.com/KOSASIH/stable-pi-core/issues"
   },
   "homepage": "https://github.com/KOSASIH/stable-pi-core#readme"
-}
+  }
