@@ -108,6 +108,12 @@ stable-pi-core is the foundational repository for the Stabzer project, aimed at 
 
 - **Pattern Recognition**: Utilizes advanced analytics to identify patterns in market behavior, aiding in predictive modeling and strategic planning.
 
+- **Self-Healing Network Protocol**: Automatically detects and resolves issues within the network, ensuring continuous operation and minimizing downtime.
+
+- **Dynamic Liquidity Pool System**: Adjusts liquidity based on market conditions and asset availability, utilizing an Automated Market Maker (AMM) model for optimal performance.
+
+- **Market Analysis Module**: Continuously monitors market conditions and adjusts liquidity parameters dynamically, ensuring the ecosystem remains responsive to changes.
+
 ## Getting Started
 
 ### Prerequisites
