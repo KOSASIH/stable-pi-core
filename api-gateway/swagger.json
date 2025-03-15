@@ -1,0 +1,187 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Stable-Pi-Core API Gateway",
+    "description": "API Gateway for integrating with various blockchains, payment systems, and IoT devices. This API allows users to fetch blockchain data, interact with smart contracts, and manage transactions."
+  },
+  "host": "localhost:4000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/api/ethereum/block/{blockNumber}": {
+      "get": {
+        "summary": "Fetch Ethereum Block Data",
+        "description": "Retrieves data for a specific Ethereum block by block number.",
+        "parameters": [
+          {
+            "name": "blockNumber",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The block number to fetch (e.g., '0x10d4e' for block 68914)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with block data.",
+            "schema": {
+              "$ref": "#/definitions/BlockData"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/ethereum/transaction/{transactionHash}": {
+      "get": {
+        "summary": "Fetch Ethereum Transaction Data",
+        "description": "Retrieves data for a specific Ethereum transaction by transaction hash.",
+        "parameters": [
+          {
+            "name": "transactionHash",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The transaction hash to fetch (e.g., '0x5c69b...')."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with transaction data.",
+            "schema": {
+              "$ref": "#/definitions/TransactionData"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/ethereum/contract/{contractAddress}/call": {
+      "post": {
+        "summary": "Call Smart Contract Method",
+        "description": "Calls a method on a specified Ethereum smart contract.",
+        "parameters": [
+          {
+            "name": "contractAddress",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The address of the smart contract (e.g., '0x123456...')."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ContractCallRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with contract method result.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input parameters."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "BlockData": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "The block number in hexadecimal format."
+        },
+        "hash": {
+          "type": "string",
+          "description": "The block hash."
+        },
+        "parentHash": {
+          "type": "string",
+          "description": "The hash of the parent block."
+        },
+        "transactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TransactionData"
+          },
+          "description": "List of transactions included in the block."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the block was mined."
+        }
+      }
+    },
+    "TransactionData": {
+      "type": "object",
+      "properties": {
+        "hash": {
+          "type": "string",
+          "description": "The transaction hash."
+        },
+        "from": {
+          "type": "string",
+          "description": "The address of the sender."
+        },
+        "to": {
+          "type": "string",
+          "description": "The address of the recipient."
+        },
+        "value": {
+          "type": "string",
+          "description": "The value transferred in the transaction, in wei."
+        },
+        "blockNumber": {
+          "type": "string",
+          "description": "The block number in which the transaction was included."
+        },
+        "gas": {
+          "type": "string",
+          "description": "The gas used for the transaction."
+        },
+        "gasPrice": {
+          "type": "string",
+          "description": "The gas price for the transaction."
+        },
+        "input": {
+          "type": "string",
+          "description": "The input data sent with the transaction."
+        }
+      }
+    },
+    "ContractCallRequest": {
+      "type": "object",
+      "properties": {
+        "methodName": {
+          "type": "string",
+          "description": "The name of the method to call on the smart contract."
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The parameters for the method call."
+        }
+      },
+      "required": ["methodName", "params"]
+    }
+  }
+}
