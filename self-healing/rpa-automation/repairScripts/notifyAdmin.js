@@ -2,6 +2,7 @@
 
 const nodemailer = require('nodemailer'); // For sending emails
 const winston = require('winston'); // For logging
+const axios = require('axios'); // For sending HTTP requests (e.g., to Slack or Discord)
 
 // Configure logging
 const logger = winston.createLogger({
@@ -22,7 +23,6 @@ const logger = winston.createLogger({
  * @param {string} message - The message body of the email.
  */
 async function sendEmailNotification(subject, message) {
-    // Create a transporter object using SMTP
     const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST, // SMTP server host
         port: process.env.SMTP_PORT, // SMTP server port
@@ -33,7 +33,6 @@ async function sendEmailNotification(subject, message) {
         },
     });
 
-    // Email options
     const mailOptions = {
         from: process.env.SMTP_FROM, // Sender address
         to: process.env.ADMIN_EMAIL, // List of recipients
@@ -50,6 +49,36 @@ async function sendEmailNotification(subject, message) {
 }
 
 /**
+ * Sends a message to a Slack channel.
+ * @param {string} message - The message to send.
+ */
+async function sendSlackNotification(message) {
+    const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
+
+    try {
+        await axios.post(slackWebhookUrl, { text: message });
+        logger.info('Slack notification sent successfully.');
+    } catch (error) {
+        logger.error('Error sending Slack notification:', error);
+    }
+}
+
+/**
+ * Sends a message to a Discord channel.
+ * @param {string} message - The message to send.
+ */
+async function sendDiscordNotification(message) {
+    const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL;
+
+    try {
+        await axios.post(discordWebhookUrl, { content: message });
+        logger.info('Discord notification sent successfully.');
+    } catch (error) {
+        logger.error('Error sending Discord notification:', error);
+    }
+}
+
+/**
  * Notify admin of an issue.
  * @param {string} issueType - The type of issue detected.
  * @param {string} details - Additional details about the issue.
@@ -57,8 +86,11 @@ async function sendEmailNotification(subject, message) {
 async function notifyAdmin(issueType, details) {
     const subject = `Alert: ${issueType} Detected`;
     const message = `An issue of type "${issueType}" has been detected.\n\nDetails:\n${details}`;
-    
+
+    // Send notifications
     await sendEmailNotification(subject, message);
+    await sendSlackNotification(message);
+    await sendDiscordNotification(message);
 }
 
 // Example usage
