@@ -47,6 +47,28 @@ async function sendXTZ(fromAddress, toAddress, amount, senderPrivateKey) {
 }
 
 /**
+ * Monitor transaction status until confirmed.
+ * @param {string} txHash - The transaction hash to monitor.
+ * @returns {Promise<Object>} - The transaction status.
+ */
+async function monitorTransaction(txHash) {
+    let confirmed = false;
+    let attempts = 0;
+
+    while (!confirmed && attempts < 10) {
+        attempts++;
+        const operation = await tezos.rpc.getOperation(txHash);
+        if (operation && operation.status === 'applied') {
+            confirmed = true;
+            return { txHash, status: 'confirmed' };
+        }
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds before checking again
+    }
+
+    throw new Error(`Transaction ${txHash} not confirmed after multiple attempts.`);
+}
+
+/**
  * Fetch transaction details by transaction hash.
  * @param {string} txHash - The transaction hash to fetch.
  * @returns {Promise<Object>} - The transaction details.
@@ -60,9 +82,28 @@ async function getTransactionDetails(txHash) {
     }
 }
 
+/**
+ * Interact with a smart contract (Michelson script).
+ * @param {string} contractAddress - The address of the smart contract.
+ * @param {Object} params - The parameters to pass to the contract.
+ * @returns {Promise<string>} - The transaction hash.
+ */
+async function interactWithContract(contractAddress, params) {
+    try {
+        const contract = await tezos.contract.at(contractAddress);
+        const operation = await contract.methods.someMethod(...params).send(); // Replace 'someMethod' with the actual method name
+        await operation.confirmation(); // Wait for confirmation
+        return operation.hash; // Return the transaction hash
+    } catch (error) {
+        throw new Error(`Failed to interact with contract: ${error.message}`);
+    }
+}
+
 // Export functions for use in other modules
 module.exports = {
     getBalance,
     sendXTZ,
+    monitorTransaction,
     getTransactionDetails,
+    interactWithContract,
 };
