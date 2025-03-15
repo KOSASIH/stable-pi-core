@@ -46,6 +46,28 @@ async function sendTRX(fromAddress, toAddress, amount, senderPrivateKey) {
 }
 
 /**
+ * Monitor transaction status until confirmed.
+ * @param {string} txID - The transaction ID to monitor.
+ * @returns {Promise<Object>} - The transaction status.
+ */
+async function monitorTransaction(txID) {
+    let confirmed = false;
+    let attempts = 0;
+
+    while (!confirmed && attempts < 10) {
+        attempts++;
+        const transaction = await tronWeb.trx.getTransaction(txID);
+        if (transaction && transaction.ret[0].contractRet === 'SUCCESS') {
+            confirmed = true;
+            return { txID, status: 'confirmed' };
+        }
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds before checking again
+    }
+
+    throw new Error(`Transaction ${txID} not confirmed after multiple attempts.`);
+}
+
+/**
  * Fetch transaction details by transaction ID.
  * @param {string} txID - The transaction ID to fetch.
  * @returns {Promise<Object>} - The transaction details.
@@ -59,9 +81,28 @@ async function getTransactionDetails(txID) {
     }
 }
 
+/**
+ * Interact with a smart contract on Tron.
+ * @param {string} contractAddress - The address of the smart contract.
+ * @param {string} methodName - The method to call on the contract.
+ * @param {Array} params - The parameters to pass to the method.
+ * @returns {Promise<string>} - The transaction ID.
+ */
+async function interactWithContract(contractAddress, methodName, params) {
+    try {
+        const contract = await tronWeb.contract().at(contractAddress);
+        const tx = await contract[methodName](...params).send(); // Call the contract method
+        return tx; // Return the transaction ID
+    } catch (error) {
+        throw new Error(`Failed to interact with contract: ${error.message}`);
+    }
+}
+
 // Export functions for use in other modules
 module.exports = {
     getBalance,
     sendTRX,
+    monitorTransaction,
     getTransactionDetails,
+    interactWithContract,
 };
