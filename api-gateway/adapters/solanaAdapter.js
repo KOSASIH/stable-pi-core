@@ -60,6 +60,28 @@ async function sendSOL(fromAddress, toAddress, amount, senderPrivateKey) {
 }
 
 /**
+ * Monitor transaction status until confirmed.
+ * @param {string} txSignature - The transaction signature to monitor.
+ * @returns {Promise<Object>} - The transaction status.
+ */
+async function monitorTransaction(txSignature) {
+    let confirmed = false;
+    let attempts = 0;
+
+    while (!confirmed && attempts < 10) {
+        attempts++;
+        const transactionStatus = await connection.getSignatureStatus(txSignature);
+        if (transactionStatus && transactionStatus.confirmationStatus === 'confirmed') {
+            confirmed = true;
+            return { txSignature, status: 'confirmed' };
+        }
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds before checking again
+    }
+
+    throw new Error(`Transaction ${txSignature} not confirmed after multiple attempts.`);
+}
+
+/**
  * Fetch transaction details by transaction signature.
  * @param {string} txSignature - The transaction signature to fetch.
  * @returns {Promise<Object>} - The transaction details.
@@ -73,9 +95,24 @@ async function getTransactionDetails(txSignature) {
     }
 }
 
+/**
+ * Interact with a Solana program (smart contract).
+ * @param {string} programId - The ID of the Solana program.
+ * @param {Array} params - The parameters to pass to the program.
+ * @returns {Promise<string>} - The transaction signature.
+ */
+async function interactWithProgram(programId, params) {
+    // Implement interaction logic with the Solana program
+    // This is a placeholder; you will need to use a library or method to interact with the program
+    // Return the transaction signature
+    return 'transaction_signature_placeholder'; // Placeholder
+}
+
 // Export functions for use in other modules
 module.exports = {
     getBalance,
     sendSOL,
+    monitorTransaction,
     getTransactionDetails,
+    interactWithProgram,
 };
