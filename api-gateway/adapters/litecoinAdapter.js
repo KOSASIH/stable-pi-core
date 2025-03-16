@@ -53,6 +53,28 @@ async function sendLTC(fromAddress, toAddress, amount, senderPrivateKey) {
 }
 
 /**
+ * Monitor transaction status until confirmed.
+ * @param {string} txId - The transaction ID to monitor.
+ * @returns {Promise<Object>} - The transaction status.
+ */
+async function monitorTransaction(txId) {
+    let confirmed = false;
+    let attempts = 0;
+
+    while (!confirmed && attempts < 10) {
+        attempts++;
+        const transaction = await client.getTransaction(txId);
+        if (transaction && transaction.confirmations > 0) {
+            confirmed = true;
+            return { txId, status: 'confirmed' };
+        }
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds before checking again
+    }
+
+    throw new Error(`Transaction ${txId} not confirmed after multiple attempts.`);
+}
+
+/**
  * Fetch transaction details by transaction ID.
  * @param {string} txId - The transaction ID to fetch.
  * @returns {Promise<Object>} - The transaction details.
@@ -66,9 +88,23 @@ async function getTransactionDetails(txId) {
     }
 }
 
+/**
+ * Interact with a smart contract (if applicable).
+ * @param {string} contractAddress - The address of the smart contract.
+ * @param {Object} params - The parameters to pass to the contract.
+ * @returns {Promise<string>} - The transaction ID.
+ */
+async function interactWithContract(contractAddress, params) {
+    // Litecoin does not have traditional smart contracts like Ethereum,
+    // but you can implement logic to interact with payment channels or other features.
+    throw new Error('Smart contract interaction is not applicable for Litecoin.');
+}
+
 // Export functions for use in other modules
 module.exports = {
     getBalance,
     sendLTC,
+    monitorTransaction,
     getTransactionDetails,
+    interactWithContract,
 };
