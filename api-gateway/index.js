@@ -8,20 +8,27 @@ const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json'); // Assuming you have a swagger.json file
+const helmet = require('helmet');
+const morgan = require('morgan'); // For logging
 const EthereumAdapter = require('./adapters/ethereumAdapter');
+const BitcoinAdapter = require('./adapters/bitcoinAdapter'); // Example for another blockchain
+// Import other adapters as needed
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Initialize Ethereum Adapter
+// Initialize Adapters
 const ethereumAdapter = new EthereumAdapter(process.env.ETHEREUM_API_URL || 'https://api.etherscan.io/api');
+const bitcoinAdapter = new BitcoinAdapter(process.env.BITCOIN_API_URL || 'https://api.blockcypher.com/v1/btc/main');
+// Initialize other adapters as needed
 
 // Middleware
+app.use(helmet()); // Security headers
 app.use(cors()); // Enable CORS
 app.use(bodyParser.json());
+app.use(morgan('combined')); // Logging
 
 // Rate limiting middleware
 const limiter = rateLimit({
@@ -32,9 +39,10 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Swagger documentation
+const swaggerDocument = require('./swagger.json'); // Assuming you have a swagger.json file
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// RESTful API Example: Fetch Block Data
+// RESTful API Example: Fetch Ethereum Block Data
 app.get('/api/ethereum/block/:blockNumber', async (req, res) => {
     const { blockNumber } = req.params;
     try {
@@ -42,6 +50,18 @@ app.get('/api/ethereum/block/:blockNumber', async (req, res) => {
         res.json(blockData);
     } catch (error) {
         console.error('Error fetching Ethereum block:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// RESTful API Example: Fetch Bitcoin Block Data
+app.get('/api/bitcoin/block/:blockHeight', async (req, res) => {
+    const { blockHeight } = req.params;
+    try {
+        const blockData = await bitcoinAdapter.getBlock(blockHeight);
+        res.json(blockData);
+    } catch (error) {
+        console.error('Error fetching Bitcoin block:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
