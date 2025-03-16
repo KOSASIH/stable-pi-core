@@ -16,7 +16,7 @@ const api = new ripple.RippleAPI({ server: XRP_API_URL });
 async function getBalance(address) {
     try {
         const accountInfo = await api.getAccountInfo(address);
-        return accountInfo.xrpBalance; // Return balance in XRP
+        return parseFloat(accountInfo.xrpBalance); // Return balance in XRP
     } catch (error) {
         throw new Error(`Failed to fetch balance: ${error.message}`);
     }
@@ -62,6 +62,28 @@ async function sendXRP(fromAddress, toAddress, amount, senderSecret) {
 }
 
 /**
+ * Monitor transaction status until confirmed.
+ * @param {string} txHash - The transaction hash to monitor.
+ * @returns {Promise<Object>} - The transaction status.
+ */
+async function monitorTransaction(txHash) {
+    let confirmed = false;
+    let attempts = 0;
+
+    while (!confirmed && attempts < 10) {
+        attempts++;
+        const transaction = await api.getTransaction(txHash);
+        if (transaction && transaction.outcome.result === 'tesSUCCESS') {
+            confirmed = true;
+            return { txHash, status: 'confirmed' };
+        }
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds before checking again
+    }
+
+    throw new Error(`Transaction ${txHash} not confirmed after multiple attempts.`);
+}
+
+/**
  * Fetch transaction details by transaction hash.
  * @param {string} txHash - The transaction hash to fetch.
  * @returns {Promise<Object>} - The transaction details.
@@ -75,9 +97,23 @@ async function getTransactionDetails(txHash) {
     }
 }
 
+/**
+ * Interact with a smart contract (if applicable).
+ * @param {string} contractAddress - The address of the smart contract.
+ * @param {Object} params - The parameters to pass to the contract.
+ * @returns {Promise<string>} - The transaction hash.
+ */
+async function interactWithContract(contractAddress, params) {
+    // Ripple does not have traditional smart contracts like Ethereum,
+    // but you can implement logic to interact with payment channels or other features.
+    throw new Error('Smart contract interaction is not applicable for Ripple.');
+}
+
 // Export functions for use in other modules
 module.exports = {
     getBalance,
     sendXRP,
+    monitorTransaction,
     getTransactionDetails,
+    interactWithContract,
 };
