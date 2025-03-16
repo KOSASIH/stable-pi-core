@@ -1,12 +1,18 @@
 // stable-pi-core/api-gateway/adapters/cosmosAdapter.js
 
-const { StargateClient, SigningStargateClient } = require('@cosmjs/stargate');
+const { StargateClient, SigningStargateClient, assertIsBroadcastTxSuccess } = require('@cosmjs/stargate');
+const { DirectSecp256k1Wallet, Registry, AminoTypes } = require('@cosmjs/proto-signing');
 require('dotenv').config();
 
 const COSMOS_API_URL = process.env.COSMOS_API_URL || 'https://rpc.cosmos.network'; // Set your Cosmos API URL in .env
 
 // Initialize the Cosmos client
-const client = await StargateClient.connect(COSMOS_API_URL);
+let client;
+let signingClient;
+
+async function init() {
+    client = await StargateClient.connect(COSMOS_API_URL);
+}
 
 /**
  * Get the balance of a given Cosmos address.
@@ -28,13 +34,15 @@ async function getBalance(address) {
  * @param {string} toAddress - The recipient's Cosmos address.
  * @param {number} amount - The amount of tokens to send.
  * @param {string} denom - The token denomination (e.g., 'uatom' for ATOM).
- * @param {string} senderPrivateKey - The sender's private key.
+ * @param {string} senderMnemonic - The sender's mnemonic.
  * @returns {Promise<string>} - The transaction hash.
  */
-async function sendTokens(fromAddress, toAddress, amount, denom, senderPrivateKey) {
-    const wallet = await SigningStargateClient.connectWithSigner(COSMOS_API_URL, {
-        mnemonic: senderPrivateKey, // Use mnemonic or private key
-    });
+async function sendTokens(fromAddress, toAddress, amount, denom, senderMnemonic) {
+    const wallet = await DirectSecp256k1Wallet.fromMnemonic(senderMnemonic);
+    const accounts = await wallet.getAccounts();
+    const account = accounts[0];
+
+    signingClient = await SigningStargateClient.connectWithSigner(COSMOS_API_URL, wallet);
 
     try {
         const fee = {
@@ -45,15 +53,38 @@ async function sendTokens(fromAddress, toAddress, amount, denom, senderPrivateKe
             gas: '200000', // Gas limit
         };
 
-        const result = await wallet.sendTokens(fromAddress, toAddress, [{
+        const result = await signingClient.sendTokens(fromAddress, toAddress, [{
             denom: denom,
             amount: amount.toString(),
         }], fee, 'Sending tokens');
 
+        assertIsBroadcastTxSuccess(result); // Ensure the transaction was successful
         return result.transactionHash; // Return the transaction hash
     } catch (error) {
         throw new Error(`Failed to send tokens: ${error.message}`);
     }
+}
+
+/**
+ * Monitor transaction status until confirmed.
+ * @param {string} txHash - The transaction hash to monitor.
+ * @returns {Promise<Object>} - The transaction status.
+ */
+async function monitorTransaction(txHash) {
+    let confirmed = false;
+    let attempts = 0;
+
+    while (!confirmed && attempts < 10) {
+        attempts++;
+        const transaction = await client.getTx(txHash);
+        if (transaction && transaction.code === 0) {
+            confirmed = true;
+            return { txHash, status: 'confirmed' };
+        }
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds before checking again
+    }
+
+    throw new Error(`Transaction ${txHash} not confirmed after multiple attempts.`);
 }
 
 /**
@@ -70,9 +101,37 @@ async function getTransactionDetails(txHash) {
     }
 }
 
+/**
+ * Interact with a smart contract (CosmWasm).
+ * @param {string} contractAddress - The address of the smart contract.
+ * @param {Object} params - The parameters to pass to the contract.
+ * @param {string} senderMnemonic - The sender's mnemonic.
+ * @returns {Promise<string>} - The transaction hash.
+ */
+async function interactWithContract(contractAddress, params, senderMnemonic) {
+    const wallet = await DirectSecp256k1Wallet.fromMnemonic(senderMnemonic);
+    const accounts = await wallet.getAccounts();
+    const account = accounts[0];
+
+    signingClient = await SigningStargateClient.connectWithSigner(COSMOS_API_URL, wallet);
+
+    try {
+        const result = await signingClient.execute(account.address, contractAddress, params, 'auto', undefined, undefined);
+        assertIsBroadcastTxSuccess(result); // Ensure the transaction was successful
+        return result.transactionHash; // Return the transaction hash
+    } catch (error) {
+        throw new Error(`Failed to interact with contract: ${error.message}`);
+    }
+}
+
+// Initialize the adapter
+init().catch(console.error);
+
 // Export functions for use in other modules
 module.exports = {
     getBalance,
     sendTokens,
+    monitorTransaction,
     getTransactionDetails,
+    interactWithContract,
 };
