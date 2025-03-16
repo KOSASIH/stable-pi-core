@@ -1,24 +1,24 @@
 # Core libraries for data manipulation and machine learning
-numpy==1.24.3  # Fundamental package for numerical computations
-pandas==1.5.3  # Data manipulation and analysis
-scikit-learn==1.2.2  # Machine learning library for Python
-joblib==1.2.0  # Lightweight pipelining in Python
+numpy==1.25.0  # Fundamental package for numerical computations
+pandas==2.0.3   # Data manipulation and analysis
+scikit-learn==1.3.0  # Machine learning library for Python
+joblib==1.3.0   # Lightweight pipelining in Python
 
 # YAML parsing
-pyyaml==6.0  # YAML parser and emitter for Python
+pyyaml==6.0.1   # YAML parser and emitter for Python
 
 # Web3 and smart contract interaction
-web3==5.32.0  # Ethereum blockchain interaction library
-solcx==1.0.0  # Solidity compiler for smart contracts
+web3==6.0.0     # Ethereum blockchain interaction library
+solcx==1.1.0    # Solidity compiler for smart contracts
 
 # Testing framework
-pytest==7.3.1  # Framework for testing Python code
+pytest==7.4.0   # Framework for testing Python code
 
 # NTRU library for quantum-resistant cryptography
-ntru==0.1.0  # NTRU encryption library for post-quantum security
+ntru==0.1.0     # NTRU encryption library for post-quantum security
 
 # Additional libraries for data visualization (optional)
-matplotlib==3.7.1  # Comprehensive library for creating static, animated, and interactive visualizations
+matplotlib==3.7.2  # Comprehensive library for creating static, animated, and interactive visualizations
 seaborn==0.12.2    # Statistical data visualization based on matplotlib
 
 # Optional: dotenv for environment variable management
@@ -29,14 +29,14 @@ requests==2.31.0  # For making HTTP requests
 cryptography==39.0.1  # For secure data handling and encryption
 
 # Advanced data processing and analysis
-dask==2023.5.0  # Parallel computing with task scheduling for larger-than-memory computations
-xgboost==1.7.5  # Gradient boosting framework for machine learning
+dask==2023.6.0  # Parallel computing with task scheduling for larger-than-memory computations
+xgboost==1.7.6   # Gradient boosting framework for machine learning
 
 # Enhanced logging and monitoring
-loguru==0.6.0  # Simplified logging for Python with advanced features
+loguru==0.6.0    # Simplified logging for Python with advanced features
 
 # Asynchronous programming support
-aiohttp==3.8.1  # Asynchronous HTTP client/server framework
+aiohttp==3.8.4   # Asynchronous HTTP client/server framework
 
 # Data serialization and messaging
-protobuf==4.23.0  # Protocol Buffers for data serialization
+protobuf==4.24.0  # Protocol Buffers for data serialization
