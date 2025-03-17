@@ -1,8 +1,10 @@
 # Configuration for the Stable Pi Core development environment
 
+# Logging configuration
 logging:
   level: DEBUG  # Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 
+# Database configuration
 database:
   host: localhost  # Database host
   port: 5432       # Database port
@@ -10,18 +12,21 @@ database:
   password: dev_password  # Database password (consider using environment variables for security)
   db_name: stable_pi_dev  # Database name
 
+# Model paths for machine learning models
 model_paths:
   demand_model_path: "models/demand_prediction_model.pkl"  # Path to the demand prediction model
   asset_model_path: "models/asset_management_model.pkl"    # Path to the asset management model
 
+# API configuration
 api:
   base_url: "http://localhost:5000"  # Base URL for the API
 
-# Additional configurations
+# Security settings
 security:
   secret_key: "your_secret_key"  # Secret key for session management (consider using environment variables)
   token_expiration: 3600  # Token expiration time in seconds
 
+# Feature flags
 features:
   enable_feature_x: true  # Enable or disable specific features
   enable_feature_y: false
