@@ -40,3 +40,7 @@ aiohttp==3.8.5         # Asynchronous HTTP client/server framework
 
 # Data serialization and messaging
 protobuf==4.25.0       # Protocol Buffers for data serialization
+
+# Additional libraries for enhanced performance and functionality
+fastapi==0.103.0       # FastAPI framework for building APIs with Python 3.6+ based on standard Python type hints
+uvicorn==0.23.0        # ASGI server for running FastAPI applications
