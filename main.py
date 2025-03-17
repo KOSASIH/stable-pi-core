@@ -127,7 +127,7 @@ def main():
             
             # Adjust allocations based on market conditions
             market_conditions = 1  # Example market condition
-            new_allocations = asset _manager.adjust_allocations(current_allocations, market_conditions)
+            new_allocations = asset_manager.adjust_allocations(current_allocations, market_conditions)
 
             # Implement dynamic pegging
             implement_dynamic_pegging(dynamic_pegging, market_conditions)
