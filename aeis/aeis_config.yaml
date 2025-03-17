@@ -1,0 +1,61 @@
+# aeis/aeis_config.yaml
+
+# Configuration for the Astro-Economic Incentive System (AEIS)
+
+# Ethereum Node Configuration
+provider_url: "https://your.ethereum.node"  # Replace with your Ethereum node URL
+contract_address: "0xYourContractAddress"     # Replace with the deployed contract address
+
+# Smart Contract ABI
+contract_abi:
+  - {
+      "constant": true,
+      "inputs": [{"name": "contributor", "type": "address"}],
+      "name": "getContribution",
+      "outputs": [{"name": "", "type": "uint256"}],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  - {
+      "constant": false,
+      "inputs": [{"name": "contributor", "type": "address"}, {"name": "amount", "type": "uint256"}],
+      "name": "recordContribution",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  - {
+      "constant": false,
+      "inputs": [{"name": "contributor", "type": "address"}],
+      "name": "distributeTokens",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+
+# Reward Configuration
+reward:
+  base_percentage: 10  # Base percentage of contributions to be rewarded
+  dynamic_factor: 1.5  # Factor to adjust rewards based on external data (e.g., market conditions)
+
+# Logging Configuration
+logging:
+  level: INFO  # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  file: "aeis.log"  # Log file name
+  max_size: 10MB  # Maximum size of the log file before rotation
+  backup_count: 5  # Number of backup log files to keep
+
+# External Services Configuration
+external_services:
+  oracle:
+    address: "0xOracleContractAddress"  # Replace with the address of the oracle contract
+    api_url: "https://api.youroracle.com/data"  # Replace with the API URL for the oracle
+    update_interval: 300  # Time in seconds to fetch new data from the oracle
+
+# Batch Processing Configuration
+batch_processing:
+  max_contributors: 100  # Maximum number of contributors to process in a single batch
+  max_tokens_per_transaction: 1000  # Maximum tokens to distribute in a single transaction
