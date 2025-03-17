@@ -1,6 +1,5 @@
 import unittest
 import json
-import socket
 from holographic_data_storage.holographic_storage import HolographicStorage
 from holographic_data_storage.edge_integration import EdgeIntegration
 
@@ -20,12 +19,13 @@ class TestEdgeIntegration(unittest.TestCase):
         request = {
             'action': 'store',
             'identifier': identifier,
-            'data': data
+            'data': data.decode('utf-8')  # Convert bytes to string for JSON serialization
         }
-        self.edge_integration.handle_client(self.mock_client_socket(request))
+        response = self.edge_integration.handle_client(self.mock_client_socket(request))
         
         # Verify that the data was stored
         self.assertIn(identifier, self.holographic_storage.stored_data)
+        self.assertEqual(self.holographic_storage.retrieve_data(identifier), data)
 
     def test_retrieve_data_via_edge(self):
         """Test retrieving data through the edge integration."""
@@ -41,7 +41,7 @@ class TestEdgeIntegration(unittest.TestCase):
         response = self.edge_integration.handle_client(self.mock_client_socket(request))
         
         # Verify that the retrieved data matches the original data
-        self.assertEqual(response, data)
+        self.assertEqual(response, data.decode('utf-8'))  # Decode bytes to string for comparison
 
     def test_invalid_action(self):
         """Test handling of an invalid action request."""
@@ -53,6 +53,19 @@ class TestEdgeIntegration(unittest.TestCase):
         
         # Verify that the response indicates an invalid action
         self.assertIn(b'{"error": "Invalid action"}', response)
+
+    def test_store_data_exceeds_capacity(self):
+        """Test storing data that exceeds storage capacity."""
+        large_data = b'A' * (self.storage_capacity + 1)  # Data larger than capacity
+        request = {
+            'action': 'store',
+            'identifier': 'test_large_data',
+            'data': large_data.decode('utf-8')  # Convert bytes to string for JSON serialization
+        }
+        response = self.edge_integration.handle_client(self.mock_client_socket(request))
+        
+        # Verify that the response indicates storage capacity exceeded
+        self.assertIn(b'{"error": "Storage capacity exceeded"}', response)
 
     def mock_client_socket(self, request):
         """Mock a client socket for testing."""
