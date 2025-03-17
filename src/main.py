@@ -15,30 +15,27 @@ CORS(app)  # Enable Cross-Origin Resource Sharing
 # Set up logging
 logger = setup_logger()
 
-# Initialize the blockchain
+# Initialize the blockchain and consensus manager
 blockchain = Blockchain()
-
-# Initialize the consensus manager
 consensus_manager = ConsensusManager(blockchain)
 
-# Create the API
+# Create the API and register the routes
 api = create_api(blockchain, consensus_manager)
-
-# Register the API routes
 app.register_blueprint(api)
 
 @app.route('/')
-def home():
+def home() -> jsonify:
     """Home route to check the status of the API."""
+    latest_block = blockchain.chain[-1].to_dict() if blockchain.chain else None
     return jsonify({
         "message": "Welcome to the Ultra-Advanced Stable-Pi-Core Blockchain API",
         "status": "Running",
         "block_count": len(blockchain.chain),
-        "latest_block": blockchain.chain[-1].to_dict() if blockchain.chain else None
+        "latest_block": latest_block
     })
 
 @app.route('/mine', methods=['POST'])
-async def mine_block():
+async def mine_block() -> jsonify:
     """Route to mine a new block."""
     try:
         data = request.get_json()
@@ -60,12 +57,12 @@ async def mine_block():
         return jsonify({"error": "An unexpected error occurred."}), 500
 
 @app.route('/chain', methods=['GET'])
-def get_chain():
+def get_chain() -> jsonify:
     """Route to retrieve the entire blockchain."""
     return jsonify(blockchain.to_dict()), 200
 
 @app.route('/validate', methods=['POST'])
-async def validate_chain():
+async def validate_chain() -> jsonify:
     """Route to validate the blockchain."""
     try:
         is_valid = await asyncio.to_thread(blockchain.validate_chain)
@@ -75,12 +72,13 @@ async def validate_chain():
         return jsonify({"error": "Chain validation failed."}), 500
 
 @app.route('/stats', methods=['GET'])
-async def get_stats():
+async def get_stats() -> jsonify:
     """Route to retrieve blockchain statistics."""
     try:
+        latest_block = blockchain.chain[-1].to_dict() if blockchain.chain else None
         stats = {
             "block_count": len(blockchain.chain),
-            "latest_block": blockchain.chain[-1].to_dict() if blockchain.chain else None,
+            "latest_block": latest_block,
             "consensus_status": consensus_manager.get_status()
         }
         return jsonify(stats), 200
