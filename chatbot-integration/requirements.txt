@@ -2,7 +2,7 @@
 Flask==2.2.3
 
 # For handling HTTP requests and responses
-requests==2.28.1
+requests==2.32.2
 
 # Natural Language Processing libraries
 nltk==3.7
