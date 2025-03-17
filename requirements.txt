@@ -51,4 +51,4 @@ qiskit==0.43.0         # Quantum computing framework for creating and running qu
 # Machine learning and deep learning frameworks
 tensorflow==2.14.0     # TensorFlow for machine learning and deep learning
 torch==2.0.1           # PyTorch for deep learning applications
-transformers==4.30.0   # Hugging Face Transformers for natural language processing
+transformers==4.48.0   # Hugging Face Transformers for natural language processing
