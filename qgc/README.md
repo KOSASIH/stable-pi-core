@@ -75,7 +75,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For inquiries or further information, please contact:
 
 - **GitHub**: [KOSASIH](https://github.com/KOSASIH)
-
-### Conclusion
-
-This `README.md` file serves as a comprehensive guide for users and contributors to the Quantum Gravitational Consensus (QGC) project. It provides essential information about the project, its features, and how to get started, ensuring that users can effectively engage with the system. You can further customize this file to include additional details or specific instructions as needed.
