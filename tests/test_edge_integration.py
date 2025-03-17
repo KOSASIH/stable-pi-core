@@ -67,6 +67,17 @@ class TestEdgeIntegration(unittest.TestCase):
         # Verify that the response indicates storage capacity exceeded
         self.assertIn(b'{"error": "Storage capacity exceeded"}', response)
 
+    def test_retrieve_nonexistent_data(self):
+        """Test retrieving data that does not exist."""
+        request = {
+            'action': 'retrieve',
+            'identifier': 'nonexistent_data'
+        }
+        response = self.edge_integration.handle_client(self.mock_client_socket(request))
+        
+        # Verify that the response indicates that the data was not found
+        self.assertIn(b'{"error": "Data not found"}', response)
+
     def mock_client_socket(self, request):
         """Mock a client socket for testing."""
         class MockSocket:
@@ -76,8 +87,8 @@ class TestEdgeIntegration(unittest.TestCase):
             def recv(self, buffer_size):
                 return self.request
 
-            def send(self, response):
-                return response
+            def sendall(self, response):
+                self.response = response  # Store the response for verification
 
             def close(self):
                 pass
