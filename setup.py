@@ -38,7 +38,7 @@ setup(
         "seaborn==0.12.2",
         "python-dotenv==0.21.0",
         "requests==2.31.0",
-        "cryptography==39.0.1",
+        "cryptography==44.0.1",
         "dask==2023.7.0",
         "xgboost==1.7.6",
         "loguru==0.6.0",
