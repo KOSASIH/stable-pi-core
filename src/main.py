@@ -29,6 +29,7 @@ app.register_blueprint(api)
 
 @app.route('/')
 def home():
+    """Home route to check the status of the API."""
     return jsonify({
         "message": "Welcome to the Ultra-Advanced Stable-Pi-Core Blockchain API",
         "status": "Running",
@@ -38,6 +39,7 @@ def home():
 
 @app.route('/mine', methods=['POST'])
 async def mine_block():
+    """Route to mine a new block."""
     try:
         data = request.get_json()
         if not data or 'data' not in data:
@@ -59,10 +61,12 @@ async def mine_block():
 
 @app.route('/chain', methods=['GET'])
 def get_chain():
+    """Route to retrieve the entire blockchain."""
     return jsonify(blockchain.to_dict()), 200
 
 @app.route('/validate', methods=['POST'])
 async def validate_chain():
+    """Route to validate the blockchain."""
     try:
         is_valid = await asyncio.to_thread(blockchain.validate_chain)
         return jsonify({"is_valid": is_valid}), 200
@@ -70,10 +74,25 @@ async def validate_chain():
         logger.error(f"Validation error: {str(e)}")
         return jsonify({"error": "Chain validation failed."}), 500
 
+@app.route('/stats', methods=['GET'])
+async def get_stats():
+    """Route to retrieve blockchain statistics."""
+    try:
+        stats = {
+            "block_count": len(blockchain.chain),
+            "latest_block": blockchain.chain[-1].to_dict() if blockchain.chain else None,
+            "consensus_status": consensus_manager.get_status()
+        }
+        return jsonify(stats), 200
+    except Exception as e:
+        logger.error(f"Error retrieving stats: {str(e)}")
+        return jsonify({"error": "Failed to retrieve statistics."}), 500
+
 if __name__ == '__main__':
     # Load environment variables
     port = int(os.environ.get("PORT", 5000))
     host = os.environ.get("HOST", "0.0.0.0")
 
     # Start the Flask application
+    logger.info(f"Starting the application on {host}:{port}")
     app.run(host=host, port=port, threaded=True)
