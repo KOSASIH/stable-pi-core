@@ -74,7 +74,7 @@ Stable-Pi-Core is a next-generation decentralized ecosystem that integrates bloc
 
 ## Vision and Goals
 
-Stable-Pi-Core aims to be the backbone of future technology, connecting humans, machines, and potential civilizations across the solar system and beyond. With a core value pegged at $314.159 through a Dual-Value System, the project combines economic stability with extreme innovation, supporting interplanetary transactions, decentralized governance, and intergalactic expansion. Stable-Pi-Core is not just a payment platform or blockchain—it is a living ecosystem that evolves to meet the needs of today and tomorrow, from smart cities on Earth to colonies on Mars and beyond.
+Stable-Pi-Core aims to be the backbone of future technology, connecting humans, machines, and potential civilizations across the solar system and beyond. With a core value pegged at $314,159 through a Dual-Value System, the project combines economic stability with extreme innovation, supporting interplanetary transactions, decentralized governance, and intergalactic expansion. Stable-Pi-Core is not just a payment platform or blockchain—it is a living ecosystem that evolves to meet the needs of today and tomorrow, from smart cities on Earth to colonies on Mars and beyond.
 
 ## Key Features
 
