@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script>
+        const socket = io();
+        socket.on('new_listing', function(data) {
+            alert('New data listing submitted: ' + data.title);
+        });
+    </script>
+</head>
+<body>
+    <h1>User Dashboard</h1>
+    <h2>Your Data Listings</h2>
+    <ul>
+        {% for listing in listings %}
+            <li>{{ listing.title }}: {{ listing.description }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Submit New Data</h2>
+    <form method="POST" action="{{ url_for('submit_data') }}">
+        <label for="title">Title:</label>
+        <input type="text" name="title" required>
+        <label for="description">Description:</label>
+        <textarea name="description" required></textarea>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
