@@ -109,7 +109,7 @@ Stable-Pi-Core offers a range of super-advanced features that make it unique amo
 
 ## Supporting Features
 
-- **Dual-Value System**: Economic stability with a value pegged at $314.159, supported by a Dynamic Liquidity Pool System.  
+- **Dual-Value System**: Economic stability with a value pegged at $314159 (three hundred fourteen thousand one hundred fifty-nine), supported by a Dynamic Liquidity Pool System.  
 - **Multi-Currency Payment System**: Cross-currency transactions (crypto and fiat) with seamless conversion.  
 - **IoT Integration & Edge Computing**: Connectivity and local processing for real-world applications.  
 - **AR-VR Experience**: Immersive interfaces for users and governance.  
