@@ -52,3 +52,7 @@ qiskit==0.43.0         # Quantum computing framework for creating and running qu
 tensorflow==2.14.0     # TensorFlow for machine learning and deep learning
 torch==2.0.1           # PyTorch for deep learning applications
 transformers==4.30.0   # Hugging Face Transformers for natural language processing
+
+# Additional libraries for enhanced functionality
+pydantic==1.10.7       # Data validation and settings management using Python type annotations
+sqlalchemy==2.0.0      # SQL toolkit and Object-Relational Mapping (ORM) system for Python
