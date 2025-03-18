@@ -1,48 +1,45 @@
-"""
-Node Module
+# nodes/node.py
 
-This module implements the individual node for data collection in the
-space-based node network.
-"""
-
-import random
-import time
 import json
-import requests
+import random
+import aiohttp
+import asyncio
+from cryptography.fernet import Fernet
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
 
 class Node:
-    def __init__(self, node_id, location):
+    def __init__(self, node_id, api_url, encryption_key):
         self.node_id = node_id
-        self.location = location
-        self.data = []  # List to hold collected data
+        self.api_url = api_url
+        self.data = []
+        self.cipher = Fernet(encryption_key)
 
-    def collect_data(self):
-        """
-        Simulate data collection from sensors or external sources.
-        """
-        # Simulate data collection with random values
-        collected_data = {
-            "node_id": self.node_id,
-            "location": self.location,
-            "temperature": random.uniform(-50, 50),  # Simulated temperature data
-            "humidity": random.uniform(0, 100),      # Simulated humidity data
-            "timestamp": time.time()
-        }
-        self.data.append(collected_data)
-        print(f"Data collected by Node {self.node_id}: {collected_data}")
+    def collect_data(self, new_data):
+        """Collects new data and adds it to the node's data list."""
+        self.data.append(new_data)
+        logging.info(f"Node {self.node_id} collected data: {new_data}")
 
-    def send_data(self, network_url):
-        """
-        Send collected data to the specified network URL.
-
-        :param network_url: URL of the node network to send data to
-        """
+    async def send_data(self, target_node):
+        """Sends collected data to another node asynchronously."""
         if self.data:
-            response = requests.post(network_url, json=self.data)
-            if response.status_code == 200:
-                print(f"Data sent successfully from Node {self.node_id}.")
-                self.data.clear()  # Clear data after successful send
-            else:
-                print(f"Failed to send data from Node {self.node_id}: {response.text}")
-        else:
-            print(f"No data to send from Node {self.node_id}.")
+            encrypted_data = self.cipher.encrypt(json.dumps(self.data).encode())
+            payload = {
+                'node_id': self.node_id,
+                'data': encrypted_data.decode()
+            }
+            async with aiohttp.ClientSession() as session:
+                async with session.post(f"{target_node.api_url}/receive_data", json=payload) as response:
+                    if response.status == 200:
+                        logging.info(f"Node {self.node_id} sent data to Node {target_node.node_id}")
+                        self.data.clear()  # Clear data after sending
+                    else:
+                        logging.error(f"Failed to send data from Node {self.node_id} to Node {target_node.node_id}")
+
+    async def receive_data(self, data):
+        """Receives data from another node asynchronously."""
+        decrypted_data = self.cipher.decrypt(data['data'].encode())
+        self.data.extend(json.loads(decrypted_data))
+        logging.info(f"Node {self.node_id} received data: {data['data']}")
