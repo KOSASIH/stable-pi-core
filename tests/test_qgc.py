@@ -1,10 +1,10 @@
 import unittest
 import json
 from unittest.mock import MagicMock
-from qgc.quantum_gravity_sensor import QuantumGravitySensor
-from qgc.node_communication import NodeCommunication
-from qgc.quantum_gravitational_consensus import QuantumGravitationalConsensus
-from qgc.qgc_utils import validate_measurement, calculate_statistics, load_config
+from core.quantum_gravity_sensor import QuantumGravitySensor
+from core.node_communication import NodeCommunication
+from core.quantum_gravitational_consensus import QuantumGravitationalConsensus
+from core.utils import validate_measurement, calculate_statistics, load_config
 
 class TestQuantumGravitySensor(unittest.TestCase):
     def setUp(self):
@@ -16,33 +16,35 @@ class TestQuantumGravitySensor(unittest.TestCase):
 
     def test_calibration_effect(self):
         original_measurement = self.sensor.measure_gravity()
-        self.sensor.calibrate()
+        self.sensor.calibrate(new_calibration_factor=1.05)  # Example calibration factor
         calibrated_measurement = self.sensor.measure_gravity()
         self.assertNotEqual(original_measurement, calibrated_measurement, "Calibration did not affect measurement.")
 
 class TestNodeCommunication(unittest.TestCase):
     def setUp(self):
-        self.node1 = NodeCommunication(node_id="Node1")
-        self.node2 = NodeCommunication(node_id="Node2")
-        self.node1.connect_to_node(self.node2)
+        self.node1 = NodeCommunication(host='localhost', port=5001)
+        self.node2 = NodeCommunication(host='localhost', port=5002)
+        self.node1.start_server()  # Start the server for node1
+        self.node2.start_server()  # Start the server for node2
+        self.node1.connect_to_node('localhost', 5002)  # Connect node1 to node2
 
     def test_send_receive_measurement(self):
         measurement = 9.81
-        self.node1.send_measurement(measurement, self.node2)
+        self.node1.send_message({"measurement": measurement}, self.node2)
         # Simulate receiving the measurement
         message = json.dumps({"sender": "Node1", "measurement": measurement, "timestamp": 1234567890})
-        self.node2.receive_measurement(message)
+        self.node2.handle_client(message)  # Simulate handling the received message
         self.assertIn(measurement, self.node2.measurements, "Measurement not received correctly.")
 
     def test_connection_limit(self):
         for i in range(3, 25):  # Exceeding max_connections
-            node = NodeCommunication(node_id=f"Node{i}")
-            self.node1.connect_to_node(node)
-        self.assertEqual(len(self.node1.connected_nodes), 20, "Connection limit not enforced.")
+            node = NodeCommunication(host='localhost', port=5000 + i)
+            self.node1.connect_to_node('localhost', 5000 + i)
+        self.assertEqual(len(self.node1.client_sockets), 20, "Connection limit not enforced.")
 
 class TestQuantumGravitationalConsensus(unittest.TestCase):
     def setUp(self):
-        self.consensus = QuantumGravitationalConsensus(initial_threshold=0.1)
+        self.consensus = QuantumGravitationalConsensus(node_id="TestNode", total_nodes=5)
 
     def test_add_measurement_and_reach_consensus(self):
         measurements = [9.78, 9.81, 9.79, 9.82, 9.75]
@@ -71,13 +73,13 @@ class TestQGCUtils(unittest.TestCase):
         self.assertAlmostEqual(stats["std_dev"], 0.025, places=2, msg="Standard deviation calculation is incorrect.")
 
     def test_load_config(self):
-        config = load_config("qgc/qgc_config.yaml")
+        config = load_config("core/config.yaml")
         self.assertIsNotNone(config, "Config should be loaded successfully.")
         self.assertIn("logging", config, "Logging configuration should be present in the config.")
 
     def test_load_nonexistent_config(self):
-        config = load_config("nonexistent.yaml")
-        self.assertIsNone(config, "Loading a nonexistent config should return None.")
+        with self.assertRaises(FileNotFoundError):
+            load_config("nonexistent.yaml")
 
 if __name__ == "__main__":
     unittest.main()
