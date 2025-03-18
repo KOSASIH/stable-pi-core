@@ -11,7 +11,10 @@ class Config:
         "LOGGING_LEVEL": "INFO",  # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
         "MODEL_COUNT": 3,  # Number of redundant AI models
         "EDGE_COMPUTING_ENABLED": True,  # Enable edge computing
-        "CONFIG_FILE": "crhai_config.json"  # Path to the configuration file
+        "CONFIG_FILE": "crhai_config.json",  # Path to the configuration file
+        "RADIATION_HARDENING_MATERIAL": "NASA-Approved",  # Material used for radiation hardening
+        "AI_MODEL_TYPE": "Neural Network",  # Type of AI model to use
+        "PROCESSING_TIMEOUT": 5  # Timeout for processing data in seconds
     }
 
     @classmethod
@@ -32,6 +35,8 @@ class Config:
             raise ValueError("LOGGING_LEVEL must be one of: DEBUG, INFO, WARNING, ERROR, CRITICAL.")
         if config_data.get("MODEL_COUNT", cls.DEFAULTS["MODEL_COUNT"]) <= 0:
             raise ValueError("MODEL_COUNT must be a positive integer.")
+        if config_data.get("PROCESSING_TIMEOUT", cls.DEFAULTS["PROCESSING_TIMEOUT"]) <= 0:
+            raise ValueError("PROCESSING_TIMEOUT must be a positive integer.")
 
     @classmethod
     def update_config(cls, config_data):
