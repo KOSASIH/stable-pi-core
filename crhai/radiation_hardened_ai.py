@@ -2,6 +2,7 @@
 
 import logging
 import numpy as np
+import random
 
 class RadiationHardenedAI:
     def __init__(self, model_count=None):
@@ -20,6 +21,7 @@ class RadiationHardenedAI:
         :return: Loaded model (placeholder).
         """
         # Placeholder for model loading logic
+        logging.debug(f"Loading model {model_id}.")
         return f"Model-{model_id}"
 
     def predict(self, input_data):
@@ -28,6 +30,7 @@ class RadiationHardenedAI:
         :param input_data: Data to predict.
         :return: Majority vote of predictions.
         """
+        logging.info("Making predictions using redundant AI models.")
         predictions = [self.run_model(model, input_data) for model in self.models]
         return self.majority_vote(predictions)
 
@@ -36,10 +39,17 @@ class RadiationHardenedAI:
         Run a specific model on the input data.
         :param model: The model to run.
         :param input_data: Data to predict.
-        :return: Prediction result (placeholder).
+        :return: Prediction result (simulated).
         """
+        # Simulate the possibility of model failure due to radiation
+        if random.random() < 0.1:  # 10% chance of failure
+            logging.warning(f"Model {model} failed due to radiation exposure.")
+            return None  # Simulate failure
+        
         # Placeholder for model prediction logic
-        return np.random.choice([0, 1])  # Simulated binary prediction
+        prediction = np.random.choice([0, 1])  # Simulated binary prediction
+        logging.debug(f"Model {model} prediction: {prediction}")
+        return prediction
 
     def majority_vote(self, predictions):
         """
@@ -47,4 +57,24 @@ class RadiationHardenedAI:
         :param predictions: List of predictions from models.
         :return: Majority vote result.
         """
-        return max(set(predictions), key=predictions.count)
+        # Filter out None predictions (failed models)
+        valid_predictions = [p for p in predictions if p is not None]
+        
+        if not valid_predictions:
+            logging.error("All models failed to provide a prediction.")
+            return None  # All models failed
+        
+        # Perform majority voting
+        majority_prediction = max(set(valid_predictions), key=valid_predictions.count)
+        logging.info(f"Majority vote result: {majority_prediction}")
+        return majority_prediction
+
+    def retrain_models(self):
+        """
+        Retrain models if necessary (placeholder for retraining logic).
+        """
+        logging.info("Retraining AI models due to detected anomalies.")
+        # Placeholder for retraining logic
+        for i in range(self.model_count):
+            self.models[i] = self.load_model(i)  # Simulate reloading models
+        logging.info("AI models retrained successfully.")
