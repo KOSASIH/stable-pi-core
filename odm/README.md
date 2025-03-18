@@ -1,4 +1,4 @@
-# Orbitorbital-data-marketM)
+# orbital-data-marketplace (ODM)
 
 ## Description
 The **Orbital Data Marketplace (ODM)** is an advanced platform designed to facilitate the buying and selling of space-based data. This marketplace allows satellites, space stations, and terrestrial users to trade various types of space data, such as star images, climate data, and telemetry, using the Stable-Pi-Core token. 
