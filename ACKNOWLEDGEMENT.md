@@ -44,3 +44,5 @@ The development of the **Stable-Pi-Core** project would not have been possible w
 We are excited about the future of the Stable-Pi-Core project and the potential it holds for creating a stable and decentralized ecosystem. This project is a testament to the power of collaboration and innovation, and we look forward to continuing our journey with the support of our contributors and partners.
 
 Thank you all for your contributions and support!
+
+[KOSASIH](https://www.linkedin.com/in/kosasih-81b46b5a)  & Team
