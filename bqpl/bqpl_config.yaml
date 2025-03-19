@@ -1,0 +1,41 @@
+# bqpl/bqpl_config.yaml
+
+# Configuration for the Bio-Quantum Privacy Layer (BQPL)
+
+# Encryption Parameters
+encryption:
+  p: 3                     # Polynomial degree for encryption
+  q: 32                    # Modulus for encryption
+  N: 11                    # Degree of the polynomial ring
+
+# Logging Configuration
+logging:
+  level: INFO              # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  file: "bqpl.log"        # Log file name
+  max_size: 10MB          # Maximum size of the log file before rotation
+  backup_count: 5         # Number of backup log files to keep
+
+# Biosensor Configuration
+biosensor:
+  sensor_id: "Biosensor_1"  # Unique identifier for the biosensor
+  sampling_rate: 1          # Sampling rate in seconds
+  data_format: "json"       # Format for the collected data (json, xml, etc.)
+
+# Edge Node Configuration
+edge_node:
+  node_id: "EdgeNode_1"     # Unique identifier for the edge node
+  max_data_size: 1024       # Maximum data size (in bytes) to process
+  processing_timeout: 5      # Timeout for data processing (in seconds)
+
+# Security Settings
+security:
+  enable_encryption: true    # Enable or disable encryption
+  enable_logging: true        # Enable or disable logging
+  use_quantum_key_distribution: true  # Use QKD for secure key exchange
+
+# External Services Configuration
+external_services:
+  oracle:
+    address: "0xOracleContractAddress"  # Replace with the address of the oracle contract
+    api_url: "https://api.youroracle.com/data"  # Replace with the API URL for the oracle
+    update_interval: 300  # Time in seconds to fetch new data from the oracle

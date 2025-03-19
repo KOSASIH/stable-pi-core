@@ -2,9 +2,24 @@ import logging
 import os
 import pandas as pd
 import yaml
+import json
+import time
+import paho.mqtt.client as mqtt
+from data_processing.analytics.anomaly_detection import detect_anomaly
+from data_processing.analytics.pattern_recognition import PatternRecognizer
+from data_processing.data_collector import collect_data
+from data_processing.data_processor import process_data
+from communication.mqtt_client import MQTTClient
 from algorithms.supply_adjustment import SupplyAdjustment
 from algorithms.asset_management import AssetManagement
 from algorithms.prediction_model import DemandPredictionModel
+from features.dynamic_pegging import DynamicPegging
+from features.decentralized_reserve import DecentralizedReserve
+from features.cross_chain_interoperability import CrossChainInteroperability
+from features.security_protocols import AdvancedSecurity
+from features.wallet_solutions import UserFriendlyWallet
+from features.bridge_system import BridgeSystem
+from features.dual_value_system import DualValueSystem
 
 def load_config(env='development'):
     """Load configuration from the specified environment."""
@@ -29,34 +44,33 @@ def initialize_algorithms(config):
 
     # Load historical data for training
     try:
-        historical_data = pd.read_csv('data/historical_data.csv')
+        historical_data = pd.read_csv(config['data']['historical_data_path'])
         supply_adjuster.train_model(historical_data)
         asset_manager.train_model(historical_data)
         demand_model.train_model(historical_data)
+        logging.info('Successfully trained models with historical data.')
     except Exception as e:
         logging.error(f'Error loading historical data: {e}')
         raise
 
     return supply_adjuster, asset_manager, demand_model
 
-def predict_demand(demand_model, market_price, current_supply, other_factors):
-    """Predict demand based on market conditions."""
+def implement_dynamic_pegging(pegging_system, market_conditions):
+    """Implement dynamic pegging mechanism."""
     try:
-        predicted_demand = demand_model.predict_demand(market_price, current_supply, other_factors)
-        logging.info(f'Predicted Demand: {predicted_demand}')
-        return predicted_demand
+        pegging_system.adjust_supply(market_conditions)
+        logging.info('Dynamic pegging mechanism executed successfully.')
     except Exception as e:
-        logging.error(f'Error predicting demand: {e}')
+        logging.error(f'Error in dynamic pegging: {e}')
         raise
 
-def adjust_allocations(asset_manager, current_allocations, market_conditions):
-    """Adjust asset allocations based on predicted performance."""
+def manage_decentralized_reserve(reserve_system):
+    """Manage decentralized reserve system."""
     try:
-        new_allocations = asset_manager.adjust_allocation(current_allocations, market_conditions)
-        logging.info(f'Adjusted Allocations: {new_allocations}')
-        return new_allocations
+        reserve_system.update_reserves()
+        logging.info('Decentralized reserve system updated successfully.')
     except Exception as e:
-        logging.error(f'Error adjusting allocations: {e}')
+        logging.error(f'Error managing decentralized reserve: {e}')
         raise
 
 def main():
@@ -70,20 +84,73 @@ def main():
     # Initialize algorithms
     supply_adjuster, asset_manager, demand_model = initialize_algorithms(config)
 
-    # Example usage of the models
-    market_price = 105
-    current_supply = 1000
-    other_factors = 1
+    # Initialize new features
+    dynamic_pegging = DynamicPegging()
+    decentralized_reserve = DecentralizedReserve()
+    cross_chain = CrossChainInteroperability()
+    security_protocols = AdvancedSecurity()
+    wallet_solutions = UserFriendlyWallet()
+    bridge_system = BridgeSystem()
+    dual_value_system = DualValueSystem()
 
-    # Predict demand
-    predicted_demand = predict_demand(demand_model, market_price, current_supply, other_factors)
+    # Initialize MQTT client for communication
+    mqtt_client = MQTTClient(config['mqtt'])
+    mqtt_client.connect()
 
-    # Current allocations
-    current_allocations = {'Asset_A': 1000, 'Asset_B': 1100}
-    
-    # Adjust allocations based on market conditions
-    market_conditions = 1  # Example market condition
-    new_allocations = adjust_allocations(asset_manager, current_allocations, market_conditions)
+    # Data collection and processing loop
+    recognizer = PatternRecognizer(window_size=5)
+
+    try:
+        while True:
+            # Collect data from sensors
+            sensor_data = collect_data()  # Implement this function to collect data
+            logging.info(f"Collected sensor data: {sensor_data}")
+
+            # Process the collected data
+            if detect_anomaly(sensor_data):
+                logging.warning("Anomaly detected in sensor data.")
+                continue  # Skip processing if anomaly detected
+
+            recognizer.add_data(sensor_data['temperature'], sensor_data['humidity'])
+            patterns = recognizer.recognize_patterns()
+
+            # Example usage of the models
+            market_price = 105
+            current_supply = 1000
+            other_factors = 1
+
+            # Predict demand
+            predicted_demand = demand_model.predict(market_price, current_supply, other_factors)
+
+            # Current allocations
+            current_allocations = {'Asset_A': 1000, 'Asset_B': 1100}
+            
+            # Adjust allocations based on market conditions
+            market_conditions = 1  # Example market condition
+            new_allocations = asset_manager.adjust_allocations(current_allocations, market_conditions)
+
+            # Implement dynamic pegging
+            implement_dynamic_pegging(dynamic_pegging, market_conditions)
+
+            # Manage decentralized reserve
+            manage_decentralized_reserve(decentralized_reserve)
+
+            # Log final allocations
+            logging.info(f'Final Allocations: {new_allocations}')
+
+            # Publish processed data to MQTT broker
+            mqtt_client.publish("sensor/data", json.dumps(sensor_data))
+            mqtt_client.publish("market/allocations", json.dumps(new_allocations))
+
+            # Sleep for a defined interval before the next iteration
+            time.sleep(config['data']['collection_interval'])
+
+    except KeyboardInterrupt:
+        logging.info("Shutting down the application.")
+    except Exception as e:
+        logging.error(f'An unexpected error occurred: {e}')
+    finally:
+        mqtt_client.disconnect()
 
 if __name__ == "__main__":
     main()

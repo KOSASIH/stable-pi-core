@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="ErrorHandling" 
+          DisplayName="Error Handling">
+    <x:Members>
+        <x:Property Name="exception" Type="InArgument(s:Exception)" />
+        <x:Property Name="logFilePath" Type="InArgument(x:String)" />
+        <x:Property Name="emailRecipient" Type="InArgument(x:String)" />
+    </x:Members>
+    <Sequence DisplayName="Error Handling Sequence">
+        <TryCatch DisplayName="Try-Catch for Logging and Notification">
+            <Try DisplayName="Log Error and Notify">
+                <Sequence>
+                    <!-- Log Error to File -->
+                    <WriteTextFile DisplayName="Log Error to File" 
+                                   FilePath="[logFilePath]" 
+                                   Text="[String.Format('{0}: {1}{2}', DateTime.Now.ToString(), exception.Message, Environment.NewLine)]" 
+                                   Append="True" />
+                    
+                    <!-- Show Error Message to User -->
+                    <MessageBox DisplayName="Show Error" 
+                                 Text="An error occurred: [exception.Message]. Please check the logs for more details." 
+                                 Button="OK" 
+                                 Title="Error" />
+                    
+                    <!-- Send Email Notification -->
+                    <SendOutlookMailMessage DisplayName="Send Email Notification" 
+                                             To="[emailRecipient]" 
+                                             Subject="Error Notification" 
+                                             Body="[String.Format('An error occurred in the RPA process: {0}', exception.Message)]" 
+                                             IsBodyHtml="False" />
+                </Sequence>
+            </Try>
+            <Catch x:TypeArguments="s:Exception" DisplayName="Exception Handling">
+                <Sequence>
+                    <WriteLine DisplayName="Log Catch Error" Text="[exception.Message]" />
+                </Sequence>
+            </Catch>
+        </TryCatch>
+    </Sequence>
+</Workflow>

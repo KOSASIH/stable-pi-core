@@ -1,0 +1,52 @@
+# Ignore Visual Studio temporary files
+.vs/
+*.suo
+*.user
+*.userprefs
+
+# Ignore UiPath project files
+*.nupkg
+*.local
+*.json
+*.xlsx
+*.xlsm
+*.xls
+*.csv
+*.xml
+*.log
+*.tmp
+*.bak
+
+# Ignore output directories
+/bin/
+/obj/
+/logs/
+output/
+temp/
+
+# Ignore user-specific files
+*.local
+*.sln.ide
+
+# Ignore NuGet packages
+*.nupkg
+
+# Ignore environment-specific files
+.env
+.env.local
+
+# Ignore credentials and sensitive information
+Credentials.json
+Config.xlsx
+
+# Ignore any other files that should not be tracked
+*.pdb
+*.mdb
+*.db
+*.cache
+*.zip
+*.rar
+*.tar
+*.tgz
+*.gz
+*.7z

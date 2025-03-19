@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="TestEndToEnd" 
+          DisplayName="Test End To End">
+    <Sequence DisplayName="End To End Test Sequence">
+        <Variable x:TypeArguments="s:String" Name="result" />
+        
+        <TryCatch DisplayName="Try-Catch for End To End Test">
+            <Try DisplayName="Perform End To End Test">
+                <WriteLine DisplayName="Starting End To End Test" Text="Starting the end-to-end test." />
+                
+                ' Simulate data extraction
+                <Assign DisplayName="Simulate Data Extraction" To="[result]" Value="Data Extracted" />
+                <WriteLine DisplayName="Data Extraction" Text="[result]" />
+                
+                ' Simulate data processing
+                <Assign DisplayName="Simulate Data Processing" To="[result]" Value="Data Processed" />
+                <WriteLine DisplayName="Data Processing" Text="[result]" />
+                
+                ' Simulate data entry
+                <Assign DisplayName="Simulate Data Entry" To="[result]" Value="Data Entered" />
+                <WriteLine DisplayName="Data Entry" Text="[result]" />
+                
+                ' Validate final result
+                <If DisplayName="Validate Final Result">
+                    <If.Condition>
+                        <InArgument x:TypeArguments="s:Boolean">[result.Equals("Data Entered")]</InArgument>
+                    </If.Condition>
+                    <Then>
+                        <WriteLine DisplayName="Test Passed" Text="End-to-end test passed." />
+                    </Then>
+                    <Else>
+                        <WriteLine DisplayName="Test Failed" Text="End-to-end test failed." />
+                    </Else>
+                </If>
+            </Try>
+            <Catch x:TypeArguments="s:Exception" DisplayName="Exception Handling">
+                <Sequence>
+                    <WriteLine DisplayName="Log Exception" Text="[String.Format('Error: {0}', exception.Message)]" />
+                </Sequence>
+            </Catch>
+        </TryCatch>
+    </Sequence>
+</Workflow>

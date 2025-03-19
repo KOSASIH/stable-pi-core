@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="DataEntry" 
+          DisplayName="Data Entry">
+    <x:Members>
+        <x:Property Name="extractedData" Type="InArgument(System.Data.DataTable)" />
+        <x:Property Name="webAppUrl" Type="InArgument(x:String)" />
+    </x:Members>
+    <Sequence DisplayName="Data Entry Sequence">
+        <TryCatch DisplayName="Try-Catch for Error Handling">
+            <Try DisplayName="Enter Data">
+                <Sequence DisplayName="Data Entry Logic">
+                    <OpenBrowser DisplayName="Open Browser" Url="[webAppUrl]" BrowserType="Chrome">
+                        <Do>
+                            <ForEach x:TypeArguments="System.Data.DataRow" DisplayName="For Each Row" Values="[extractedData.Rows]">
+                                <ActivityAction x:TypeArguments="System.Data.DataRow">
+                                    <Sequence DisplayName="Process Row">
+                                        <Assign DisplayName="Assign Current Row" To="[currentRow]" Value="[item]" />
+                                        
+                                        <!-- Validate Data -->
+                                        <If DisplayName="Validate Data">
+                                            <If.Condition>
+                                                <InArgument x:TypeArguments="s:Boolean">[Not String.IsNullOrEmpty(currentRow("Name").ToString) AndAlso Not String.IsNullOrEmpty(currentRow("Email").ToString)]</InArgument>
+                                            </If.Condition>
+                                            <Then>
+                                                <Sequence>
+                                                    <!-- Enter Data into Web Application -->
+                                                    <TypeInto DisplayName="Type Name" Text="[currentRow("Name").ToString]" Selector="<your_selector_for_name>" />
+                                                    <TypeInto DisplayName="Type Email" Text="[currentRow("Email").ToString]" Selector="<your_selector_for_email>" />
+                                                    <Click DisplayName="Submit" Selector="<your_selector_for_submit_button>" />
+                                                </Sequence>
+                                            </Then>
+                                            <Else>
+                                                <Sequence>
+                                                    <WriteLine DisplayName="Log Validation Error" Text="Validation failed for row: [currentRow("Name").ToString], [currentRow("Email").ToString]" />
+                                                    <MessageBox DisplayName="Show Validation Error" 
+                                                                Text="Validation failed for row: [currentRow("Name").ToString]. Please ensure all fields are filled." 
+                                                                Button="OK" 
+                                                                Title="Validation Error" />
+                                                </Sequence>
+                                            </Else>
+                                        </If>
+                                    </Sequence>
+                                </ActivityAction>
+                            </ForEach>
+                        </Do>
+                    </OpenBrowser>
+                </Sequence>
+            </Try>
+            <Catch x:TypeArguments="s:Exception" DisplayName="Exception Handling">
+                <Sequence>
+                    <WriteLine DisplayName="Log Error" Text="[exception.Message]" />
+                    <MessageBox DisplayName="Show Error" 
+                                 Text="An error occurred while entering data: [exception.Message]." 
+                                 Button="OK" 
+                                 Title="Data Entry Error" />
+                </Sequence>
+            </Catch>
+        </TryCatch>
+    </Sequence>
+</Workflow>

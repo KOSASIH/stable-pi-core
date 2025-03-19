@@ -1,0 +1,12 @@
+# stsp/stsp_config.yaml
+
+edge_node:
+  id: "EdgeNode_1"
+  processing_power: 5
+
+satellite:
+  api_url: "http://localhost:5000/api/satellite"  # Replace with actual satellite API URL
+
+cross_chain:
+  source_chain_url: "http://localhost:5001/api/source"  # Replace with actual source chain API URL
+  target_chain_url: "http://localhost:5002/api/target"  # Replace with actual target chain API URL

@@ -1,0 +1,23 @@
+# config.yaml
+
+# AI Security System Configuration
+ai_security:
+  model:
+    fraud_detection_model: "models/fraud_detection_model.h5"  # Path to the fraud detection model
+    attack_detection_model: "models/attack_detection_model.h5"  # Path to the attack detection model
+
+  data:
+    training_data_path: "data/training_data/"  # Path to training data
+    test_data_path: "data/test_data/"            # Path to test data
+
+  alert:
+    email:
+      recipient: "recipient@example.com"         # Recipient email for alerts
+      sender: "your_email@example.com"           # Sender email for alerts
+      smtp_server: "smtp.example.com"            # SMTP server for sending emails
+      smtp_port: 587                             # SMTP port
+      username: "your_email@example.com"         # SMTP username
+      password: "your_password"                  # SMTP password (consider using environment variables for security)
+
+  monitoring:
+    monitoring_interval: 5                        # Interval for monitoring in seconds

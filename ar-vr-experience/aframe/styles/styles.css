@@ -1,0 +1,71 @@
+/* styles.css */
+
+/* General body styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000; /* Dark background for better contrast */
+    color: #fff; /* White text for readability */
+}
+
+/* A-Frame scene styles */
+a-scene {
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+}
+
+/* Styling for text elements */
+a-text {
+    font-family: 'Arial', sans-serif;
+    color: #ffffff; /* White text color */
+    align: center; /* Center align text */
+    width: 6; /* Set width for text wrapping */
+}
+
+/* Button styles */
+.button {
+    position: absolute;
+    top: 20px; /* Position from the top */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    padding: 10px 20px; /* Padding for button */
+    background-color: #007BFF; /* Bootstrap primary color */
+    color: #ffffff; /* White text color */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Button hover effect */
+.button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Styling for the info text */
+#info {
+    position: absolute;
+    bottom: 20px; /* Position from the bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    padding: 10px; /* Padding for text */
+    border-radius: 5px; /* Rounded corners */
+    color: #ffffff; /* White text color */
+    font-size: 14px; /* Font size */
+    text-align: center; /* Center align text */
+}
+
+/* Hide the default A-Frame cursor */
+a-cursor {
+    display: none; /* Hide the default cursor */
+}
+
+/* Custom cursor styles */
+.custom-cursor {
+    width: 0.1; /* Width of the cursor */
+    height: 0.1; /* Height of the cursor */
+    color: #FF0000; /* Red color for the custom cursor */
+    opacity: 0.8; /* Slightly transparent */
+}

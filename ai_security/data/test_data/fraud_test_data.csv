@@ -1,0 +1,6 @@
+transaction_id,amount,time_of_day,location,is_fraud
+1,120,13:00,New York,0
+2,250,15:00,Los Angeles,0
+3,1600,17:00,New York,1
+4,70,11:00,Chicago,0
+5,3500,21:00,Los Angeles,1

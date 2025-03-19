@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="ReportGeneration" 
+          DisplayName="Report Generation">
+    <x:Members>
+        <x:Property Name="reportData" Type="InArgument(System.Data.DataTable)" />
+        <x:Property Name="reportFilePath" Type="InArgument(x:String)" />
+    </x:Members>
+    <Sequence DisplayName="Report Generation Sequence">
+        <ExcelApplicationScope DisplayName="Create Excel File" WorkbookPath="[reportFilePath]">
+            <Do>
+                <Sequence>
+                    <!-- Write Headers -->
+                    <WriteRange DisplayName="Write Headers" SheetName="Report" 
+                                DataTable="[reportData]" 
+                                StartingCell="A1" 
+                                AddHeaders="True" />
+                    
+                    <!-- Format the Header Row -->
+                    <InvokeMethod DisplayName="Format Header Row" TargetType="Excel.Application">
+                        <MethodName>ActiveSheet.Rows("1").Font.Bold</MethodName>
+                        <Parameters>
+                            <InArgument x:TypeArguments="s:Boolean">True</InArgument>
+                        </Parameters>
+                    </InvokeMethod>
+                    
+                    <InvokeMethod DisplayName="Set Column Widths" TargetType="Excel.Application">
+                        <MethodName>ActiveSheet.Columns.AutoFit</MethodName>
+                    </InvokeMethod>
+
+                    <!-- Optional: Add additional formatting here -->
+                    <InvokeMethod DisplayName="Set Background Color" TargetType="Excel.Application">
+                        <MethodName>ActiveSheet.Rows("1").Interior.Color</MethodName>
+                        <Parameters>
+                            <InArgument x:TypeArguments="s:UInt32">16776960</InArgument> <!-- Yellow color -->
+                        </Parameters>
+                    </InvokeMethod>
+                </Sequence>
+            </Do>
+        </ExcelApplicationScope>
+        
+        <MessageBox DisplayName="Report Generated" 
+                    Text="The report has been generated successfully at [reportFilePath]." 
+                    Button="OK" 
+                    Title="Report Generation" />
+    </Sequence>
+</Workflow>

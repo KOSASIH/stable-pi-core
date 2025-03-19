@@ -35,7 +35,7 @@ Before you begin, ensure you have the following installed on your system:
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/KOSASIH/stable-pi-core.git
-   cd quantum-ai-arbitration
+   cd stable-pi-core/quantum-ai-arbitration
    ```
 
 2. **Install Dependencies**

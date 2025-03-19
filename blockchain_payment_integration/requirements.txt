@@ -1,0 +1,9 @@
+Flask==2.1.1
+requests==2.32.2
+SQLAlchemy==1.4.27
+python-dotenv==0.19.2
+pytest==6.2.5
+pytest-mock==3.6.1
+Flask-Cors==4.0.2          # For handling Cross-Origin Resource Sharing (CORS)
+Flask-Limiter==2.0          # For rate limiting requests
+Flask-HTTPAuth==4.5.0       # For handling HTTP authentication

@@ -1,14 +1,26 @@
+# api/app.py
+
 from flask import Flask
-from routes import api_routes
+from api.routes import api_routes  # Ensure the correct import path for your routes
 
-app = Flask(__name__)
+def create_app():
+    """Create and configure the Flask application.
 
-# Register API routes
-app.register_blueprint(api_routes)
+    Returns:
+        Flask: The configured Flask application.
+    """
+    app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "Welcome to the Blockchain API!"
+    # Register API routes
+    app.register_blueprint(api_routes, url_prefix='/api')
+
+    @app.route('/')
+    def home():
+        """Home route for the API."""
+        return "Welcome to the Blockchain API!"
+
+    return app
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app = create_app()
+    app.run(debug=True, host='0.0.0.0', port=5000)

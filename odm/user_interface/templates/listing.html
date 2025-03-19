@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ listing.title }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        .listing-details {
+            margin-bottom: 20px;
+        }
+        .owner-info {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .action-buttons {
+            margin-top: 20px;
+        }
+        .action-buttons a {
+            text-decoration: none;
+            padding: 10px 15px;
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .action-buttons a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ listing.title }}</h1>
+    <div class="listing-details">
+        <h2>Description</h2>
+        <p>{{ listing.description }}</p>
+    </div>
+    
+    <div class="owner-info">
+        <h3>Owner Information</h3>
+        <p><strong>Owner ID:</strong> {{ listing.owner_id }}</p>
+        <p><strong>Contact:</strong> <a href="mailto:{{ listing.owner_email }}">{{ listing.owner_email }}</a></p>
+    </div>
+
+    <div class="action-buttons">
+        <h3>Actions</h3>
+        <a href="{{ url_for('download_data', listing_id=listing.id) }}" class="download-button">
+            <i class="fas fa-download"></i> Download Data
+        </a>
+        <a href="{{ url_for('contact_owner', owner_id=listing.owner_id) }}" class="contact-button">
+            <i class="fas fa-envelope"></i> Contact Owner
+        </a>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

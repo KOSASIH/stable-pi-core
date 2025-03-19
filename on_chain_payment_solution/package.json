@@ -1,0 +1,73 @@
+{
+  "name": "on-chain-payment-solution",
+  "version": "1.0.0",
+  "description": "A decentralized application for processing payments and managing refunds using Ethereum smart contracts.",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "deploy": "truffle migrate --network development",
+    "test:contracts": "truffle test",
+    "lint": "eslint .",
+    "format": "prettier --write '**/*.{js,jsx,json,css,md}'",
+    "prepare": "husky install"
+  },
+  "keywords": [
+    "ethereum",
+    "smart-contracts",
+    "dapp",
+    "payment",
+    "refund"
+  ],
+  "author": "KOSASIH",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "web3": "^1.6.1",
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "@openzeppelin/contracts": "^4.3.2",
+    "react-toastify": "^8.1.0"  // For notifications
+  },
+  "devDependencies": {
+    "truffle": "^5.4.0",
+    "ganache-cli": "^6.12.2",
+    "eslint": "^7.32.0",
+    "prettier": "^2.3.2",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.2",  // For Git hooks
+    "lint-staged": "^12.1.2"  // For running linters on staged files
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "homepage": "http://revtech.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KOSASIH/stable-pi-core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KOSASIH/stable-pi-core/issues"
+  }
+}

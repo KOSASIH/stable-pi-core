@@ -1,0 +1,28 @@
+<!-- payment_system/templates/payment_form.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Currency Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/static/js/payment.js" defer></script>
+</head>
+<body>
+    <h1>Select Payment Method</h1>
+    <form id="payment-form">
+        <label for="currency">Select Currency:</label>
+        <select id="currency" name="currency">
+            <option value="usd">USD</option>
+            <option value="eur">EUR</option>
+            <option value="gbp">GBP</option>
+            <option value="btc">BTC</option>
+            <!-- Add more currencies as needed -->
+        </select>
+        <button type="submit">Pay</button>
+    </form>
+
+    <div id="payment-result"></div>
+</body>
+</html>

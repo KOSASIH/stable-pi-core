@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="TestErrorHandling" 
+          DisplayName="Test Error Handling">
+    <Sequence DisplayName="Error Handling Test Sequence">
+        <Variable x:TypeArguments="s:String" Name="result" />
+        
+        <TryCatch DisplayName="Try-Catch for Error Handling Test">
+            <Try DisplayName="Perform Error Handling Test">
+                <WriteLine DisplayName="Starting Error Handling Test" Text="Starting the error handling test." />
+                
+                ' Simulate an error during data extraction
+                Throw New Exception("Simulated data extraction error.")
+                
+                ' If no error occurs, this part would run
+                <Assign DisplayName="Simulate Data Processing" To="[result]" Value="Data Processed" />
+                <WriteLine DisplayName="Data Processing" Text="[result]" />
+            </Try>
+            <Catch x:TypeArguments="s:Exception" DisplayName="Exception Handling">
+                <Sequence>
+                    <WriteLine DisplayName="Log Exception" Text="[String.Format('Error: {0}', exception.Message)]" />
+                    <Assign DisplayName="Set Result to Error" To="[result]" Value="Error Occurred" />
+                </Sequence>
+            </Catch>
+        </TryCatch>
+        
+        <If DisplayName="Validate Error Handling">
+            <If.Condition>
+                <InArgument x:TypeArguments="s:Boolean">[result.Equals("Error Occurred")]</InArgument>
+            </If.Condition>
+            <Then>
+                <WriteLine DisplayName="Test Passed" Text="Error handling test passed." />
+            </Then>
+            <Else>
+                <WriteLine DisplayName="Test Failed" Text="Error handling test failed." />
+            </Else>
+        </If>
+    </Sequence>
+</Workflow>

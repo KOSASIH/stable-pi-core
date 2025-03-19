@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="DataExtraction" 
+          DisplayName="Data Extraction">
+    <x:Members>
+        <x:Property Name="excelFilePath" Type="InArgument(x:String)" />
+        <x:Property Name="sheetName" Type="InArgument(x:String)" />
+        <x:Property Name="extractedData" Type="OutArgument(System.Data.DataTable)" />
+    </x:Members>
+    <Sequence DisplayName="Data Extraction Sequence">
+        <TryCatch DisplayName="Try-Catch for Error Handling">
+            <Try DisplayName="Extract Data">
+                <Sequence DisplayName="Data Extraction Logic">
+                    <Assign DisplayName="Initialize DataTable" To="[extractedData]" Value="[New System.Data.DataTable()]" />
+                    
+                    <ExcelApplicationScope DisplayName="Excel Application Scope" WorkbookPath="[excelFilePath]">
+                        <Do>
+                            <ReadRange DisplayName="Read Data" SheetName="[sheetName]" Output="[extractedData]" AddHeaders="True" />
+                        </Do>
+                    </ExcelApplicationScope>
+                </Sequence>
+            </Try>
+            <Catch x:TypeArguments="s:Exception" DisplayName="Exception Handling">
+                <Sequence>
+                    <WriteLine DisplayName="Log Error" Text="[exception.Message]" />
+                    <MessageBox DisplayName="Show Error" 
+                                 Text="An error occurred while extracting data: [exception.Message]." 
+                                 Button="OK" 
+                                 Title="Data Extraction Error" />
+                    <Assign DisplayName="Set Output to Null" To="[extractedData]" Value="[Nothing]" />
+                </Sequence>
+            </Catch>
+        </TryCatch>
+    </Sequence>
+</Workflow>

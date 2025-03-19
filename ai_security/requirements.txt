@@ -1,0 +1,15 @@
+# Machine Learning and Data Processing
+tensorflow==2.10.0          # TensorFlow for building and training models
+pandas==1.5.3                # Pandas for data manipulation and analysis
+numpy==1.23.5                # NumPy for numerical operations
+scikit-learn==1.1.3          # Scikit-learn for machine learning utilities
+
+# Real-time Monitoring and Alerts
+smtplib==3.10.0             # For sending email alerts (part of the standard library, no need to install separately)
+email==6.0.0                # For email handling (part of the standard library, no need to install separately)
+
+# Logging
+logging==0.5.1              # For logging events (part of the standard library, no need to install separately)
+
+# Additional Libraries
+matplotlib==3.6.0           # Optional: For visualizing data and results

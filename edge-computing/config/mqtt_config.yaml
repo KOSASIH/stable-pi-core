@@ -1,0 +1,26 @@
+# MQTT Configuration
+mqtt:
+  broker:
+    host: "mqtt.example.com"  # MQTT broker hostname or IP address
+    port: 8883                 # Port for MQTT broker (use 8883 for secure connections)
+    username: "mqtt_user"      # Username for MQTT authentication
+    password: "mqtt_password"   # Password for MQTT authentication
+    client_id: "edge-device-001"  # Unique client ID for the MQTT connection
+    keep_alive: 60              # Keep alive interval in seconds
+    clean_session: true          # Clean session flag (true or false)
+    ssl:
+      enabled: true              # Enable SSL/TLS for secure communication
+      ca_cert: "/path/to/ca.crt" # Path to CA certificate for SSL
+      client_cert: "/path/to/client.crt" # Path to client certificate for SSL
+      client_key: "/path/to/client.key"   # Path to client key for SSL
+
+  topics:
+    data_collection: "edge/device/data"  # Topic for sending collected data
+    control_commands: "edge/device/control"  # Topic for receiving control commands
+    status_updates: "edge/device/status"  # Topic for sending device status updates
+    alerts: "edge/device/alerts"          # Topic for sending alerts
+
+  qos: 1  # Quality of Service level (0, 1, or 2)
+  message_retain: true  # Retain messages on the broker
+  max_retries: 5        # Maximum number of retries for sending messages
+  retry_interval: 2     # Interval in seconds between retries

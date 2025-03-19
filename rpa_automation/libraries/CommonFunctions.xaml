@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="CommonFunctions" 
+          DisplayName="Common Functions">
+    <x:Members>
+        <x:Property Name="logFilePath" Type="InArgument(x:String)" />
+        <x:Property Name="logLevel" Type="InArgument(x:String)" />
+    </x:Members>
+    <Sequence DisplayName="Common Functions Sequence">
+        <Variable x:TypeArguments="s:String" Name="logMessage" />
+        
+        <!-- Function to Log Messages -->
+        <InvokeMethod DisplayName="Log Message" TargetType="System.IO.File" MethodName="AppendAllText">
+            <Parameters>
+                <InArgument x:TypeArguments="s:String">[logFilePath]</InArgument>
+                <InArgument x:TypeArguments="s:String">[String.Format('{0} [{1}]: {2}{3}', DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), logLevel, logMessage, Environment.NewLine)]</InArgument>
+            </Parameters>
+        </InvokeMethod>
+        
+        <!-- Function to Set Log Message -->
+        <Assign DisplayName="Set Log Message" To="[logMessage]" Value="[String.Empty]" />
+        
+        <!-- Function to Log Error -->
+        <InvokeMethod DisplayName="Log Error" TargetType="System.IO.File" MethodName="AppendAllText">
+            <Parameters>
+                <InArgument x:TypeArguments="s:String">[logFilePath]</InArgument>
+                <InArgument x:TypeArguments="s:String">[String.Format('{0} [ERROR]: {1}{2}', DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), logMessage, Environment.NewLine)]</InArgument>
+            </Parameters>
+        </InvokeMethod>
+        
+        <!-- Function to Log Info -->
+        <InvokeMethod DisplayName="Log Info" TargetType="System.IO.File" MethodName="AppendAllText">
+            <Parameters>
+                <InArgument x:TypeArguments="s:String">[logFilePath]</InArgument>
+                <InArgument x:TypeArguments="s:String">[String.Format('{0} [INFO]: {1}{2}', DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), logMessage, Environment.NewLine)]</InArgument>
+            </Parameters>
+        </InvokeMethod>
+        
+        <!-- Function to Log Warning -->
+        <InvokeMethod DisplayName="Log Warning" TargetType="System.IO.File" MethodName="AppendAllText">
+            <Parameters>
+                <InArgument x:TypeArguments="s:String">[logFilePath]</InArgument>
+                <InArgument x:TypeArguments="s:String">[String.Format('{0} [WARNING]: {1}{2}', DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), logMessage, Environment.NewLine)]</InArgument>
+            </Parameters>
+        </InvokeMethod>
+    </Sequence>
+</Workflow>

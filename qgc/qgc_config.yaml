@@ -1,0 +1,73 @@
+# qgc/qgc_config.yaml
+
+# Configuration for the Quantum Gravitational Consensus (QGC) system
+
+# Logging Configuration
+logging:
+  level: DEBUG                  # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  file: "qgc.log"               # Log file name
+  max_size: 20MB                # Maximum size of the log file before rotation
+  backup_count: 10              # Number of backup log files to keep
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"  # Log message format
+  rotation:                     # Log rotation settings
+    enabled: true               # Enable log rotation
+    when: "midnight"            # Rotate logs at midnight
+    interval: 1                 # Rotate logs every day
+
+# Quantum Gravity Sensor Configuration
+quantum_gravity_sensor:
+  calibration_factor: 1.0       # Default calibration factor for the sensor
+  sampling_rate: 1.0            # Sampling rate in seconds for measurements
+  measurement_range:             # Range of valid measurements
+    min: 9.70                    # Minimum expected gravitational measurement (m/s^2)
+    max: 9.90                    # Maximum expected gravitational measurement (m/s^2)
+  sensor_type: "Quantum"         # Type of sensor (e.g., Quantum, Classical)
+  noise_level: 0.01              # Expected noise level in measurements (m/s^2)
+
+# Node Communication Configuration
+node_communication:
+  max_connections: 20           # Maximum number of connections to other nodes
+  timeout: 5                    # Timeout for communication in seconds
+  protocol: "TCP"               # Communication protocol (TCP, UDP, etc.)
+  encryption:                   # Encryption settings for communication
+    enabled: true                # Enable or disable encryption
+    algorithm: "AES"             # Encryption algorithm to use (e.g., AES, RSA)
+    key_length: 256              # Key length for encryption
+  message_format: "JSON"         # Format for messages (e.g., JSON, XML)
+
+# Consensus Algorithm Configuration
+consensus:
+  initial_threshold: 0.1        # Initial acceptable deviation threshold for consensus
+  adjustment_factor: 0.05        # Factor to adjust the threshold based on measurement variability
+  max_iterations: 10            # Maximum number of iterations to attempt reaching consensus
+  consensus_method: "Weighted"   # Method for reaching consensus (e.g., Average, Weighted, Median)
+  outlier_detection:              # Outlier detection settings
+    enabled: true                # Enable or disable outlier detection
+    method: "Z-score"            # Method for outlier detection (e.g., Z-score, IQR)
+
+# Security Settings
+security:
+  enable_encryption: true        # Enable or disable encryption for communication
+  encryption_algorithm: "AES"    # Encryption algorithm to use (e.g., AES, RSA)
+  key_length: 256                # Key length for encryption
+  authentication:                # Authentication settings
+    enabled: true                # Enable or disable authentication
+    method: "HMAC"               # Method for authentication (e.g., HMAC, JWT)
+    secret_key: "your_secret_key" # Secret key for HMAC authentication
+
+# External Services Configuration
+external_services:
+  oracle:
+    address: "0xOracleContractAddress"  # Replace with the address of the oracle contract
+    api_url: "https://api.youroracle.com/data"  # Replace with the API URL for the oracle
+    update_interval: 300  # Time in seconds to fetch new data from the oracle
+  monitoring:
+    enabled: true          # Enable or disable external monitoring services
+    service_url: "https://monitoring.service.com"  # URL for the monitoring service
+    api_key: "your_api_key" # API key for the monitoring service
+
+# Performance Tuning
+performance:
+  measurement_buffer_size: 100  # Size of the buffer for storing measurements before processing
+  consensus_timeout: 10          # Timeout for reaching consensus in seconds
+  retry_attempts: 3              # Number of retry attempts for failed communications

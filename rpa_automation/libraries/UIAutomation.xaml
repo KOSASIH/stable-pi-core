@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="UIAutomation" 
+          DisplayName="UI Automation Functions">
+    <x:Members>
+        <x:Property Name="logFilePath" Type="InArgument(x:String)" />
+        <x:Property Name="selector" Type="InArgument(x:String)" />
+        <x:Property Name="inputText" Type="InArgument(x:String)" />
+        <x:Property Name="extractedText" Type="OutArgument(x:String)" />
+    </x:Members>
+    <Sequence DisplayName="UI Automation Sequence">
+        <Variable x:TypeArguments="s:String" Name="logMessage" />
+        
+        <TryCatch DisplayName="Try-Catch for UI Automation">
+            <Try DisplayName="Perform UI Automation Tasks">
+                <Sequence DisplayName="UI Automation Logic">
+                    <!-- Click Button -->
+                    <Click DisplayName="Click Button" Selector="[selector]" />
+                    
+                    <!-- Type Into Field -->
+                    <TypeInto DisplayName="Type Into Field" Text="[inputText]" Selector="[selector]" />
+                    
+                    <!-- Extract Text -->
+                    <GetText DisplayName="Extract Text" Selector="[selector]" Output="[extractedText]" />
+                    
+                    <!-- Optional: Handle Pop-ups -->
+                    <If DisplayName="Check for Pop-up" Condition="[YourPopUpSelectorCondition]">
+                        <Then>
+                            <Click DisplayName="Close Pop-up" Selector="[YourPopUpSelector]" />
+                        </Then>
+                    </If>
+                </Sequence>
+            </Try>
+            <Catch x:TypeArguments="s:Exception" DisplayName="Exception Handling">
+                <Sequence>
+                    <Assign DisplayName="Set Log Message" To="[logMessage]" Value="[String.Format('Error during UI Automation: {0}', exception.Message)]" />
+                    <InvokeMethod DisplayName="Log Error" TargetType="System.IO.File" MethodName="AppendAllText">
+                        <Parameters>
+                            <InArgument x:TypeArguments="s:String">[logFilePath]</InArgument>
+                            <InArgument x:TypeArguments="s:String">[String.Format('{0} [ERROR]: {1}{2}', DateTime.Now.ToString('yyyy-MM-dd HH:mm:ss'), logMessage, Environment.NewLine)]</InArgument>
+                        </Parameters>
+                    </InvokeMethod>
+                </Sequence>
+            </Catch>
+        </TryCatch>
+    </Sequence>
+</Workflow>

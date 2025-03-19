@@ -1,0 +1,19 @@
+| **Section**         | **Parameter Name** | **Parameter Value**               | **Description**                                      |
+|---------------------|---------------------|-----------------------------------|------------------------------------------------------|
+| **File Paths**      | ExcelFilePath       | C:\path\to\your\data.xlsx        | Path to the input Excel file for data processing.    |
+|                     | LogFilePath         | C:\path\to\your\logs\log.txt     | Path to the log file for storing logs.               |
+|                     | OutputFilePath      | C:\path\to\your\output.xlsx      | Path to the output Excel file for results.           |
+| **Web Application** | WebAppUrl           | http://your-web-app.com          | URL of the web application for automation tasks.      |
+|                     | WebAppTimeout       | 30                                | Timeout for web application interactions (in seconds).|
+| **Database**        | DatabaseServer      | your_database_server              | Server address for the database connection.          |
+|                     | DatabaseName        | your_database_name                | Name of the database to connect to.                  |
+|                     | DatabaseUsername     | db_username                       | Username for database authentication.                 |
+|                     | DatabasePassword     | db_password                       | Password for database authentication.                 |
+| **Retries**         | MaxRetries          | 3                                 | Maximum number of retries for failed operations.      |
+|                     | RetryInterval       | 5                                 | Interval between retries (in seconds).                |
+| **Logging**         | LogLevel            | Info                              | Level of logging (e.g., Info, Warning, Error).       |
+|                     | LogToFile           | True                              | Whether to log messages to a file.                   |
+|                     | LogToConsole        | False                             | Whether to log messages to the console.              |
+| **Data Processing** | EnableDataValidation| True                              | Enable validation for input data.                     |
+|                     | RequiredFields      | Name, Email, Phone                | Comma-separated list of required fields for validation.|
+|                     | EmailFormat         | ^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$ | Regex pattern for validating email format.            |

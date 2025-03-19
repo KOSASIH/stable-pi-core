@@ -1,0 +1,15 @@
+# Numerical and scientific computing
+numpy==1.23.5          # Fundamental package for numerical computations
+scipy==1.9.3           # Library for scientific and technical computing
+
+# Quantum computing (if applicable)
+qiskit==0.39.1         # Quantum computing framework for creating and running quantum circuits
+
+# Data visualization (optional)
+matplotlib==3.6.2      # Library for creating static, animated, and interactive visualizations
+
+# Logging (standard library, no installation needed)
+# logging is part of the Python standard library and does not need to be included
+
+# Additional libraries (if needed)
+pandas==1.5.3          # Data manipulation and analysis library (optional)

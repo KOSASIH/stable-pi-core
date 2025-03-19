@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Workflow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+          xmlns:s="clr-namespace:System;assembly=mscorlib" 
+          xmlns:ui="http://schemas.uipath.com/workflow/activities"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          mc:Ignorable="d" 
+          x:Class="TestDataExtraction" 
+          DisplayName="Test Data Extraction">
+    <Sequence DisplayName="Test Data Extraction Sequence">
+        <Variable x:TypeArguments="dt:DataTable" Name="extractedData" />
+        <Variable x:TypeArguments="s:String" Name="expectedValue" Value="Expected Data" />
+        
+        <TryCatch DisplayName="Try-Catch for Data Extraction Test">
+            <Try DisplayName="Perform Data Extraction">
+                <!-- Simulate Data Extraction -->
+                <Assign DisplayName="Simulate Data Extraction" To="[extractedData]" Value="[New dt:DataTable()]" />
+                <InvokeMethod DisplayName="Add Test Data" TargetType="dt:DataTable" MethodName="Rows.Add">
+                    <Parameters>
+                        <InArgument x:TypeArguments="Object[]">[New Object() {"Expected Data"}]</InArgument>
+                    </Parameters>
+                </InvokeMethod>
+                
+                <!-- Validate Output -->
+                <If DisplayName="Validate Output">
+                    <If.Condition>
+                        <InArgument x:TypeArguments="s:Boolean">[extractedData.Rows(0)(0).ToString.Equals(expectedValue)]</InArgument>
+                    </If.Condition>
+                    <Then>
+                        <WriteLine DisplayName="Test Passed" Text="Data extraction test passed." />
+                    </Then>
+                    <Else>
+                        <WriteLine DisplayName="Test Failed" Text="Data extraction test failed." />
+                    </Else>
+                </If>
+            </Try>
+            <Catch x:TypeArguments="s:Exception" DisplayName="Exception Handling">
+                <Sequence>
+                    <WriteLine DisplayName="Log Exception" Text="[String.Format('Error: {0}', exception.Message)]" />
+                </Sequence>
+            </Catch>
+        </TryCatch>
+    </Sequence>
+</Workflow>

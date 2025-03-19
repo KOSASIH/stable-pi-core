@@ -1,25 +1,58 @@
 # Core libraries for data manipulation and machine learning
-numpy==1.23.5
-pandas==1.5.3
-scikit-learn==1.2.0
-joblib==1.2.0
+numpy==1.25.2          # Fundamental package for numerical computations
+pandas==2.1.0          # Data manipulation and analysis
+scikit-learn==1.3.1    # Machine learning library for Python
+joblib==1.3.1          # Lightweight pipelining in Python
 
 # YAML parsing
-pyyaml==6.0
+pyyaml==6.0.1          # YAML parser and emitter for Python
 
 # Web3 and smart contract interaction
-web3==5.31.0
-solcx==1.0.0
+web3==6.1.0            # Ethereum blockchain interaction library
+solcx==1.2.0           # Solidity compiler for smart contracts
 
 # Testing framework
-pytest==7.2.0
+pytest==7.4.1          # Framework for testing Python code
 
 # NTRU library for quantum-resistant cryptography
-ntru==0.1.0  # Ensure to check for the latest version or specific version you need
+ntru==0.1.0            # NTRU encryption library for post-quantum security
 
-# Additional libraries for data visualization (optional)
-matplotlib==3.6.0  # For plotting and visualizing data
-seaborn==0.12.0    # For statistical data visualization
+# Data visualization libraries
+matplotlib==3.7.2      # Comprehensive library for creating static, animated, and interactive visualizations
+seaborn==0.12.2        # Statistical data visualization based on matplotlib
 
-# Optional: dotenv for environment variable management
-python-dotenv==0.20.0  # For loading environment variables from a .env file
+# Environment variable management
+python-dotenv==0.21.0  # For loading environment variables from a .env file
+
+# HTTP requests and secure data handling
+requests==2.31.0       # For making HTTP requests
+cryptography==39.0.1   # For secure data handling and encryption
+
+# Advanced data processing and analysis
+dask==2023.7.0         # Parallel computing with task scheduling for larger-than-memory computations
+xgboost==1.7.6         # Gradient boosting framework for machine learning
+
+# Enhanced logging and monitoring
+loguru==0.6.0          # Simplified logging for Python with advanced features
+
+# Asynchronous programming support
+aiohttp==3.8.5         # Asynchronous HTTP client/server framework
+
+# Data serialization and messaging
+protobuf==4.25.0       # Protocol Buffers for data serialization
+
+# Web framework for building APIs
+fastapi==0.103.0       # FastAPI framework for building APIs with Python 3.6+ based on standard Python type hints
+uvicorn==0.23.0        # ASGI server for running FastAPI applications
+
+# Quantum computing libraries (optional)
+qiskit==0.43.0         # Quantum computing framework for creating and running quantum circuits
+
+# Machine learning and deep learning frameworks
+tensorflow==2.14.0     # TensorFlow for machine learning and deep learning
+torch==2.0.1           # PyTorch for deep learning applications
+transformers==4.30.0   # Hugging Face Transformers for natural language processing
+
+# Additional libraries for enhanced functionality
+pydantic==1.10.7       # Data validation and settings management using Python type annotations
+sqlalchemy==2.0.0      # SQL toolkit and Object-Relational Mapping (ORM) system for Python

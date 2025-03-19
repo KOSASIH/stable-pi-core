@@ -1,0 +1,12 @@
+# logging_config.yaml
+
+# Logging Configuration
+logging:
+  level: "INFO"                                  # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  format: "%(asctime)s - %(levelname)s - %(message)s"  # Log message format
+  handlers:
+    file:
+      security_log_file: "logs/security_logs.log"  # Path to the security logs
+      error_log_file: "logs/error_logs.log"        # Path to the error logs
+    console:
+      enabled: true                                # Enable console logging

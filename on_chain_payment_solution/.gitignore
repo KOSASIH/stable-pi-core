@@ -1,0 +1,112 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build output
+/build/
+/dist/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Truffle artifacts
+/build/
+artifacts/
+.cache/
+
+# Ganache local blockchain data
+*.db
+*.log
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+
+# Operating system files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Logs
+logs/
+*.log
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Backup files
+*~
+*.bak
+*.orig
+
+# NPM debug log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript cache
+*.tsbuildinfo
+
+# React Native
+.expo/
+.expo-shared/
+
+# Next.js
+.next/
+out/
+
+# Svelte
+.svelte-kit/
+
+# Storybook
+out/
+storybook-static/
+
+# Firebase
+.firebaserc
+firebase-debug.log
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Miscellaneous
+*.tgz
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+
+# Custom build directories
+build/
+dist/
+public/build/
+public/dist/
