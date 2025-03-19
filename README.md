@@ -68,6 +68,8 @@
 # stable-pi-core
 Stable-Pi-Core is a next-generation decentralized ecosystem that integrates blockchain, quantum AI, IoT, edge computing, and AR/VR to deliver secure, scalable, and personalized solutions for payments, governance, and real-world applications—redefining the future of technology with unmatched flexibility and innovation.
 
+![Images](assets/images/beautifull-city-of-mars.jpg) 
+
 # Stable-Pi-Core: Comprehensive Project Description
 
 **Stable-Pi-Core** is a revolutionary decentralized technology ecosystem designed to push the boundaries of human innovation and expand technological presence throughout the universe. As an independent project with a vision that transcends conventional blockchain, Stable-Pi-Core integrates super-advanced technologies such as quantum physics, dark matter energy, neutrino communication, and intergalactic governance to create a platform unmatched in speed, security, scalability, and utility. With a flexible modular architecture, Stable-Pi-Core does not rely on any specific ecosystem—while capable of synergizing with other networks—and offers solutions for digital economies, real-world applications, and space exploration.
