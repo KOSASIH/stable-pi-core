@@ -1,8 +1,14 @@
 import argparse
 import json
 import requests
+import logging
+import os
 
-API_URL = "http://localhost:5000/proposals"
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Load API URL from environment variable or default to localhost
+API_URL = os.getenv("API_URL", "http://localhost:5000/proposals")
 
 def create_proposal(proposal_id, description, proposer, expiration_time):
     data = {
@@ -11,28 +17,58 @@ def create_proposal(proposal_id, description, proposer, expiration_time):
         "proposer": proposer,
         "expiration_time": expiration_time
     }
-    response = requests.post(API_URL, json=data)
-    print(response.json())
+    try:
+        response = requests.post(API_URL, json=data)
+        response.raise_for_status()  # Raise an error for bad responses
+        logging.info("Proposal created successfully.")
+        print(response.json())
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error creating proposal: {e}")
+        print(f"Error: {e}")
 
 def vote(proposal_id, voter, vote):
     data = {
         "voter": voter,
         "vote": vote
     }
-    response = requests.post(f"{API_URL}/{proposal_id}/vote", json=data)
-    print(response.json())
+    try:
+        response = requests.post(f"{API_URL}/{proposal_id}/vote", json=data)
+        response.raise_for_status()
+        logging.info(f"Vote cast successfully by {voter}.")
+        print(response.json())
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error voting on proposal: {e}")
+        print(f"Error: {e}")
 
 def finalize_proposal(proposal_id):
-    response = requests.post(f"{API_URL}/{proposal_id}/finalize")
-    print(response.json())
+    try:
+        response = requests.post(f"{API_URL}/{proposal_id}/finalize")
+        response.raise_for_status()
+        logging.info("Proposal finalized successfully.")
+        print(response.json())
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error finalizing proposal: {e}")
+        print(f"Error: {e}")
 
 def get_proposal_status(proposal_id):
-    response = requests.get(f"{API_URL}/{proposal_id}/status")
-    print(response.json())
+    try:
+        response = requests.get(f"{API_URL}/{proposal_id}/status")
+        response.raise_for_status()
+        logging.info("Proposal status retrieved successfully.")
+        print(response.json())
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error retrieving proposal status: {e}")
+        print(f"Error: {e}")
 
 def get_votes(proposal_id):
-    response = requests.get(f"{API_URL}/{proposal_id}/votes")
-    print(response.json())
+    try:
+        response = requests.get(f"{API_URL}/{proposal_id}/votes")
+        response.raise_for_status()
+        logging.info("Votes retrieved successfully.")
+        print(response.json())
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error retrieving votes: {e}")
+        print(f"Error: {e}")
 
 def main():
     parser = argparse.ArgumentParser(description="Galactic Governance CLI")
@@ -51,7 +87,8 @@ def main():
     vote_parser.add_argument('voter', type=str, help='Voter name')
     vote_parser.add_argument('vote', type=str, choices=['for', 'against'], help='Vote choice')
 
-    # Finalize proposal commandfinalize_parser = subparsers.add_parser('finalize', help='Finalize a proposal')
+    # Finalize proposal command
+    finalize_parser = subparsers.add_parser('finalize', help='Finalize a proposal')
     finalize_parser.add_argument('proposal_id', type=str, help='Proposal ID to finalize')
 
     # Get proposal status command
@@ -59,7 +96,7 @@ def main():
     status_parser.add_argument('proposal_id', type=str, help='Proposal ID to check status')
 
     # Get votes command
-    votes_parser = subparsers.add_parser('votes', help='Get votes for a proposal')
+    votes_parser = subparsers .add_parser('votes', help='Get votes for a proposal')
     votes_parser.add_argument('proposal_id', type=str, help='Proposal ID to get votes for')
 
     args = parser.parse_args()
