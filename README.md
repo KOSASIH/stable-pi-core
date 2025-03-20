@@ -1,4 +1,6 @@
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/KOSASIH/stable-pi-core/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/KOSASIH/stable-pi-core/tree/main)
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
 
 [![Certified Blockchain Expert](https://img.shields.io/badge/Blockchain%20Council-Certified%20Blockchain%20Expert-4CAF50?style=for-the-badge)](https://www.blockchain-council.org/)
 [![Stanford Blockchain Certificate](https://img.shields.io/badge/Stanford%20University-Blockchain%20Certificate-FF5733?style=for-the-badge)](https://online.stanford.edu/courses/sohs-ystanford-blockchain)
