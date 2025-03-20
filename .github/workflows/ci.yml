@@ -1,13 +1,54 @@
 name: CI
-on: [push, pull_request]
+
+on: 
+  push:
+    branches:
+      - main  # Change to your default branch if different
+  pull_request:
+    branches:
+      - main  # Change to your default branch if different
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      - run: npm install
-      - run: npm test
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linting
+        run: npm run lint  # Ensure you have a lint script in your package.json
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build project
+        run: npm run build  # Ensure you have a build script in your package.json
+
+      - name: Upload test results
+        if: always()  # This step will run regardless of the test results
+        run: |
+          mkdir -p test-results
+          cp -r ./test-results/* ./test-results/  # Adjust this path based on your test framework
+          echo "Test results uploaded."
+
+      - name: Notify on failure
+        if: failure()  # This step will run only if the previous steps failed
+        run: |
+          echo "Build or tests failed. Please check the logs for details."
