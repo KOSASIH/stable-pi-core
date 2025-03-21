@@ -5,11 +5,56 @@ import AccessControl from './accessControl';
 import Transaction from './transaction';
 import { generateQuantumHash, validateQuantumSignature } from './utils';
 
+class CosmicEntropyShield {
+    constructor() {
+        this.protectionLevel = 100; // Initial protection level (0-100)
+        this.entropyThreshold = 50; // Threshold for warning
+    }
+
+    // Method to enhance protection level
+    enhanceProtection(amount) {
+        this.protectionLevel = Math.min(100, this.protectionLevel + amount);
+        console.log(`Protection level enhanced to ${this.protectionLevel}`);
+    }
+
+    // Method to check the current protection level
+    getProtectionLevel() {
+        return this.protectionLevel;
+    }
+
+    // Method to protect data from entropy degradation
+    protectData(data) {
+        if (this.protectionLevel < this.entropyThreshold) {
+            console.warn("Warning: Protection level is low. Data may be at risk of degradation.");
+        }
+        // Simulate advanced data protection logic using quantum principles
+        console.log("Data is being protected from cosmic entropy...");
+        return { ...data, protected: true, timestamp: Date.now() }; // Return protected data with timestamp
+    }
+
+    // Method to simulate entropy degradation
+    degradeData(data) {
+        if (this.protectionLevel < this.entropyThreshold) {
+            console.log("Data integrity compromised due to low protection level.");
+            return null; // Data is lost
+        }
+        console.log("Data integrity maintained.");
+        return data; // Return original data
+    }
+
+    // Method to reset protection level
+    resetProtection() {
+        this.protectionLevel = 100;
+        console.log("Protection level reset to maximum.");
+    }
+}
+
 class HolographicQuantumLedger {
     constructor() {
         this.transactions = [];
         this.ttr = new TemporalTransactionRewind(this);
         this.accessControl = new AccessControl();
+        this.ces = new CosmicEntropyShield(); // Integrate CES
     }
 
     // Method to create a new transaction
@@ -18,7 +63,8 @@ class HolographicQuantumLedger {
             throw new Error("Unauthorized access to create transaction.");
         }
 
-        const transaction = new Transaction(data);
+        const protectedData = this.ces.protectData(data); // Protect data with CES
+        const transaction = new Transaction(protectedData);
         transaction.hash = this.generateTransactionHash(transaction);
         this.transactions.push(transaction);
         return transaction;
@@ -26,7 +72,15 @@ class HolographicQuantumLedger {
 
     // Method to retrieve a transaction by ID
     getTransaction(transactionId) {
-        return this.transactions.find(tx => tx.id === transactionId) || null;
+        const entry = this.transactions.find(tx => tx.id === transactionId);
+        if (entry) {
+            const data = this.ces.degradeData(entry.data); // Check data integrity
+            if (data === null) {
+                throw new Error("Data integrity compromised. Unable to retrieve transaction.");
+            }
+            return { ...entry, data }; // Return transaction with protected data
+        }
+        return null;
     }
 
     // Method to update a transaction
@@ -61,6 +115,21 @@ class HolographicQuantumLedger {
     // Method to clear the ledger (for testing or reset purposes)
     clearLedger() {
         this.transactions = [];
+    }
+
+    // Method to enhance protection level
+    enhanceProtection(amount) {
+        this.ces.enhanceProtection(amount);
+    }
+
+    // Method to get current protection level
+    getProtectionLevel() {
+        return this.ces.getProtectionLevel();
+    }
+
+    // Method to reset protection level
+    resetProtection() {
+        this.ces.resetProtection();
     }
 }
 
