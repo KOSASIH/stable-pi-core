@@ -85,9 +85,8 @@ describe('HolographicQuantumLedger', () => {
         expect(retrievedTransaction).toEqual(transaction);
     });
 
-    test('should return null for non-existent transaction', () => {
-        const transaction = ledger.getTransaction('non-existent-id');
-        expect(transaction).toBe(null);
+    test('should throw error for non-existent transaction', () => {
+        expect(() => ledger.getTransaction('non-existent-id')).toThrow("Transaction not found.");
     });
 
     test('should update a transaction', () => {
@@ -96,7 +95,7 @@ describe('HolographicQuantumLedger', () => {
         const transaction = ledger.createTransaction(data, user);
         const updatedTransaction = { ...transaction, amount: 200 };
         ledger.updateTransaction(updatedTransaction);
-        expect(ledger.getTransaction(transaction.id).amount).toBe(200);
+        expect(ledger.getTransaction(transaction.id).data.amount).toBe(200);
     });
 
     test('should throw error when updating a non-existent transaction', () => {
