@@ -1,76 +1,77 @@
 // src/tokens/wallet.js
-const gtc = require('./gtc');
-const EventEmitter = require('events');
-const dotenv = require('dotenv');
 
-dotenv.config(); // Load environment variables
-
-class GalacticWallet extends EventEmitter {
-  constructor(address) {
-    super();
-    this.address = address;
-    this.transactionHistory = [];
-  }
-
-  async sendGTC(to, amountGTC) {
-    try {
-      const balance = await gtc.getBalance(this.address);
-      if (balance.GTC < amountGTC) {
-        throw new Error(`Insufficient GTC balance: ${balance.GTC} GTC available.`);
-      }
-
-      await gtc.transferGTC(this.address, to, amountGTC);
-      const transaction = {
-        type: 'GTC',
-        to,
-        amount: amountGTC,
-        timestamp: new Date(),
-      };
-      this.transactionHistory.push(transaction);
-      this.emit('transaction', transaction); // Emit transaction event
-
-      console.log(`Wallet ${this.address} sent ${amountGTC} GTC ($${amountGTC * gtc.stableValueGTC}) to ${to}`);
-    } catch (error) {
-      console.error(`Error sending GTC: ${error.message}`);
+class Wallet {
+    constructor() {
+        this.balance = 0; // User's balance
+        this.transactions = []; // Array to hold transaction history
+        this.isBioSignalAuthenticated = false; // Flag for bio-signal authentication
     }
-  }
 
-  async sendGU(to, amountGU) {
-    try {
-      const balance = await gtc.getBalance(this.address);
-      if (balance.GU < amountGU) {
-        throw new Error(`Insufficient GU balance: ${balance.GU} GU available.`);
-      }
-
-      await gtc.transferGU(this.address, to, amountGU);
-      const transaction = {
-        type: 'GU',
-        to,
-        amount: amountGU,
-        timestamp: new Date(),
-      };
-      this.transactionHistory.push(transaction);
-      this.emit('transaction', transaction); // Emit transaction event
-
-      console.log(`Wallet ${this.address} sent ${amountGU} GU ($${amountGU}) to ${to}`);
-    } catch (error) {
-      console.error(`Error sending GU: ${error.message}`);
+    // Method to authenticate using traditional methods (e.g., password)
+    authenticate(password) {
+        // Implement traditional authentication logic
+        console.log("Authenticating with password...");
+        // Assume authentication is successful for this example
+        return true;
     }
-  }
 
-  async checkBalance() {
-    try {
-      const balance = await gtc.getBalance(this.address);
-      console.log(`Balance of ${this.address}: ${balance.GTC} GTC ($${balance.GTC * gtc.stableValueGTC}), ${balance.GU} GU ($${balance.GU})`);
-      return balance;
-    } catch (error) {
-      console.error(`Error checking balance: ${error.message}`);
+    // Method to authenticate using Bio-Quantum Integration Layer
+    async authenticateWithBQIL(bioSignal) {
+        console.log("Authenticating with Bio-Quantum Integration Layer...");
+        const isValid = await this.validateBioSignal(bioSignal);
+        if (!isValid) {
+            throw new Error("Bio-signal authentication failed.");
+        }
+        this.isBioSignalAuthenticated = true; // Set authentication flag
+        console.log("Authentication successful using BQIL.");
+        return true;
     }
-  }
 
-  getTransactionHistory() {
-    return this.transactionHistory;
-  }
+    // Method to validate the bio-signal (mock implementation)
+    async validateBioSignal(bioSignal) {
+        // Simulate bio-signal validation logic
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                // Assume the bio-signal is valid for this example
+                resolve(true);
+            }, 1000); // Simulate processing time
+        });
+    }
+
+    // Method to perform a transaction
+    async performTransaction(amount, bioSignal) {
+        // Authenticate using BQIL before performing the transaction
+        await this.authenticateWithBQIL(bioSignal);
+        
+        if (amount <= 0) {
+            throw new Error("Transaction amount must be positive.");
+        }
+        
+        if (!this.isBioSignalAuthenticated) {
+            throw new Error("User  must be authenticated to perform transactions.");
+        }
+
+        this.balance += amount; // Update balance
+        this.transactions.push({ amount, timestamp: new Date() }); // Record transaction
+        console.log(`Transaction of ${amount} completed. New balance: ${this.balance}`);
+        return this.balance;
+    }
+
+    // Method to get transaction history
+    getTransactionHistory() {
+        return this.transactions;
+    }
+
+    // Method to reset bio-signal authentication
+    resetBioSignalAuthentication() {
+        this.isBioSignalAuthenticated = false;
+        console.log("Bio-signal authentication reset.");
+    }
+
+    // Method to display wallet balance
+    getBalance() {
+        return this.balance;
+    }
 }
 
-module.exports = GalacticWallet;
+export default Wallet;
