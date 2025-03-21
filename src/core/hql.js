@@ -4,6 +4,7 @@ import TemporalTransactionRewind from './ttr';
 import AccessControl from './accessControl';
 import Transaction from './transaction';
 import { generateQuantumHash, validateQuantumSignature } from './utils';
+import SEBD from './sebd'; // Import the Self-Evolving Blockchain DNA module
 
 class CosmicEntropyShield {
     constructor() {
@@ -55,6 +56,7 @@ class HolographicQuantumLedger {
         this.ttr = new TemporalTransactionRewind(this);
         this.accessControl = new AccessControl();
         this.ces = new CosmicEntropyShield(); // Integrate CES
+        this.sebd = SEBD; // Integrate SEBD
     }
 
     // Method to create a new transaction
@@ -68,6 +70,10 @@ class HolographicQuantumLedger {
         transaction.hash = this.generateTransactionHash(transaction);
         this.transactions.push(transaction);
         console.log(`Transaction created: ${transaction.id}`);
+
+        // Integrate with SEBD
+        this.sebd.integrateWithLedger();
+
         return transaction;
     }
 
@@ -133,6 +139,12 @@ class HolographicQuantumLedger {
     // Method to reset protection level
     resetProtection() {
         this.ces.resetProtection();
+    }
+
+    // Method to trigger self-healing in the blockchain
+    triggerSelfHealing() {
+        this.sebd.selfHeal();
+        console.log("Self-healing process triggered in the blockchain.");
     }
 }
 
