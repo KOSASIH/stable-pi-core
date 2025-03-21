@@ -5,6 +5,7 @@ import Transaction from '../src/core/transaction';
 import AccessControl from '../src/core/accessControl';
 
 jest.mock('../src/core/accessControl'); // Mock the AccessControl module
+jest.mock('../src/core/sebd'); // Mock the SEBD module
 
 describe('CosmicEntropyShield', () => {
     let ces;
@@ -64,7 +65,7 @@ describe('HolographicQuantumLedger', () => {
 
     test('should create a new transaction', () => {
         const data = { amount: 100 };
-        const user = '0xUser1';
+        const user = '0xUser 1';
         const transaction = ledger.createTransaction(data, user);
         expect(transaction).toBeInstanceOf(Transaction);
         expect(ledger.transactions).toContain(transaction);
@@ -73,13 +74,13 @@ describe('HolographicQuantumLedger', () => {
     test('should throw error if user is not authorized to create transaction', () => {
         accessControl.isAuthorized.mockReturnValue(false); // Mock unauthorized access
         const data = { amount: 100 };
-        const user = '0xUser1';
+        const user = '0xUser 1';
         expect(() => ledger.createTransaction(data, user)).toThrow("Unauthorized access to create transaction.");
     });
 
     test('should retrieve a transaction by ID', () => {
         const data = { amount: 100 };
-        const user = '0xUser1';
+        const user = '0xUser 1';
         const transaction = ledger.createTransaction(data, user);
         const retrievedTransaction = ledger.getTransaction(transaction.id);
         expect(retrievedTransaction).toEqual(transaction);
@@ -91,7 +92,7 @@ describe('HolographicQuantumLedger', () => {
 
     test('should update a transaction', () => {
         const data = { amount: 100 };
-        const user = '0xUser1';
+        const user = '0xUser 1';
         const transaction = ledger.createTransaction(data, user);
         const updatedTransaction = { ...transaction, amount: 200 };
         ledger.updateTransaction(updatedTransaction);
@@ -105,7 +106,7 @@ describe('HolographicQuantumLedger', () => {
 
     test('should rewind a transaction', async () => {
         const data = { amount: 100 };
-        const user = '0xUser1';
+        const user = '0xUser 1';
         const transaction = ledger.createTransaction(data, user);
         const rewindedTransaction = await ledger.rewindTransaction(transaction.id, Date.now(), user);
         expect(rewindedTransaction).toBeDefined(); // Assuming TTR logic is implemented
@@ -113,9 +114,22 @@ describe('HolographicQuantumLedger', () => {
 
     test('should clear the ledger', () => {
         const data = { amount: 100 };
-        const user = '0xUser1';
+        const user = '0xUser 1';
         ledger.createTransaction(data, user);
         ledger.clearLedger();
         expect(ledger.getAllTransactions()).toHaveLength(0);
+    });
+
+    test('should integrate with SEBD when creating a transaction', () => {
+        const data = { amount: 100 };
+        const user = '0xUser 1';
+        ledger.createTransaction(data, user);
+        expect(ledger.sebd.integrateWithLedger).toHaveBeenCalled(); // Check if SEBD integration was called
+    });
+
+    test('should trigger self-healing process', () => {
+        const selfHealSpy = jest.spyOn(ledger.sebd, 'selfHeal');
+        ledger.triggerSelfHealing();
+        expect(selfHealSpy).toHaveBeenCalled(); // Ensure self-healing was triggered
     });
 });
