@@ -67,6 +67,7 @@ class HolographicQuantumLedger {
         const transaction = new Transaction(protectedData);
         transaction.hash = this.generateTransactionHash(transaction);
         this.transactions.push(transaction);
+        console.log(`Transaction created: ${transaction.id}`);
         return transaction;
     }
 
@@ -80,7 +81,7 @@ class HolographicQuantumLedger {
             }
             return { ...entry, data }; // Return transaction with protected data
         }
-        return null;
+        throw new Error("Transaction not found.");
     }
 
     // Method to update a transaction
@@ -90,6 +91,7 @@ class HolographicQuantumLedger {
             throw new Error("Transaction not found.");
         }
         this.transactions[index] = updatedTransaction;
+        console.log(`Transaction updated: ${updatedTransaction.id}`);
     }
 
     // Method to rewind a transaction to a previous state
@@ -115,6 +117,7 @@ class HolographicQuantumLedger {
     // Method to clear the ledger (for testing or reset purposes)
     clearLedger() {
         this.transactions = [];
+        console.log("Ledger cleared.");
     }
 
     // Method to enhance protection level
