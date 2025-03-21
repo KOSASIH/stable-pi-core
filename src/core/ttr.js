@@ -1,10 +1,14 @@
 // src/core/ttr.js
 
+import { validateQuantumSignature, generateQuantumHash } from './utils';
+import Transaction from './transaction';
+
 class TemporalTransactionRewind {
     constructor(ledger) {
-        this.ledger = ledger; // Holographic Quantum Ledger
+        this.ledger = ledger; // Reference to the Holographic Quantum Ledger
     }
 
+    // Method to rewind a transaction to a previous state
     rewindTransaction(transactionId, targetTimestamp, user) {
         if (!this.isAuthorized(user)) {
             throw new Error("Unauthorized access to TTR feature.");
@@ -19,24 +23,43 @@ class TemporalTransactionRewind {
             throw new Error("Target timestamp must be earlier than the transaction timestamp.");
         }
 
-        // Manipulasi temporal kuantum untuk mengembalikan transaksi
-        const rewindedTransaction = this.applyTemporalManipulation(transaction, targetTimestamp);
+        // Retrieve historical states of the transaction
+        const historicalStates = this.getHistoricalStates(transactionId);
+        const rewindedTransaction = this.findClosestState(historicalStates, targetTimestamp);
+
+        if (!rewindedTransaction) {
+            throw new Error("No valid historical state found for the given timestamp.");
+        }
+
+        // Update the transaction in the ledger
         this.ledger.updateTransaction(rewindedTransaction);
-        
         return rewindedTransaction;
     }
 
+    // Check if the user is authorized to perform rewind operations
     isAuthorized(user) {
-        // Implementasi logika untuk memeriksa akses berbasis Astro-Quantum Privacy Shield
-        return user.hasQuantumAccess;
+        return user.hasQuantumAccess; // Implement your own logic for access control
     }
 
-    applyTemporalManipulation(transaction, targetTimestamp) {
-        // Logika untuk memodifikasi transaksi menggunakan prinsip time dilation dan quantum superposition
-        // Ini adalah tempat untuk menerapkan algoritma kuantum yang sesuai
-        transaction.timestamp = targetTimestamp;
-        // Lakukan penyesuaian lain yang diperlukan
-        return transaction;
+    // Retrieve historical states of a transaction (mock implementation)
+    getHistoricalStates(transactionId) {
+        // In a real implementation, this would retrieve historical states from a database or storage
+        return this.ledger.transactions.filter(tx => tx.id === transactionId);
+    }
+
+    // Find the closest historical state to the target timestamp
+    findClosestState(historicalStates, targetTimestamp) {
+        return historicalStates
+            .filter(state => state.timestamp < targetTimestamp)
+            .sort((a, b) => b.timestamp - a.timestamp)[0]; // Get the most recent state before the target timestamp
+    }
+
+    // Method to validate the integrity of the rewinded transaction
+    validateRewindedTransaction(transaction) {
+        if (!validateQuantumSignature(transaction)) {
+            throw new Error("Invalid transaction signature after rewind.");
+        }
+        // Additional validation logic can be added here
     }
 }
 
