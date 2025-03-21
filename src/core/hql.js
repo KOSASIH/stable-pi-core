@@ -5,6 +5,7 @@ import AccessControl from './accessControl';
 import Transaction from './transaction';
 import { generateQuantumHash, validateQuantumSignature } from './utils';
 import SEBD from './sebd'; // Import the Self-Evolving Blockchain DNA module
+import DimensionalCompressionEngine from './dce'; // Import the Dimensional Compression Engine
 
 class CosmicEntropyShield {
     constructor() {
@@ -57,6 +58,7 @@ class HolographicQuantumLedger {
         this.accessControl = new AccessControl();
         this.ces = new CosmicEntropyShield(); // Integrate CES
         this.sebd = SEBD; // Integrate SEBD
+        this.dce = DimensionalCompressionEngine; // Integrate DCE
     }
 
     // Method to create a new transaction
@@ -68,6 +70,10 @@ class HolographicQuantumLedger {
         const protectedData = this.ces.protectData(data); // Protect data with CES
         const transaction = new Transaction(protectedData);
         transaction.hash = this.generateTransactionHash(transaction);
+        
+        // Compress and store the transaction data using DCE
+        this.dce.compressData(transaction.id, protectedData);
+
         this.transactions.push(transaction);
         console.log(`Transaction created: ${transaction.id}`);
 
