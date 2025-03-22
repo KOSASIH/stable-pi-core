@@ -1,135 +1,156 @@
 // tests/hql.test.js
 
 import HolographicQuantumLedger from '../src/core/hql';
-import Transaction from '../src/core/transaction';
+import GalacticEntropyReversalSystem from '../src/core/gers';
 import AccessControl from '../src/core/accessControl';
+import Transaction from '../src/core/transaction';
 
-jest.mock('../src/core/accessControl'); // Mock the AccessControl module
-jest.mock('../src/core/sebd'); // Mock the SEBD module
-
-describe('CosmicEntropyShield', () => {
-    let ces;
-
-    beforeEach(() => {
-        ces = new HolographicQuantumLedger().ces; // Get the Cosmic Entropy Shield instance
-    });
-
-    test('should initialize with maximum protection level', () => {
-        expect(ces.getProtectionLevel()).toBe(100);
-    });
-
-    test('should enhance protection level', () => {
-        ces.enhanceProtection(10);
-        expect(ces.getProtectionLevel()).toBe(100); // Should not exceed 100
-    });
-
-    test('should warn when protection level is low', () => {
-        ces.enhanceProtection(-60); // Reduce protection level to 40
-        console.warn = jest.fn(); // Mock console.warn
-        ces.protectData({ data: 'test' });
-        expect(console.warn).toHaveBeenCalledWith("Warning: Protection level is low. Data may be at risk of degradation.");
-    });
-
-    test('should protect data', () => {
-        const protectedData = ces.protectData({ data: 'test' });
-        expect(protectedData).toEqual(expect.objectContaining({ protected: true }));
-    });
-
-    test('should degrade data if protection level is low', () => {
-        ces.enhanceProtection(-60); // Reduce protection level to 40
-        const result = ces.degradeData({ data: 'test' });
-        expect(result).toBe(null); // Data should be lost
-    });
-
-    test('should maintain data integrity if protection level is sufficient', () => {
-        const result = ces.degradeData({ data: 'test' });
-        expect(result).toEqual({ data: 'test' }); // Data should be intact
-    });
-
-    test('should reset protection level to maximum', () => {
-        ces.enhanceProtection(-60); // Reduce protection level to 40
-        ces.resetProtection();
-        expect(ces.getProtectionLevel()).toBe(100);
-    });
-});
+jest.mock('../src/core/gers'); // Mock GERS
+jest.mock('../src/core/accessControl'); // Mock AccessControl
+jest.mock('../src/core/transaction'); // Mock Transaction
 
 describe('HolographicQuantumLedger', () => {
     let ledger;
-    let accessControl;
+    let mockUser ;
 
     beforeEach(() => {
         ledger = new HolographicQuantumLedger();
-        accessControl = new AccessControl();
-        accessControl.isAuthorized = jest.fn().mockReturnValue(true); // Mock authorization
+        mockUser  = { id: 'user1' };
+        ledger.accessControl.isAuthorized.mockReturnValue(true); // Mock authorization
+        ledger.gers.reverseEntropy.mockImplementation(data => ({ ...data, entropyReversed: true })); // Mock reverseEntropy
+    });
+
+    test('should initialize HQL with GERS', () => {
+        const mockConverter = {}; // Mock Dark Matter Energy Converter
+        ledger.initializeHQL(mockConverter);
+        expect(ledger.gers.initializeGERS).toHaveBeenCalledWith(mockConverter);
     });
 
     test('should create a new transaction', () => {
-        const data = { amount: 100 };
-        const user = '0xUser 1';
-        const transaction = ledger.createTransaction(data, user);
-        expect(transaction).toBeInstanceOf(Transaction);
-        expect(ledger.transactions).toContain(transaction);
+        const data = { example: 'data' };
+        const transactionId = 'tx1';
+        Transaction.mockImplementation(() => ({ id: transactionId, data }));
+
+        const transaction = ledger.createTransaction(data, mockUser );
+        expect(transaction).toEqual({ id: transactionId, data: { example: 'data', entropyReversed: true } });
+        expect(ledger.transactions).toContainEqual(transaction);
+        expect(ledger.gers.reverseEntropy).toHaveBeenCalledWith({ protected: true, timestamp: expect.any(Number) });
     });
 
-    test('should throw error if user is not authorized to create transaction', () => {
-        accessControl.isAuthorized.mockReturnValue(false); // Mock unauthorized access
-        const data = { amount: 100 };
-        const user = '0xUser 1';
-        expect(() => ledger.createTransaction(data, user)).toThrow("Unauthorized access to create transaction.");
+    test('should throw an error when creating a transaction if unauthorized', () => {
+        ledger.accessControl.isAuthorized.mockReturnValue(false); // Mock unauthorized access
+        const data = { example: 'data' };
+        expect(() => {
+            ledger.createTransaction(data, mockUser );
+        }).toThrow("Unauthorized access to create transaction.");
     });
 
     test('should retrieve a transaction by ID', () => {
-        const data = { amount: 100 };
-        const user = '0xUser 1';
-        const transaction = ledger.createTransaction(data, user);
-        const retrievedTransaction = ledger.getTransaction(transaction.id);
-        expect(retrievedTransaction).toEqual(transaction);
+        const data = { example: 'data' };
+        const transactionId = 'tx1';
+        Transaction.mockImplementation(() => ({ id: transactionId, data }));
+
+        ledger.createTransaction(data, mockUser );
+        const retrievedTransaction = ledger.getTransaction(transactionId);
+        expect(retrievedTransaction).toEqual({ id: transactionId, data: { example: 'data', entropyReversed: true } });
     });
 
-    test('should throw error for non-existent transaction', () => {
-        expect(() => ledger.getTransaction('non-existent-id')).toThrow("Transaction not found.");
+    test('should throw an error when retrieving a non-existent transaction', () => {
+        expect(() => {
+            ledger.getTransaction('nonExistentId');
+        }).toThrow("Transaction not found.");
     });
 
     test('should update a transaction', () => {
-        const data = { amount: 100 };
-        const user = '0xUser 1';
-        const transaction = ledger.createTransaction(data, user);
-        const updatedTransaction = { ...transaction, amount: 200 };
+        const data = { example: 'data' };
+        const transactionId = 'tx1';
+        Transaction.mockImplementation(() => ({ id: transactionId, data }));
+
+        const transaction = ledger.createTransaction(data, mockUser );
+        const updatedTransaction = { ...transaction, data: { example: 'updated data' } };
         ledger.updateTransaction(updatedTransaction);
-        expect(ledger.getTransaction(transaction.id).data.amount).toBe(200);
+
+        expect(ledger.transactions[0].data).toEqual({ example: 'updated data' });
     });
 
-    test('should throw error when updating a non-existent transaction', () => {
-        const updatedTransaction = new Transaction({ id: 'non-existent-id', amount: 200 });
-        expect(() => ledger.updateTransaction(updatedTransaction)).toThrow("Transaction not found.");
+    test('should throw an error when updating a non-existent transaction', () => {
+        const updatedTransaction = { id: 'nonExistentId', data: { example: 'data' } };
+        expect(() => {
+            ledger.updateTransaction(updatedTransaction);
+        }).toThrow("Transaction not found.");
     });
 
-    test('should rewind a transaction', async () => {
-        const data = { amount: 100 };
-        const user = '0xUser 1';
-        const transaction = ledger.createTransaction(data, user);
-        const rewindedTransaction = await ledger.rewindTransaction(transaction.id, Date.now(), user);
-        expect(rewindedTransaction).toBeDefined(); // Assuming TTR logic is implemented
+    test('should rewind a transaction to a previous state', () => {
+        const data = { example: 'data' };
+        const transactionId = 'tx1';
+        Transaction.mockImplementation(() => ({ id: transactionId, data }));
+
+        ledger.createTransaction(data, mockUser );
+        const targetTimestamp = Date.now(); // Simulate a target timestamp
+        const rewindedTransaction = ledger.rewindTransaction(transactionId, targetTimestamp, mockUser );
+
+        expect(rewindedTransaction).toBeDefined(); // Assuming the rewindTransaction method returns something
+        expect(ledger.ttr.rewindTransaction).toHaveBeenCalledWith(transactionId, targetTimestamp, mockUser);
+    });
+
+    test('should generate a quantum hash for a transaction', () => {
+        const data = { example: 'data' };
+        const transactionId = 'tx1';
+        Transaction.mockImplementation(() => ({ id: transactionId, data }));
+
+        const transaction = ledger.createTransaction(data, mockUser );
+        const hash = ledger.generateTransactionHash(transaction);
+        
+        expect(hash).toBeDefined(); // Assuming generateQuantumHash returns a hash
+        expect(generateQuantumHash).toHaveBeenCalledWith(transaction);
+    });
+
+    test('should validate a transaction\'s signature', () => {
+        const data = { example: 'data' };
+        const transactionId = 'tx1';
+        Transaction.mockImplementation(() => ({ id: transactionId, data }));
+
+        const transaction = ledger.createTransaction(data, mockUser );
+        const isValid = ledger.validateTransactionSignature(transaction);
+        
+        expect(isValid).toBe(true); // Assuming validateQuantumSignature returns true
+        expect(validateQuantumSignature).toHaveBeenCalledWith(transaction);
+    });
+
+    test('should get all transactions', () => {
+        const data1 = { example: 'data1' };
+        const data2 = { example: 'data2' };
+        ledger.createTransaction(data1, mockUser );
+        ledger.createTransaction(data2, mockUser );
+
+        const allTransactions = ledger.getAllTransactions();
+        expect(allTransactions.length).toBe(2);
     });
 
     test('should clear the ledger', () => {
-        const data = { amount: 100 };
-        const user = '0xUser 1';
-        ledger.createTransaction(data, user);
+        const data = { example: 'data' };
+        ledger.createTransaction(data, mockUser );
+        expect(ledger.transactions.length).toBe(1);
+
         ledger.clearLedger();
-        expect(ledger.getAllTransactions()).toHaveLength(0);
+        expect(ledger.transactions.length).toBe(0);
     });
 
-    test('should integrate with SEBD when creating a transaction', () => {
-        const data = { amount: 100 };
-        const user = '0xUser 1';
-        ledger.createTransaction(data, user);
-        expect(ledger.sebd.integrateWithLedger).toHaveBeenCalled(); // Check if SEBD integration was called
+    test('should enhance protection level', () => {
+        const initialProtectionLevel = ledger.getProtectionLevel();
+        ledger.enhanceProtection(10);
+        expect(ledger.getProtectionLevel()).toBe(initialProtectionLevel + 10);
     });
 
-    test('should trigger self-healing process', () => {
-        const selfHealSpy = jest.spyOn(ledger.sebd, 'selfHeal');
+    test('should reset protection level', () => {
+        ledger.enhanceProtection(20);
+        expect(ledger.getProtectionLevel()).toBe(100); // Assuming max protection level is 100
+        ledger.resetProtection();
+        expect(ledger.getProtectionLevel()).toBe(100);
+    });
+
+    test('should trigger self-healing in the blockchain', () => {
         ledger.triggerSelfHealing();
-        expect(selfHealSpy).toHaveBeenCalled(); // Ensure self-healing was triggered
+        expect(ledger.sebd.selfHeal).toHaveBeenCalled();
     });
 });
