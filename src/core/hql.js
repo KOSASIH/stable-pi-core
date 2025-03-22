@@ -6,6 +6,7 @@ import Transaction from './transaction';
 import { generateQuantumHash, validateQuantumSignature } from './utils';
 import SEBD from './sebd'; // Import the Self-Evolving Blockchain DNA module
 import DimensionalCompressionEngine from './dce'; // Import the Dimensional Compression Engine
+import GalacticEntropyReversalSystem from './gers'; // Import the Galactic Entropy Reversal System
 
 class CosmicEntropyShield {
     constructor() {
@@ -59,6 +60,13 @@ class HolographicQuantumLedger {
         this.ces = new CosmicEntropyShield(); // Integrate CES
         this.sebd = SEBD; // Integrate SEBD
         this.dce = DimensionalCompressionEngine; // Integrate DCE
+        this.gers = GalacticEntropyReversalSystem; // Integrate GERS
+    }
+
+    // Method to initialize the HQL with GERS
+    initializeHQL(darkMatterEnergyConverter) {
+        this.gers.initializeGERS(darkMatterEnergyConverter);
+        console.log("Holographic Quantum Ledger initialized with Galactic Entropy Reversal System.");
     }
 
     // Method to create a new transaction
@@ -68,11 +76,12 @@ class HolographicQuantumLedger {
         }
 
         const protectedData = this.ces.protectData(data); // Protect data with CES
-        const transaction = new Transaction(protectedData);
+        const reversedData = this.gers.reverseEntropy(protectedData); // Reverse entropy on protected data
+        const transaction = new Transaction(reversedData);
         transaction.hash = this.generateTransactionHash(transaction);
         
         // Compress and store the transaction data using DCE
-        this.dce.compressData(transaction.id, protectedData);
+        this.dce.compressData(transaction.id, reversedData);
 
         this.transactions.push(transaction);
         console.log(`Transaction created: ${transaction.id}`);
@@ -104,8 +113,6 @@ class HolographicQuantumLedger {
         }
         this.transactions[index] = updatedTransaction;
         console.log(`Transaction updated: ${updatedTransaction.id}`);
-    }
-
     // Method to rewind a transaction to a previous state
     rewindTransaction(transactionId, targetTimestamp, user) {
         return this.ttr.rewindTransaction(transactionId, targetTimestamp, user);
@@ -151,6 +158,15 @@ class HolographicQuantumLedger {
     triggerSelfHealing() {
         this.sebd.selfHeal();
         console.log("Self-healing process triggered in the blockchain.");
+    }
+
+    // Method to reverse entropy on the ledger data
+    reverseLedgerEntropy() {
+        this.transactions = this.transactions.map(transaction => {
+            const reversedData = this.gers.reverseEntropy(transaction.data);
+            return { ...transaction, data: reversedData };
+        });
+        console.log("Entropy reversed on all ledger transactions.");
     }
 }
 
