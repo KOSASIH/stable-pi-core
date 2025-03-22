@@ -3,14 +3,17 @@
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const EventEmitter = require('events');
+const TachyonBasedPredictiveGovernance = require('./tbpg'); // Import TBPG
 
 class GalacticGovernanceFramework extends EventEmitter {
     constructor() {
         super();
-        this.proposals = [];
-        this.votes = [];
+        this.proposals = []; // Store proposals
+        this.votes = []; // Store votes
         this.entities = new Set(); // Unique set of authorized entities
-        this.logger = this.createLogger();
+        this.logger = this.createLogger(); // Create a logger
+        this.tachyonicCommunicationProtocol = null; // Placeholder for tachyonic communication protocol
+        this.tbpg = new TachyonBasedPredictiveGovernance(); // Initialize TBPG
     }
 
     // Create a logger for logging events
@@ -21,6 +24,13 @@ class GalacticGovernanceFramework extends EventEmitter {
                 console.log(`[${timestamp}] ${message}`);
             }
         };
+    }
+
+    // Initialize the GGF with a tachyonic communication protocol
+    initializeGGF(tachyonicProtocol) {
+        this.tachyonicCommunicationProtocol = tachyonicProtocol;
+        this.tbpg.initializeTBPG(tachyonicProtocol); // Initialize TBPG with the protocol
+        console.log("Galactic Governance Framework initialized with tachyonic protocol.");
     }
 
     // Register a new entity
@@ -124,11 +134,40 @@ class GalacticGovernanceFramework extends EventEmitter {
         proposal.status = 'executed';
         this.emit('proposalExecuted', proposal);
     }
+
+    // Send proposals to relevant nodes using tachyonic communication
+    sendProposalsToNodes(proposals, nodes) {
+        if (!this.tachyonicCommunicationProtocol) {
+            throw new Error("Tachyonic communication protocol is not initialized.");
+        }
+
+        nodes.forEach(node => {
+            this.tachyonicCommunicationProtocol.sendMessage(node, {
+                type: 'proposal',
+                proposals,
+            });
+            console.log(`Proposal sent to ${node}:`, proposals);
+        });
+    }
+
+    // Use TBPG to predict future outcomes and send predictions
+    predictAndSend(scenario, currentData, nodes) {
+        const predictions = this.tbpg.predictFuture(scenario, currentData);
+        this.tbpg.sendPredictionsToNodes(predictions, nodes);
+    }
 }
 
 // Example usage
 (async () => {
     const ggf = new GalacticGovernanceFramework();
+
+    // Initialize the GGF with a tachyonic communication protocol
+    const mockProtocol = {
+        sendMessage: (node, message) => {
+            console.log(`Message sent to ${node}:`, message);
+        }
+    };
+    ggf.initializeGGF(mockProtocol);
 
     // Register entities
     ggf.registerEntity('PlanetA');
@@ -160,6 +199,13 @@ class GalacticGovernanceFramework extends EventEmitter {
     // Retrieve all proposals
     const allProposals = ggf.getAllProposals();
     console.log('All proposals:', allProposals);
+
+    // Send proposals to nodes
+    ggf.sendProposalsToNodes(allProposals, ['Node1', 'Node2']);
+
+    // Predict future outcomes using TBPG
+    const currentData = { growthRate: 3 };
+    ggf.predictAndSend('economic_growth', currentData, ['Node1', 'Node2']);
 })();
 
 module.exports = GalacticGovernanceFramework;
