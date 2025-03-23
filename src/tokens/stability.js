@@ -1,7 +1,7 @@
-// src/tokens/stability.js
 const { payment } = require('../core/payment');
 const { Logger } = require('../core/logger'); // Assuming a logger module exists
 const dotenv = require('dotenv');
+const AstroNeuralEconomicAmplifier = require('./anea'); // Import the ANEA class
 
 dotenv.config(); // Load environment variables
 
@@ -15,6 +15,7 @@ class StabilityManager {
             usd: parseFloat(process.env.INITIAL_USD) || 314159000000 // Initial USD reserve
         };
         this.logger = new Logger();
+        this.anea = new AstroNeuralEconomicAmplifier(); // Initialize ANEA
     }
 
     async stabilize(currentPriceGTC) {
@@ -33,6 +34,10 @@ class StabilityManager {
             } else {
                 this.logger.info("No adjustment needed for GTC stabilization.");
             }
+
+            // Amplify liquidity using ANEA
+            const amplifiedLiquidity = this.anea.amplifyLiquidity();
+            this.logger.info(`Amplified Liquidity: ${amplifiedLiquidity}`);
         } catch (error) {
             this.logger.error(`Error stabilizing GTC: ${error.message}`);
         }
