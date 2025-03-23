@@ -1,5 +1,3 @@
-// itp.js - Interplanetary Transaction Protocol
-
 const crypto = require('crypto');
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
@@ -32,6 +30,10 @@ class InterplanetaryTransactionProtocol {
 
     // Create a new transaction
     createTransaction(sender, receiver, amount, conditions = null) {
+        if (amount <= 0) {
+            throw new Error('Transaction amount must be greater than zero.');
+        }
+
         const transaction = {
             id: uuidv4(),
             sender,
@@ -113,33 +115,75 @@ class InterplanetaryTransactionProtocol {
             this.logger.log(`Peer added: ${node}`);
         }
     }
+
+    // Remove peer node
+    removePeer(node) {
+        this.peers = this.peers.filter(peer => peer !== node);
+        this.logger.log(`Peer removed: ${node}`);
+    }
+
+    // Get the list of peers
+    getPeers() {
+        return this.peers;
+    }
+}
+
+// Interdimensional Transaction Gateway (ITG) extending ITP
+class InterdimensionalTransactionGateway extends InterplanetaryTransactionProtocol {
+    constructor() {
+        super();
+    }
+
+    // Create a new interdimensional transaction
+    createInterdimensionalTransaction(sender, receiver, amount, conditions = null) {
+        const transaction = this.createTransaction(sender, receiver, amount, conditions);
+        transaction.type = 'interdimensional'; // Mark as interdimensional
+        this.logger.log(`Interdimensional transaction created: ${JSON.stringify(transaction)}`);
+        return transaction;
+    }
+
+    // Handle incoming interdimensional transactions
+    async handleIncomingInterdimensionalTransaction(transaction) {
+        this.logger.log('Handling incoming interdimensional transaction...');
+        await this.handleIncomingTransaction(transaction);
+    }
+
+    // Simulate interdimensional communication delay
+    async simulateInterdimensionalCommunicationDelay() {
+        const delay = Math.floor(Math.random() * 10000); // Random delay up to 10 seconds
+        return new Promise(resolve => setTimeout(resolve, delay));
+    }
 }
 
 // Example usage
 (async () => {
-    const itp = new InterplanetaryTransactionProtocol();
+    const itg = new InterdimensionalTransactionGateway();
 
     // Add peers (in a real scenario, this would be dynamic)
-    itp.addPeer('http://node1.example.com');
-    itp.addPeer('http://node2.example.com');
+    itg.addPeer('http://node1.example.com');
+    itg.addPeer('http://node2.example.com');
 
-    // Create a new transaction
-    const transaction = itp.createTransaction('PlanetA', 'PlanetB', 100, { condition: 'ifPlanetBIsReady' });
-    console.log('Created transaction:', transaction);
+    // Create a new interdimensional transaction
+    try {
+        const transaction = itg.createInterdimensionalTransaction('PlanetA', 'PlanetB', 100, { condition: 'ifPlanetBIsReady' });
+        console.log('Created interdimensional transaction:', transaction);
 
-    // Simulate communication delay before handling the transaction
-    await itp.simulateCommunicationDelay();
-    
-    // Handle the transaction (simulate receiving it)
-    await itp.handleIncomingTransaction(transaction);
+        // Simulate communication delay before handling the transaction
+        await itg.simulateInterdimensionalCommunicationDelay();
+        
+        // Handle the transaction (simulate receiving it)
+        await itg.handleIncomingInterdimensionalTransaction(transaction);
 
-    // Retrieve all transactions
-    const allTransactions = itp.getAllTransactions();
-    console.log('All transactions:', allTransactions);
+        // Retrieve all transactions
+        const allTransactions = itg.getAllTransactions();
+        console.log('All transactions:', allTransactions);
 
-    // Retrieve blockchain
-    const blockchain = itp.getBlockchain();
-    console.log('Blockchain:', blockchain);
+        // Retrieve blockchain
+        const blockchain = itg.getBlockchain();
+        console.log('Blockchain:', blockchain);
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
 })();
 
-module.exports = InterplanetaryTransactionProtocol;
+module.exports = InterdimensionalTransactionGateway;
