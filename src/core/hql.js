@@ -1,3 +1,5 @@
+// src/core/hql.js
+
 import TemporalTransactionRewind from './ttr';
 import AccessControl from './accessControl';
 import Transaction from './transaction';
@@ -6,6 +8,7 @@ import SEBD from './sebd'; // Import the Self-Evolving Blockchain DNA module
 import DimensionalCompressionEngine from './dce'; // Import the Dimensional Compression Engine
 import GalacticEntropyReversalSystem from './gers'; // Import the Galactic Entropy Reversal System
 import CSRFProtection from './csrf_layer'; // Import CSRF Protection
+import InfiniteHorizonDataVortex from './ihdv'; // Import the Infinite Horizon Data Vortex
 
 class CosmicEntropyShield {
     constructor() {
@@ -55,6 +58,7 @@ class HolographicQuantumLedger {
         this.dce = new DimensionalCompressionEngine(); // Ensure DCE is instantiated
         this.gers = new GalacticEntropyReversalSystem(); // Ensure GERS is instantiated
         this.csrfProtection = new CSRFProtection(); // Initialize CSRF Protection
+        this.ihdv = new InfiniteHorizonDataVortex(); // Instantiate IHDV
     }
 
     initializeHQL(darkMatterEnergyConverter) {
@@ -75,6 +79,9 @@ class HolographicQuantumLedger {
         
         // Compress and store the transaction data using DCE
         this.dce.compressData(transaction.id, reversedData);
+
+        // Add transaction data to IHDV
+        this.ihdv.addData(Date.now(), transaction);
 
         this.transactions.push(transaction);
         console.log(`Transaction created: ${transaction.id}`);
@@ -109,7 +116,7 @@ class HolographicQuantumLedger {
 
     rewindTransaction(transactionId, targetTimestamp, user, csrfToken) {
         this.csrfProtection.verify_token(user.id, csrfToken); // CSRF check
-        return this.ttr.rewind Transaction(transactionId, targetTimestamp, user);
+        return this.ttr.rewindTransaction(transactionId, targetTimestamp, user);
     }
 
     generateTransactionHash(transaction) {
@@ -152,6 +159,10 @@ class HolographicQuantumLedger {
             return { ...transaction, data: reversedData };
         });
         console.log("Entropy reversed on all ledger transactions.");
+    }
+
+    queryIHDV(currentTime) {
+        return this.ihdv.queryData(currentTime);
     }
 }
 
