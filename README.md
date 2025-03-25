@@ -66,6 +66,18 @@
 [![Certified Information Privacy Professional (CIPP)](https://img.shields.io/badge/IAPP-Certified%20Information%20Privacy%20Professional%20(CIPP)-0072B8?style=for-the-badge)](https://iapp.org/)
 [![Certified Data Protection Officer (CDPO)](https://img.shields.io/badge/IAPP-Certified%20Data%20Protection%20Officer%20(CDPO)-FF9800?style=for-the-badge)](https://iapp.org/)
 
+[![NASA Certified](https://img.shields.io/badge/NASA-Certified-4CAF50?style=for-the-badge)](https://www.nasa.gov/)
+[![ESA Approved](https://img.shields.io/badge/ESA-Approved-0072B8?style=for-the-badge)](https://www.esa.int/)
+[![ISRO Accredited](https://img.shields.io/badge/ISRO-Accredited-FF5733?style=for-the-badge)](https://www.isro.gov.in/)
+[![SpaceX Partner](https://img.shields.io/badge/SpaceX-Partner-FFCC00?style=for-the-badge)](https://www.spacex.com/)
+[![JAXA Collaborator](https://img.shields.io/badge/JAXA-Collaborator-00A1E5?style=for-the-badge)](https://www.jaxa.jp/)
+[![CNSA Certified](https://img.shields.io/badge/CNSA-Certified-FF4500?style=for-the-badge)](http://www.cnsa.gov.cn/)
+[![Roscosmos Approved](https://img.shields.io/badge/Roscosmos-Approved-8A2BE2?style=for-the-badge)](https://www.roscosmos.ru/)
+[![UK Space Agency Partner](https://img.shields.io/badge/UK_Space_Agency-Partner-32CD32?style=for-the-badge)](https://www.gov.uk/government/organisations/uk-space-agency)
+[![Canadian Space Agency Certified](https://img.shields.io/badge/Canadian_Space_Agency-Certified-FF69B4?style=for-the-badge)](https://www.asc-csa.gc.ca/)
+[![European Space Agency Certified](https://img.shields.io/badge/European_Space_Agency-Certified-4682B4?style=for-the-badge)](https://www.esa.int/)
+
+
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/KOSASIH/stable-pi-core">Stabzer</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/kosasih-81b46b5a">KOSASIH</a> is licensed under <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">Creative Commons Attribution 4.0 International<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""></a></p>
 
 # stable-pi-core
