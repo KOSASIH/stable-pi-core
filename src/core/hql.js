@@ -1,5 +1,3 @@
-// src/core/hql.js
-
 import TemporalTransactionRewind from './ttr';
 import AccessControl from './accessControl';
 import Transaction from './transaction';
@@ -7,6 +5,7 @@ import { generateQuantumHash, validateQuantumSignature } from './utils';
 import SEBD from './sebd'; // Import the Self-Evolving Blockchain DNA module
 import DimensionalCompressionEngine from './dce'; // Import the Dimensional Compression Engine
 import GalacticEntropyReversalSystem from './gers'; // Import the Galactic Entropy Reversal System
+import CSRFProtection from './csrf_layer'; // Import CSRF Protection
 
 class CosmicEntropyShield {
     constructor() {
@@ -14,28 +13,23 @@ class CosmicEntropyShield {
         this.entropyThreshold = 50; // Threshold for warning
     }
 
-    // Method to enhance protection level
     enhanceProtection(amount) {
         this.protectionLevel = Math.min(100, this.protectionLevel + amount);
         console.log(`Protection level enhanced to ${this.protectionLevel}`);
     }
 
-    // Method to check the current protection level
     getProtectionLevel() {
         return this.protectionLevel;
     }
 
-    // Method to protect data from entropy degradation
     protectData(data) {
         if (this.protectionLevel < this.entropyThreshold) {
             console.warn("Warning: Protection level is low. Data may be at risk of degradation.");
         }
-        // Simulate advanced data protection logic using quantum principles
         console.log("Data is being protected from cosmic entropy...");
         return { ...data, protected: true, timestamp: Date.now() }; // Return protected data with timestamp
     }
 
-    // Method to simulate entropy degradation
     degradeData(data) {
         if (this.protectionLevel < this.entropyThreshold) {
             console.log("Data integrity compromised due to low protection level.");
@@ -45,7 +39,6 @@ class CosmicEntropyShield {
         return data; // Return original data
     }
 
-    // Method to reset protection level
     resetProtection() {
         this.protectionLevel = 100;
         console.log("Protection level reset to maximum.");
@@ -58,22 +51,22 @@ class HolographicQuantumLedger {
         this.ttr = new TemporalTransactionRewind(this);
         this.accessControl = new AccessControl();
         this.ces = new CosmicEntropyShield(); // Integrate CES
-        this.sebd = SEBD; // Integrate SEBD
-        this.dce = DimensionalCompressionEngine; // Integrate DCE
-        this.gers = GalacticEntropyReversalSystem; // Integrate GERS
+        this.sebd = new SEBD(); // Ensure SEBD is instantiated
+        this.dce = new DimensionalCompressionEngine(); // Ensure DCE is instantiated
+        this.gers = new GalacticEntropyReversalSystem(); // Ensure GERS is instantiated
+        this.csrfProtection = new CSRFProtection(); // Initialize CSRF Protection
     }
 
-    // Method to initialize the HQL with GERS
     initializeHQL(darkMatterEnergyConverter) {
         this.gers.initializeGERS(darkMatterEnergyConverter);
         console.log("Holographic Quantum Ledger initialized with Galactic Entropy Reversal System.");
     }
 
-    // Method to create a new transaction
-    createTransaction(data, user) {
+    createTransaction(data, user, csrfToken) {
         if (!this.accessControl.isAuthorized(user)) {
             throw new Error("Unauthorized access to create transaction.");
         }
+        this.csrfProtection.verify_token(user.id, csrfToken); // CSRF check
 
         const protectedData = this.ces.protectData(data); // Protect data with CES
         const reversedData = this.gers.reverseEntropy(protectedData); // Reverse entropy on protected data
@@ -92,7 +85,6 @@ class HolographicQuantumLedger {
         return transaction;
     }
 
-    // Method to retrieve a transaction by ID
     getTransaction(transactionId) {
         const entry = this.transactions.find(tx => tx.id === transactionId);
         if (entry) {
@@ -105,62 +97,55 @@ class HolographicQuantumLedger {
         throw new Error("Transaction not found.");
     }
 
-    // Method to update a transaction
-    updateTransaction(updatedTransaction) {
+    updateTransaction(updatedTransaction, csrfToken) {
         const index = this.transactions.findIndex(tx => tx.id === updatedTransaction.id);
         if (index === -1) {
             throw new Error("Transaction not found.");
         }
+        this.csrfProtection.verify_token(updatedTransaction.userId, csrfToken); // CSRF check
         this.transactions[index] = updatedTransaction;
         console.log(`Transaction updated: ${updatedTransaction.id}`);
-    // Method to rewind a transaction to a previous state
-    rewindTransaction(transactionId, targetTimestamp, user) {
-        return this.ttr.rewindTransaction(transactionId, targetTimestamp, user);
     }
 
-    // Method to generate a quantum hash for a transaction
+    rewindTransaction(transactionId, targetTimestamp, user, csrfToken) {
+        this.csrfProtection.verify_token(user.id, csrfToken); // CSRF check
+        return this.ttr.rewind Transaction(transactionId, targetTimestamp, user);
+    }
+
     generateTransactionHash(transaction) {
         return generateQuantumHash(transaction);
     }
 
-    // Method to validate a transaction's signature
     validateTransactionSignature(transaction) {
         return validateQuantumSignature(transaction);
     }
 
-    // Method to get all transactions
     getAllTransactions() {
         return this.transactions;
     }
 
-    // Method to clear the ledger (for testing or reset purposes)
     clearLedger() {
         this.transactions = [];
         console.log("Ledger cleared.");
     }
 
-    // Method to enhance protection level
     enhanceProtection(amount) {
         this.ces.enhanceProtection(amount);
     }
 
-    // Method to get current protection level
     getProtectionLevel() {
         return this.ces.getProtectionLevel();
     }
 
-    // Method to reset protection level
     resetProtection() {
         this.ces.resetProtection();
     }
 
-    // Method to trigger self-healing in the blockchain
     triggerSelfHealing() {
         this.sebd.selfHeal();
         console.log("Self-healing process triggered in the blockchain.");
     }
 
-    // Method to reverse entropy on the ledger data
     reverseLedgerEntropy() {
         this.transactions = this.transactions.map(transaction => {
             const reversedData = this.gers.reverseEntropy(transaction.data);
