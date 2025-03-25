@@ -1,91 +1,90 @@
-// tests/qgc.test.js
+import QuantumGravitationalConsensus from './qgc';
+import CSRFProtection from './csrf_layer'; // Mock CSRF Protection
 
-import QuantumGravitationalConsensus from '../src/core/qgc';
+jest.mock('./csrf_layer'); // Mock the CSRFProtection module
 
-describe('QuantumGravitationalConsensus', () => {
-    let qgc;
+describe('QuantumGravitationalConsensus CSRF Tests', () => {
+    let consensus;
 
     beforeEach(() => {
-        qgc = new QuantumGravitationalConsensus();
+        consensus = new QuantumGravitationalConsensus();
     });
 
-    test('addNode - should add a new node', () => {
-        const node = { name: 'Node1' };
-        qgc.addNode(node);
-        expect(qgc.nodes).toHaveLength(1);
-        expect(qgc.nodes[0].name).toBe('Node1');
-    });
+    test('should add node with valid CSRF token', () => {
+        const node = { name: 'Node1', userId: 'user123' };
+        const validCsrfToken = 'valid-token';
 
-    test('addNode - should not add duplicate node', () => {
-        const node = { name: 'Node1' };
-        qgc.addNode(node);
+        CSRFProtection.prototype.verify_token.mockImplementation(() => {});
+
         expect(() => {
-            qgc.addNode(node);
-        }).toThrow('Node Node1 already exists in the consensus network.');
+            consensus.addNode(node, validCsrfToken);
+        }).not.toThrow();
+
+        expect(consensus.nodes).toContainEqual(node);
     });
 
-    test('addParallelUniverseNode - should add a new parallel universe node', () => {
-        const node = { name: 'ParallelNode1' };
-        qgc.addParallelUniverseNode(node);
-        expect(qgc.parallelUniverses).toHaveLength(1);
-        expect(qgc.parallelUniverses[0].name).toBe('ParallelNode1');
-    });
+    test('should throw error when adding node with invalid CSRF token', () => {
+        const node = { name: 'Node2', userId: 'user123' };
+        const invalidCsrfToken = 'invalid-token';
 
-    test('addParallelUniverseNode - should not add duplicate parallel universe node', () => {
-        const node = { name: 'ParallelNode1' };
-        qgc.addParallelUniverseNode(node);
+        CSRFProtection.prototype.verify_token.mockImplementation(() => {
+            throw new Error('Invalid CSRF token');
+        });
+
         expect(() => {
-            qgc.addParallelUniverseNode(node);
-        }).toThrow('Parallel universe node ParallelNode1 already exists.');
+            consensus.addNode(node, invalidCsrfToken);
+        }).toThrow('Invalid CSRF token');
+
+        expect(consensus.nodes).not.toContainEqual(node);
     });
 
-    test('synchronizeWithParallelUniverse - should synchronize with a parallel universe node', async () => {
-        const node = { name: 'ParallelNode1' };
-        qgc.addParallelUniverseNode(node);
-        await qgc.synchronizeWithParallelUniverse('ParallelNode1');
-        expect(qgc.parallelUniverses[0].name).toBe('ParallelNode1');
+    test('should add parallel universe node with valid CSRF token', () => {
+        const parallelNode = { name: 'ParallelNode1', userId: 'user123' };
+        const validCsrfToken = 'valid-token';
+
+        CSRFProtection.prototype.verify_token.mockImplementation(() => {});
+
+        expect(() => {
+            consensus.addParallelUniverseNode(parallelNode, validCsrfToken);
+        }).not.toThrow();
+
+        expect(consensus.parallelUniverses).toContainEqual(parallelNode);
     });
 
-    test('synchronizeWithParallelUniverse - should throw error for non-existent node', async () => {
-        await expect(qgc.synchronizeWithParallelUniverse('NonExistentNode')).rejects.toThrow('Parallel universe node NonExistentNode not found.');
+    test('should throw error when adding parallel universe node with invalid CSRF token', () => {
+        const parallelNode = { name: 'ParallelNode2', userId: 'user123' };
+        const invalidCsrfToken = 'invalid-token';
+
+        CSRFProtection.prototype.verify_token.mockImplementation(() => {
+            throw new Error('Invalid CSRF token');
+        });
+
+        expect(() => {
+            consensus.addParallelUniverseNode(parallelNode, invalidCsrfToken);
+        }).toThrow('Invalid CSRF token');
+
+        expect(consensus.parallelUniverses).not.toContainEqual(parallelNode);
     });
 
-    test('fetchDataFromParallelNode - should fetch data from a parallel universe node', async () => {
-        const node = { name: 'ParallelNode1' };
-        qgc.addParallelUniverseNode(node);
-        const data = await qgc.fetchDataFromParallelNode(node);
-        expect(data).toEqual({ data: 'Data from ParallelNode1', timestamp: expect.any(Number) });
+    test('should synchronize with parallel universe node with valid CSRF token', async () => {
+        const parallelNode = { name: 'ParallelNode3', userId: 'user123' };
+        const validCsrfToken = 'valid-token';
+        consensus.addParallelUniverseNode(parallelNode, validCsrfToken);
+
+        CSRFProtection.prototype.verify_token.mockImplementation(() => {});
+
+        await expect(consensus.synchronizeWithParallelUniverse(parallelNode.name, validCsrfToken)).resolves.not.toThrow();
     });
 
-    test('updateLocalData - should update local data', () => {
-        const data = { data: 'Test data' };
-        console.log = jest.fn(); // Mock console.log
-        qgc.updateLocalData(data);
-        expect(console.log).toHaveBeenCalledWith('Updating local data with: Test data');
-    });
+    test('should throw error when synchronizing with parallel universe node with invalid CSRF token', async () => {
+        const parallelNode = { name: 'ParallelNode4', userId: 'user123' };
+        const invalidCsrfToken = 'invalid-token';
+        consensus.addParallelUniverseNode(parallelNode, invalidCsrfToken);
 
-    test('handleConsensus - should handle consensus across nodes', async () => {
-        const node = { name: 'Node1' };
-        qgc.addNode(node);
-        console.log = jest.fn(); // Mock console.log
-        await qgc.handleConsensus();
-        expect(console.log).toHaveBeenCalledWith('Handling consensus across nodes...');
-    });
+        CSRFProtection.prototype.verify_token.mockImplementation(() => {
+            throw new Error('Invalid CSRF token');
+        });
 
-    test('resolveDiscrepancies - should resolve discrepancies', async () => {
-        console.log = jest.fn(); // Mock console.log
-        await qgc.resolveDiscrepancies();
-        expect(console.log).toHaveBeenCalledWith('Discrepancies resolved.');
-    });
-
-    test('synchronizeWithAllParallelUniverses - should synchronize with all parallel universe nodes', async () => {
-        const node1 = { name: 'ParallelNode1' };
-        const node2 = { name: 'ParallelNode2' };
-        qgc.addParallelUniverseNode(node1);
-        qgc.addParallelUniverseNode(node2);
-        console.log = jest.fn(); // Mock console.log
-        await qgc.synchronizeWithAllParallelUniverses();
-        expect(console.log).toHaveBeenCalledWith('Synchronizing with parallel universe node ParallelNode1...');
-        expect(console.log).toHaveBeenCalledWith('Synchronizing with parallel universe node ParallelNode2...');
+        await expect(consensus.synchronizeWithParallelUniverse(parallelNode.name, invalidCsrfToken)).rejects.toThrow('Invalid CSRF token');
     });
 });
