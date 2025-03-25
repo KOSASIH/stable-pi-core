@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const EventEmitter = require('events');
 const TachyonBasedPredictiveGovernance = require('./tbpg'); // Import TBPG
+const AstroSentientGovernanceMatrix = require('./asgm'); // Import ASGM
 
 class GalacticGovernanceFramework extends EventEmitter {
     constructor() {
@@ -14,6 +15,7 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.logger = this.createLogger(); // Create a logger
         this.tachyonicCommunicationProtocol = null; // Placeholder for tachyonic communication protocol
         this.tbpg = new TachyonBasedPredictiveGovernance(); // Initialize TBPG
+        this.asgm = new AstroSentientGovernanceMatrix(); // Initialize ASGM
     }
 
     // Create a logger for logging events
@@ -30,7 +32,8 @@ class GalacticGovernanceFramework extends EventEmitter {
     initializeGGF(tachyonicProtocol) {
         this.tachyonicCommunicationProtocol = tachyonicProtocol;
         this.tbpg.initializeTBPG(tachyonicProtocol); // Initialize TBPG with the protocol
-        console.log("Galactic Governance Framework initialized with tachyonic protocol.");
+        this.asgm.initializeASGM(); // Initialize ASGM
+        console.log("Galactic Governance Framework initialized with tachyonic protocol and ASGM.");
     }
 
     // Register a new entity
@@ -122,8 +125,7 @@ class GalacticGovernanceFramework extends EventEmitter {
     // Execute a proposal (if applicable)
     executeProposal(proposalId) {
         const proposal = this.getProposalById(proposalId);
-        if (!proposal) {
-            throw new Error('Proposal not found');
+        if (!proposal) throw new Error('Proposal not found');
         }
         if (proposal.status !== 'approved') {
             throw new Error('Proposal must be approved before execution');
@@ -154,6 +156,14 @@ class GalacticGovernanceFramework extends EventEmitter {
     predictAndSend(scenario, currentData, nodes) {
         const predictions = this.tbpg.predictFuture(scenario, currentData);
         this.tbpg.sendPredictionsToNodes(predictions, nodes);
+    }
+
+    // Utilize ASGM to make decisions based on cosmic data
+    utilizeASGM() {
+        this.asgm.collectCosmicData();
+        const decisions = this.asgm.makeDecisions();
+        this.logger.log(`ASGM decisions made: ${JSON.stringify(decisions)}`);
+        return decisions;
     }
 }
 
@@ -206,6 +216,10 @@ class GalacticGovernanceFramework extends EventEmitter {
     // Predict future outcomes using TBPG
     const currentData = { growthRate: 3 };
     ggf.predictAndSend('economic_growth', currentData, ['Node1', 'Node2']);
+
+    // Utilize ASGM for decision making
+    const asgmDecisions = ggf.utilizeASGM();
+    console.log('ASGM Decisions:', asgmDecisions);
 })();
 
 module.exports = GalacticGovernanceFramework;
