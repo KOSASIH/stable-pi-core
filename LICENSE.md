@@ -42,4 +42,4 @@ Permission is hereby granted, free of charge, to any entity obtaining a copy of 
 
 ---
 
-This license reflects the commitment of the GALACTIC UNION to foster innovation, collaboration, and ethical use of technology across the universe. By using this Software, you agree to abide by the terms outlined herein.
+This license reflects the commitment of the [GALACTIC UNION](https://github.com/GALACTIC-UNION) to foster innovation, collaboration, and ethical use of technology across the universe. By using this Software, you agree to abide by the terms outlined herein.
