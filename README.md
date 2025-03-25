@@ -182,7 +182,7 @@ To run the application, use the following command:
 We welcome contributions! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT and GALACTIC UNION License. See the [MIT LICENSE](LICENSE) and [GALACTIC UNION](LICENSE.md) file for details.
 
 ## Acknowledgments
 Special thanks to the contributors and the community for their support and feedback.
