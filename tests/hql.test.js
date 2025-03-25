@@ -13,11 +13,11 @@ jest.mock('../src/core/utils'); // Mock utility functions
 
 describe('HolographicQuantumLedger', () => {
     let ledger;
-    let mockUser ;
+    let mockUser;
 
     beforeEach(() => {
         ledger = new HolographicQuantumLedger();
-        mockUser  = { id: 'user1' };
+        mockUser = { id: 'user1' };
         ledger.accessControl.isAuthorized.mockReturnValue(true); // Mock authorization
         ledger.gers.reverseEntropy.mockImplementation(data => ({ ...data, entropyReversed: true })); // Mock reverseEntropy
         CSRFProtection.prototype.verify_token.mockImplementation(() => {}); // Mock CSRF verification
@@ -34,7 +34,7 @@ describe('HolographicQuantumLedger', () => {
         const transactionId = 'tx1';
         Transaction.mockImplementation(() => ({ id: transactionId, data }));
 
-        const transaction = ledger.createTransaction(data, mockUser , 'valid-csrf-token');
+        const transaction = ledger.createTransaction(data, mockUser, 'valid-csrf-token');
         expect(transaction).toEqual({ id: transactionId, data: { example: 'data', entropyReversed: true } });
         expect(ledger.transactions).toContainEqual(transaction);
         expect(ledger.gers.reverseEntropy).toHaveBeenCalledWith({ protected: true, timestamp: expect.any(Number) });
@@ -48,7 +48,7 @@ describe('HolographicQuantumLedger', () => {
         });
 
         expect(() => {
-            ledger.createTransaction(data, mockUser , 'invalid-csrf-token');
+            ledger.createTransaction(data, mockUser, 'invalid-csrf-token');
         }).toThrow('Invalid CSRF token');
 
         expect(ledger.transactions).toHaveLength(0);
@@ -59,7 +59,7 @@ describe('HolographicQuantumLedger', () => {
         const transactionId = 'tx1';
         Transaction.mockImplementation(() => ({ id: transactionId, data }));
 
-        ledger.createTransaction(data, mockUser , 'valid-csrf-token');
+        ledger.createTransaction(data, mockUser, 'valid-csrf-token');
         const retrievedTransaction = ledger.getTransaction(transactionId);
         expect(retrievedTransaction).toEqual({ id: transactionId, data: { example: 'data', entropyReversed: true } });
     });
@@ -75,7 +75,7 @@ describe('HolographicQuantumLedger', () => {
         const transactionId = 'tx1';
         Transaction.mockImplementation(() => ({ id: transactionId, data }));
 
-        const transaction = ledger.createTransaction(data, mockUser , 'valid-csrf-token');
+        const transaction = ledger.createTransaction(data, mockUser, 'valid-csrf-token');
         const updatedTransaction = { ...transaction, data: { example: 'updated data' } };
 
         ledger.updateTransaction(updatedTransaction, 'valid-csrf-token');
@@ -83,7 +83,7 @@ describe('HolographicQuantumLedger', () => {
         expect(ledger.transactions[0].data).toEqual({ example: 'updated data' });
     });
 
-    test('should throw an error when updating a transaction with invalid CSRF token', () => {
+    test('should throw an error when updating a transaction with invalid CSRF token', ```javascript
         const data = { example: 'data' };
         const transactionId = 'tx1';
         Transaction.mockImplementation(() => ({ id: transactionId, data }));
@@ -95,7 +95,7 @@ describe('HolographicQuantumLedger', () => {
             throw new Error('Invalid CSRF token');
         });
 
- expect(() => {
+        expect(() => {
             ledger.updateTransaction(updatedTransaction, 'invalid-csrf-token');
         }).toThrow('Invalid CSRF token');
 
@@ -107,9 +107,9 @@ describe('HolographicQuantumLedger', () => {
         const transactionId = 'tx1';
         Transaction.mockImplementation(() => ({ id: transactionId, data }));
 
-        ledger.createTransaction(data, mockUser  , 'valid-csrf-token');
+        ledger.createTransaction(data, mockUser , 'valid-csrf-token');
         const targetTimestamp = Date.now(); // Simulate a target timestamp
-        const rewindedTransaction = ledger.rewindTransaction(transactionId, targetTimestamp, mockUser  );
+        const rewindedTransaction = ledger.rewindTransaction(transactionId, targetTimestamp, mockUser );
 
         expect(rewindedTransaction).toBeDefined(); // Assuming the rewindTransaction method returns something
         expect(ledger.ttr.rewindTransaction).toHaveBeenCalledWith(transactionId, targetTimestamp, mockUser );
@@ -120,9 +120,9 @@ describe('HolographicQuantumLedger', () => {
         const transactionId = 'tx1';
         Transaction.mockImplementation(() => ({ id: transactionId, data }));
 
-        const transaction = ledger.createTransaction(data, mockUser  , 'valid-csrf-token');
+        const transaction = ledger.createTransaction(data, mockUser , 'valid-csrf-token');
         const hash = ledger.generateTransactionHash(transaction);
-        
+
         expect(hash).toBeDefined(); // Assuming generateQuantumHash returns a hash
         expect(generateQuantumHash).toHaveBeenCalledWith(transaction);
     });
@@ -132,9 +132,9 @@ describe('HolographicQuantumLedger', () => {
         const transactionId = 'tx1';
         Transaction.mockImplementation(() => ({ id: transactionId, data }));
 
-        const transaction = ledger.createTransaction(data, mockUser  , 'valid-csrf-token');
+        const transaction = ledger.createTransaction(data, mockUser , 'valid-csrf-token');
         const isValid = ledger.validateTransactionSignature(transaction);
-        
+
         expect(isValid).toBe(true); // Assuming validateQuantumSignature returns true
         expect(validateQuantumSignature).toHaveBeenCalledWith(transaction);
     });
@@ -142,8 +142,8 @@ describe('HolographicQuantumLedger', () => {
     test('should get all transactions', () => {
         const data1 = { example: 'data1' };
         const data2 = { example: 'data2' };
-        ledger.createTransaction(data1, mockUser  , 'valid-csrf-token');
-        ledger.createTransaction(data2, mockUser  , 'valid-csrf-token');
+        ledger.createTransaction(data1, mockUser , 'valid-csrf-token');
+        ledger.createTransaction(data2, mockUser , 'valid-csrf-token');
 
         const allTransactions = ledger.getAllTransactions();
         expect(allTransactions.length).toBe(2);
@@ -151,7 +151,7 @@ describe('HolographicQuantumLedger', () => {
 
     test('should clear the ledger', () => {
         const data = { example: 'data' };
-        ledger.createTransaction(data, mockUser  , 'valid-csrf-token');
+        ledger.createTransaction(data, mockUser , 'valid-csrf-token');
         expect(ledger.transactions.length).toBe(1);
 
         ledger.clearLedger();
@@ -174,5 +174,20 @@ describe('HolographicQuantumLedger', () => {
     test('should trigger self-healing in the blockchain', () => {
         ledger.triggerSelfHealing();
         expect(ledger.sebd.selfHeal).toHaveBeenCalled();
+    });
+
+    test('should handle empty data when creating a transaction', () => {
+        expect(() => {
+            ledger.createTransaction({}, mockUser , 'valid-csrf-token');
+        }).toThrow('Data cannot be empty');
+    });
+
+    test('should handle invalid user when creating a transaction', () => {
+        const data = { example: 'data' };
+        const invalidUser  = null; // Simulate an invalid user
+
+        expect(() => {
+            ledger.createTransaction(data, invalidUser , 'valid-csrf-token');
+        }).toThrow('User  is not authorized');
     });
 });
