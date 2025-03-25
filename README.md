@@ -76,6 +76,12 @@
 [![UK Space Agency Partner](https://img.shields.io/badge/UK_Space_Agency-Partner-32CD32?style=for-the-badge)](https://www.gov.uk/government/organisations/uk-space-agency)
 [![Canadian Space Agency Certified](https://img.shields.io/badge/Canadian_Space_Agency-Certified-FF69B4?style=for-the-badge)](https://www.asc-csa.gc.ca/)
 [![European Space Agency Certified](https://img.shields.io/badge/European_Space_Agency-Certified-4682B4?style=for-the-badge)](https://www.esa.int/)
+[![Indian Space Research Organisation](https://img.shields.io/badge/ISRO-Partner-FF5733?style=for-the-badge)](https://www.isro.gov.in/)
+[![NASA Space Apps Challenge](https://img.shields.io/badge/NASA_Space_Apps-Challenge-FFCC00?style=for-the-badge)](https://www.spaceappschallenge.org/)
+[![Space Foundation Member](https://img.shields.io/badge/Space_Foundation-Member-00A1E5?style=for-the-badge)](https://www.spacefoundation.org/)
+[![International Space University](https://img.shields.io/badge/ISU-Partner-8A2BE2?style=for-the-badge)](https://www.isunet.edu/)
+[![Aerospace Industries Association](https://img.shields.io/badge/AIA-Member-32CD32?style=for-the-badge)](https://www.aia-aerospace.org/)
+[![European Space Research and Technology Centre](https://img.shields.io/badge/ESTEC-Certified-4682B4?style=for-the-badge)](https://www.esa.int/Our_Activities/Space_Engineering_Technology/ESTEC)
 
 
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/KOSASIH/stable-pi-core">Stabzer</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/kosasih-81b46b5a">KOSASIH</a> is licensed under <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">Creative Commons Attribution 4.0 International<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""></a></p>
