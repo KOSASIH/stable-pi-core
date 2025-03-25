@@ -1,13 +1,15 @@
-// src/core/qgc.js
+import CSRFProtection from './csrf_layer'; // Import CSRF Protection
 
 class QuantumGravitationalConsensus {
     constructor() {
         this.nodes = []; // Array to hold nodes in the consensus network
         this.parallelUniverses = []; // Array to hold parallel universe nodes
+        this.csrfProtection = new CSRFProtection(); // Initialize CSRF Protection
     }
 
     // Method to add a node to the consensus network
-    addNode(node) {
+    addNode(node, csrfToken) {
+        this.csrfProtection.verify_token(node.userId, csrfToken); // CSRF check
         if (this.nodes.find(n => n.name === node.name)) {
             throw new Error(`Node ${node.name} already exists in the consensus network.`);
         }
@@ -16,7 +18,8 @@ class QuantumGravitationalConsensus {
     }
 
     // Method to add a parallel universe node
-    addParallelUniverseNode(node) {
+    addParallelUniverseNode(node, csrfToken) {
+        this.csrfProtection.verify_token(node.userId, csrfToken); // CSRF check
         if (this.parallelUniverses.find(n => n.name === node.name)) {
             throw new Error(`Parallel universe node ${node.name} already exists.`);
         }
@@ -25,7 +28,8 @@ class QuantumGravitationalConsensus {
     }
 
     // Method to synchronize data with a parallel universe node
-    async synchronizeWithParallelUniverse(nodeName) {
+    async synchronizeWithParallelUniverse(nodeName, csrfToken) {
+        this.csrfProtection.verify_token(node.userId, csrfToken); // CSRF check
         const parallelNode = this.parallelUniverses.find(n => n.name === nodeName);
         if (!parallelNode) {
             throw new Error(`Parallel universe node ${nodeName} not found.`);
@@ -84,9 +88,10 @@ class QuantumGravitationalConsensus {
     }
 
     // Method to initiate synchronization with all parallel universe nodes
-    async synchronizeWithAllParallelUniverses() {
+    async synchronizeWithAllParallelUniverses(userId, csrfToken) {
+        this.csrfProtection.verify_token(userId, csrfToken); // CSRF check
         for (const node of this.parallelUniverses) {
-            await this.synchronizeWithParallelUniverse(node.name);
+            await this.synchronizeWithParallelUniverse(node.name, csrfToken);
         }
     }
 }
