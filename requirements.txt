@@ -26,7 +26,7 @@ python-dotenv==0.21.0  # For loading environment variables from a .env file
 
 # HTTP requests and secure data handling
 requests==2.31.0       # For making HTTP requests
-cryptography==39.0.1   # For secure data handling and encryption
+cryptography==44.0.1   # For secure data handling and encryption
 
 # Advanced data processing and analysis
 dask==2023.7.0         # Parallel computing with task scheduling for larger-than-memory computations
