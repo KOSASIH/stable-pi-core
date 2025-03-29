@@ -1,5 +1,7 @@
 // src/quantum/tcp.js
 
+const TachyonEchoResonanceArray = require('./TachyonEchoResonanceArray'); // Import TERA
+
 class PanGalacticResonanceAmplifier {
     constructor() {
         this.harmonicFrequencies = this.generateHarmonicFrequencies();
@@ -34,6 +36,7 @@ class PanGalacticResonanceAmplifier {
 class TCP {
     constructor() {
         this.pgra = new PanGalacticResonanceAmplifier();
+        this.tera = new TachyonEchoResonanceArray(); // Initialize TERA
         this.connection = null; // Placeholder for connection object
     }
 
@@ -59,6 +62,9 @@ class TCP {
         const amplifiedSignal = this.pgra.amplifySignal(signal);
         console.log(`Sending amplified signal: ${amplifiedSignal} to ${this.connection.address}`);
 
+        // Capture the signal using TERA
+        await this.tera.captureEcho(amplifiedSignal);
+
         // Simulate sending the signal
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -75,10 +81,18 @@ class TCP {
         }
 
         // Simulate receiving a signal
-        return new Promise((resolve) => {
-            setTimeout(() => {
+        return new Promise(async (resolve) => {
+            setTimeout(async () => {
                 const receivedSignal = Math.random() * 100; // Simulate a random signal
                 console.log(`Received signal: ${receivedSignal} from ${this.connection.address}`);
+
+                // Capture the received signal using TERA
+                await this.tera.captureEcho(receivedSignal);
+
+                // Analyze the received signal
+                const insights = await this.tera.analyzeEcho();
+                console.log('Insights from TERA:', insights);
+
                 resolve(receivedSignal);
             }, 500);
         });
