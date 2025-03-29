@@ -52,6 +52,15 @@ describe('TCP', () => {
         expect(amplifiedSignal).toBeGreaterThan(0); // Check if the signal is sent and amplified
     });
 
+    test('should capture and analyze the sent signal using TERA', async () => {
+        await tcp.connect('galactic-network.local');
+        const signal = 100;
+        await tcp.send(signal);
+        const insights = await tcp.tera.analyzeEcho(); // Analyze echoes after sending
+        expect(insights).toHaveLength(1); // Check if insights are generated
+        expect(insights[0]).toHaveProperty('signal', signal); // Check if the signal matches
+    });
+
     test('should throw error when receiving signal without connection', async () => {
         await expect(tcp.receive()).rejects.toThrow('No active connection. Please connect first.');
     });
@@ -60,6 +69,14 @@ describe('TCP', () => {
         await tcp.connect('galactic-network.local');
         const receivedSignal = await tcp.receive();
         expect(receivedSignal).toBeGreaterThan(0); // Check if a signal is received
+    });
+
+    test('should capture and analyze the received signal using TERA', async () => {
+        await tcp.connect('galactic-network.local');
+        const receivedSignal = await tcp.receive();
+        const insights = await tcp.tera.analyzeEcho(); // Analyze echoes after receiving
+        expect(insights).toHaveLength(1); // Check if insights are generated
+        expect(insights[0]).toHaveProperty('signal', receivedSignal); // Check if the signal matches
     });
 
     test('should close the connection', async () => {
