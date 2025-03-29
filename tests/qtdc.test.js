@@ -89,7 +89,7 @@ describe('QuantumTimeDilationCompensator', () => {
         qtdc.initializeQTDC(nodes, null);
         console.warn = jest.fn(); // Mock console.warn
         await qtdc.synchronizeTime();
-        expect(console.warn).toHaveBeenCalledWith("No tachyonic communication protocol initialized.");
+        expect(console.warn).toHaveBeen CalledWith("No tachyonic communication protocol initialized.");
     });
 
     test('should process events with the Omni-Temporal Causality Shield', () => {
@@ -100,5 +100,32 @@ describe('QuantumTimeDilationCompensator', () => {
         expect(qtdc.processEvent(event1)).toBe(true); // Should process successfully
         expect(qtdc.processEvent(event2)).toBe(true); // Should process successfully
         expect(qtdc.processEvent(event3)).toBe(false); // Should fail due to causality violation
+    });
+
+    test('should handle multiple events correctly', () => {
+        const events = [
+            { id: 1, timestamp: Date.now(), data: "Event 1" },
+            { id: 2, timestamp: Date.now() + 500, data: "Event 2" },
+            { id: 3, timestamp: Date.now() + 1000, data: "Event 3" },
+        ];
+
+        events.forEach(event => {
+            expect(qtdc.processEvent(event)).toBe(true);
+        });
+
+        const invalidEvent = { id: 4, timestamp: Date.now() - 1000, data: "Invalid Event" };
+        expect(qtdc.processEvent(invalidEvent)).toBe(false); // Should fail due to causality violation
+    });
+
+    test('should clear event buffer after processing', () => {
+        const event1 = { id: 1, timestamp: Date.now(), data: "First event" };
+        const event2 = { id: 2, timestamp: Date.now() + 1000, data: "Second event" };
+
+        qtdc.processEvent(event1);
+        qtdc.processEvent(event2);
+        expect(qtdc.otcs.getEventBuffer().length).toBe(2); // Buffer should have 2 events
+
+        qtdc.otcs.clearEventBuffer();
+        expect(qtdc.otcs.getEventBuffer().length).toBe(0); // Buffer should be cleared
     });
 });
