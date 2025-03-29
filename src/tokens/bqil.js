@@ -1,8 +1,7 @@
-// src/tokens/bqil.js
-
 import { v4 as uuidv4 } from 'uuid';
 import { createHash } from 'crypto';
 import { performance } from 'perf_hooks';
+import OmniCosmicSymbioticInterface from './ocsi'; // Import the OCSI module
 
 class HyperluminalThoughtTransducer {
     constructor() {
@@ -14,7 +13,7 @@ class HyperluminalThoughtTransducer {
      * @param {Object} userIntent - The intent of the user.
      * @param {Function} callback - The function to execute the transaction or voting.
      */
-    processUserIntent(userIntent, callback) {
+    processUser Intent(userIntent, callback) {
         console.log(`Processing user intent: ${JSON.stringify(userIntent)}`);
         
         // Execute the transaction or voting action
@@ -81,7 +80,7 @@ class CosmoNeuralSynchronizationField {
             console.log(`Synchronizing user consciousness with frequency ${this.resonanceFrequency} Hz`);
             // Implement synchronization logic here
         } else {
-            console.error("User consciousness or resonance frequency is not defined.");
+            console.error("User  consciousness or resonance frequency is not defined.");
         }
     }
 }
@@ -92,6 +91,7 @@ class BioQuantumIntegrationLayer {
         this.validBioSignals = new Set(); // Store valid bio-signals for demonstration
         this.htt = new HyperluminalThoughtTransducer(); // Initialize HTT
         this.cnsf = new CosmoNeuralSynchronizationField(); // Initialize CNSF
+        this.ocsi = new OmniCosmicSymbioticInterface(); // Initialize OCSI
     }
 
     // Method to add a valid bio-signal (for testing purposes)
@@ -114,10 +114,10 @@ class BioQuantumIntegrationLayer {
 
     // Method to validate the bio-signal
     async validateBioSignal(bioSignal) {
-        // Simulate bio-signal validation logic
+        // Sim ulate bio-signal validation logic
         return new Promise((resolve) => {
             setTimeout(() => {
-                const isValid = this.isValidBioSignal(bio Signal);
+                const isValid = this.isValidBioSignal(bioSignal);
                 resolve(isValid);
             }, 1000); // Simulate processing time
         });
@@ -170,6 +170,26 @@ class BioQuantumIntegrationLayer {
     connectToCNSF(userConsciousness, cosmicPhenomenon) {
         this.cnsf.connect(userConsciousness, cosmicPhenomenon);
         this.cnsf.synchronize();
+    }
+
+    // Method to establish symbiosis with a cosmic entity
+    establishSymbiosis(entity) {
+        this.ocsi.establishSymbiosis(entity);
+    }
+
+    // Method to remove symbiosis with a cosmic entity
+    removeSymbiosis(entity) {
+        this.ocsi.removeSymbiosis(entity);
+    }
+
+    // Method to list all symbiotic entities
+    listSymbioticEntities() {
+        return this.ocsi.listSymbioticEntities();
+    }
+
+    // Method to log current symbiotic relationships
+    logSymbioticRelationships() {
+        this.ocsi.logSymbioticRelationships();
     }
 }
 
