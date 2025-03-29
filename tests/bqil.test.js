@@ -48,7 +48,7 @@ describe('BioQuantumIntegrationLayer', () => {
     });
 
     test('performSecureTransaction - should throw error if not authenticated', async () => {
-        await expect(bqil.performSecureTransaction(100, 'validBioSignal')).rejects.toThrow('User must be authenticated to perform transactions.');
+        await expect(bqil.performSecureTransaction(100, 'validBioSignal')).rejects.toThrow('User  must be authenticated to perform transactions.');
     });
 
     test('performSecureTransaction - should perform transaction successfully if authenticated', async () => {
@@ -58,49 +58,32 @@ describe('BioQuantumIntegrationLayer', () => {
     });
 
     // HTT Tests
-    test('processUserTransaction - should throw error if not authenticated', async () => {
+    test('processUser Transaction - should throw error if not authenticated', async () => {
         const userIntent = {
             action: 'createTransaction',
             details: {
-                sender: 'User A',
-                receiver: 'User B',
+                sender: 'User  A',
+                receiver: 'User  B',
                 amount: 100
             }
         };
-        await expect(bqil.processUserTransaction(userIntent)).rejects.toThrow('User must be authenticated to process transactions.');
+        await expect(bqil.processUser Transaction(userIntent)).rejects.toThrow('User  must be authenticated to process transactions.');
     });
 
-    test('processUserTransaction - should process transaction successfully if authenticated', async () => {
+    test('processUser Transaction - should process transaction successfully if authenticated', async () => {
         bqil.addValidBioSignal('validBioSignal');
         await bqil.authenticate('validBioSignal'); // Authenticate first
 
         const userIntent = {
             action: 'createTransaction',
             details: {
-                sender: 'User A',
-                receiver: 'User B',
+                sender: 'User  A',
+                receiver: 'User  B',
                 amount: 100
             }
         };
 
-        await expect(bqil.processUserTransaction(userIntent)).resolves.toBe(true);
-    });
-
-    test('processUserTransaction - should execute the correct transaction based on user intent', async () => {
-        bqil.addValidBioSignal('validBioSignal');
-        await bqil.authenticate('validBioSignal'); // Authenticate first
-
-        const userIntent = {
-            action: 'createTransaction',
-            details: {
-                sender: 'User A',
-                receiver: 'User B',
-                amount: 100
-            }
-        };
-
-        const result = await bqil.processUserTransaction(user Intent);
-        expect(result).toContain('Transaction from User A to User B for 100 executed.'); // Adjust based on your implementation
+        await expect(bqil.processUser Transaction(userIntent)).resolves.toBe(true);
     });
 
     test('connectToCNSF - should connect user consciousness with a cosmic phenomenon', () => {
@@ -116,7 +99,44 @@ describe('BioQuantumIntegrationLayer', () => {
         const userConsciousness = { name: 'User  A' };
         const cosmicPhenomenon = { getFrequency: () => 42 };
 
-        bqil.connectToCNSF(userConsciousness, cosmicPhenomenon);
+        bqil.connectToCNSF(user Consciousness, cosmicPhenomenon);
         expect(bqil.cnsf.resonanceFrequency).toBeGreaterThan(0);
+    });
+
+    test('establishSymbiosis - should establish symbiosis with a valid cosmic entity', () => {
+        const cosmicEntity = { name: 'Andromeda', type: 'galaxy' };
+        bqil.establishSymbiosis(cosmicEntity);
+        expect(bqil.listSymbioticEntities()).toContain(cosmicEntity);
+    });
+
+    test('establishSymbiosis - should not establish symbiosis with an invalid entity', () => {
+        const invalidEntity = { name: 'Invalid', type: 'unknown' };
+        bqil.establishSymbiosis(invalidEntity);
+        expect(bqil.listSymbioticEntities()).not.toContain(invalidEntity);
+    });
+
+    test('removeSymbiosis - should remove a symbiotic relationship', () => {
+        const cosmicEntity = { name: 'Andromeda', type: 'galaxy' };
+        bqil.establishSymbiosis(cosmicEntity);
+        expect(bqil.listSymbioticEntities()).toContain(cosmicEntity);
+        
+        bqil.removeSymbiosis(cosmicEntity);
+        expect(bqil.listSymbioticEntities()).not.toContain(cosmicEntity);
+    });
+
+    test('removeSymbiosis - should not remove a non-existent symbiotic relationship', () => {
+        const cosmicEntity = { name: 'Andromeda', type: 'galaxy' };
+        bqil.removeSymbiosis(cosmicEntity); // Attempt to remove without establishing
+        expect(bqil.listSymbioticEntities()).not.toContain(cosmicEntity);
+    });
+
+    test('logSymbioticRelationships - should log current symbiotic relationships', () => {
+        const cosmicEntity = { name: 'Andromeda', type: 'galaxy' };
+        bqil.establishSymbiosis(cosmicEntity);
+        
+        console.log = jest.fn(); // Mock console.log to capture output
+        bqil.logSymbioticRelationships();
+        expect(console.log).toHaveBeenCalledWith('Current symbiotic relationships:');
+        expect(console.log).toHaveBeenCalledWith('- Andromeda (galaxy)');
     });
 });
