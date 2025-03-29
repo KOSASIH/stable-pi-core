@@ -8,57 +8,21 @@ import GalacticEntropyReversalSystem from './gers'; // Import the Galactic Entro
 import CSRFProtection from './csrf_layer'; // Import CSRF Protection
 import InfiniteHorizonDataVortex from './ihdv'; // Import the Infinite Horizon Data Vortex
 import EternalResonanceContinuityField from './ercf'; // Import the ERCF
-
-class CosmicEntropyShield {
-    constructor() {
-        this.protectionLevel = 100; // Initial protection level (0-100)
-        this.entropyThreshold = 50; // Threshold for warning
-    }
-
-    enhanceProtection(amount) {
-        this.protectionLevel = Math.min(100, this.protectionLevel + amount);
-        console.log(`Protection level enhanced to ${this.protectionLevel}`);
-    }
-
-    getProtectionLevel() {
-        return this.protectionLevel;
-    }
-
-    protectData(data) {
-        if (this.protectionLevel < this.entropyThreshold) {
-            console.warn("Warning: Protection level is low. Data may be at risk of degradation.");
-        }
-        console.log("Data is being protected from cosmic entropy...");
-        return { ...data, protected: true, timestamp: Date.now() }; // Return protected data with timestamp
-    }
-
-    degradeData(data) {
-        if (this.protectionLevel < this.entropyThreshold) {
-            console.log("Data integrity compromised due to low protection level.");
-            return null; // Data is lost
-        }
-        console.log("Data integrity maintained.");
-        return data; // Return original data
-    }
-
-    resetProtection() {
-        this.protectionLevel = 100;
-        console.log("Protection level reset to maximum.");
-    }
-}
+import CosmicMemoryImprintNetwork from './cmin'; // Import the Cosmic Memory Imprint Network
 
 class HolographicQuantumLedger {
     constructor() {
         this.transactions = [];
         this.ttr = new TemporalTransactionRewind(this);
         this.accessControl = new AccessControl();
-        this.ces = new CosmicEntropyShield(); // Integrate CES
+        this.ces = new CosmicEntropyShield(); // Integrate Cosmic Entropy Shield
         this.sebd = new SEBD(); // Ensure SEBD is instantiated
         this.dce = new DimensionalCompressionEngine(); // Ensure DCE is instantiated
         this.gers = new GalacticEntropyReversalSystem(); // Ensure GERS is instantiated
         this.csrfProtection = new CSRFProtection(); // Initialize CSRF Protection
         this.ihdv = new InfiniteHorizonDataVortex(); // Instantiate IHDV
         this.erfc = new EternalResonanceContinuityField(); // Integrate ERCF
+        this.cmin = new CosmicMemoryImprintNetwork(); // Instantiate CMIN
     }
 
     initializeHQL(darkMatterEnergyConverter) {
@@ -83,6 +47,9 @@ class HolographicQuantumLedger {
 
         // Add transaction data to IHDV
         this.ihdv.addData(Date.now(), transaction);
+
+        // Capture memory imprint for the transaction
+        this.cmin.captureMemoryImprint({ transactionId: transaction.id, data: reversedData }, user.id, csrfToken);
 
         this.transactions.push(transaction);
         console.log(`Transaction created: ${transaction.id}`);
@@ -111,8 +78,11 @@ class HolographicQuantumLedger {
             throw new Error("Transaction not found.");
         }
         this.csrfProtection.verify_token(updatedTransaction.userId, csrfToken); // CSRF check
-        this.transactions[index] = updatedTransaction;
+        this.transactions[index] = updated Transaction;
         console.log(`Transaction updated: ${updatedTransaction.id}`);
+        
+        // Capture memory imprint for the updated transaction
+        this.cmin.captureMemoryImprint({ transactionId: updatedTransaction.id, data: updatedTransaction.data }, updatedTransaction.userId, csrfToken);
     }
 
     rewindTransaction(transactionId, targetTimestamp, user, csrfToken) {
