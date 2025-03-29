@@ -5,6 +5,7 @@ class QuantumGravitationalConsensus {
         this.nodes = []; // Array to hold nodes in the consensus network
         this.parallelUniverses = []; // Array to hold parallel universe nodes
         this.csrfProtection = new CSRFProtection(); // Initialize CSRF Protection
+        this.isVortexActive = false; // Flag to indicate if the quantum vortex is active
     }
 
     // Method to add a node to the consensus network
@@ -27,9 +28,53 @@ class QuantumGravitationalConsensus {
         console.log(`Parallel universe node ${node.name} added.`);
     }
 
+    // Method to create a quantum vortex
+    async createQuantumVortex() {
+        if (this.isVortexActive) {
+            console.log("Quantum vortex is already active.");
+            return;
+        }
+
+        console.log("Creating quantum vortex for synchronization...");
+        this.isVortexActive = true;
+
+        try {
+            await this.simulateQuantumVortexCreation();
+            console.log("Quantum vortex created. Synchronizing all nodes...");
+            await this.synchronizeWithAllParallelUniverses();
+            console.log("All nodes synchronized successfully.");
+        } catch (error) {
+            console.error("Error during quantum vortex creation:", error);
+        } finally {
+            this.isVortexActive = false; // Reset vortex state
+        }
+    }
+
+    // Simulate the quantum vortex creation process
+    async simulateQuantumVortexCreation() {
+        return new Promise((resolve, reject) => {
+            // Simulate time taken to create the vortex
+            setTimeout(() => {
+                const success = Math.random() > 0.1; // 90% chance of success
+                if (success) {
+                    resolve();
+                } else {
+                    reject(new Error("Failed to create quantum vortex due to instability."));
+                }
+            }, 2000); // Simulate 2 seconds for vortex creation
+        });
+    }
+
+    // Method to synchronize data with all parallel universe nodes
+    async synchronizeWithAllParallelUniverses() {
+        for (const node of this.parallelUniverses) {
+            await this.synchronizeWithParallelUniverse(node.name, node.userId, node.csrfToken);
+        }
+    }
+
     // Method to synchronize data with a parallel universe node
-    async synchronizeWithParallelUniverse(nodeName, csrfToken) {
-        this.csrfProtection.verify_token(node.userId, csrfToken); // CSRF check
+    async synchronizeWithParallelUniverse(nodeName, userId, csrfToken) {
+        this.csrfProtection.verify_token(userId, csrfToken); // CSRF check
         const parallelNode = this.parallelUniverses.find(n => n.name === nodeName);
         if (!parallelNode) {
             throw new Error(`Parallel universe node ${nodeName} not found.`);
@@ -46,7 +91,7 @@ class QuantumGravitationalConsensus {
         // Simulate fetching data from a parallel universe
         return new Promise((resolve) => {
             setTimeout(() => {
-                const mockData = { data: `Data from ${node.name}`, timestamp: Date.now() }; // Mock data
+                const mockData = { data: `Data from ${node.name}`, timestamp: Date .now() }; // Mock data
                 resolve(mockData);
             }, 1000); // Simulate network delay
         });
@@ -85,14 +130,6 @@ class QuantumGravitationalConsensus {
                 resolve(true);
             }, 500); // Simulate communication setup time
         });
-    }
-
-    // Method to initiate synchronization with all parallel universe nodes
-    async synchronizeWithAllParallelUniverses(userId, csrfToken) {
-        this.csrfProtection.verify_token(userId, csrfToken); // CSRF check
-        for (const node of this.parallelUniverses) {
-            await this.synchronizeWithParallelUniverse(node.name, csrfToken);
-        }
     }
 }
 
