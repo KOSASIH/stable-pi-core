@@ -1,5 +1,7 @@
 // src/space/singularitySeedGenerator.js
 
+const DarkMatterEnergyConverter = require('./darkMatterEnergyConverter'); // Ensure the path is correct
+
 class SingularitySeedGenerator {
     constructor() {
         this.energyOutput = 0; // Energy produced
@@ -8,13 +10,7 @@ class SingularitySeedGenerator {
         this.maxEnergyOutput = 1e12; // Maximum energy output limit
         this.maxStorageCapacity = 1e9; // Maximum storage capacity limit
         this.safetyThreshold = 0.8; // Safety threshold for energy output
-        this.dmConverter = null; // Placeholder for Dark Matter Energy Converter
-    }
-
-    // Method to set the Dark Matter Energy Converter
-    setDarkMatterEnergyConverter(converter) {
-        this.dmConverter = converter;
-        console.log('Dark Matter Energy Converter integrated.');
+        this.dmConverter = new DarkMatterEnergyConverter(); // Initialize the converter
     }
 
     // Method to activate the generator
@@ -57,9 +53,7 @@ class SingularitySeedGenerator {
             console.log(`Generated singularity with energy output: ${this.energyOutput.toFixed(2)} J and storage capacity: ${this.storageCapacity.toFixed(2)} GB.`);
 
             // If a Dark Matter Energy Converter is set, convert the generated energy
-            if (this.dmConverter) {
-                this.dmConverter.convertEnergy(this.energyOutput);
-            }
+            this.dmConverter.convertEnergy(this.energyOutput);
         } else {
             console.log('Cannot generate singularity. Generator is inactive.');
         }
@@ -80,6 +74,14 @@ class SingularitySeedGenerator {
         this.energyOutput = 0;
         this.storageCapacity = 0;
         console.log('Singularity Seed Generator reset to initial state.');
+    }
+
+    // Method to dynamically configure energy output and storage limits
+    configure(maxEnergy, maxStorage, safetyThreshold) {
+        this.maxEnergyOutput = maxEnergy;
+        this.maxStorageCapacity = maxStorage;
+        this.safetyThreshold = safetyThreshold;
+        console.log(`Configuration updated: Max Energy Output = ${this.maxEnergyOutput}, Max Storage Capacity = ${this.maxStorageCapacity}, Safety Threshold = ${this.safetyThreshold}`);
     }
 }
 
