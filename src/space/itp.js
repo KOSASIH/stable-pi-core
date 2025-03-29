@@ -189,7 +189,7 @@ class InterplanetaryTransactionProtocol {
     }
 
     // List all integrated technologies
-    listIntegrated Technologies() {
+    listIntegratedTechnologies() {
         return this.emqs.listIntegratedTechnologies();
     }
 
@@ -220,7 +220,7 @@ class InterdimensionalTransactionGateway extends InterplanetaryTransactionProtoc
     }
 
     // Handle incoming interdimensional transactions
-    async handleIncomingInterdimensionalTransaction(transaction) {
+ async handleIncomingInterdimensionalTransaction(transaction) {
         this.logger.log('Handling incoming interdimensional transaction...');
         await this.handleIncomingTransaction(transaction);
     }
