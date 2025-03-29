@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
+const HyperDimensionalTransactionNexus = require('./hdtN'); // Import HDTN
 
 class ExoMorphicQuantumSymbiosis {
     constructor() {
@@ -65,6 +66,7 @@ class InterplanetaryTransactionProtocol {
         this.blockchain = []; // Simple blockchain to store confirmed transactions
         this.logger = this.createLogger();
         this.emqs = new ExoMorphicQuantumSymbiosis(); // Initialize EMQS
+        this.hdtn = new HyperDimensionalTransactionNexus(); // Initialize HDTN
     }
 
     // Create a logger for logging events
@@ -127,7 +129,7 @@ class InterplanetaryTransactionProtocol {
     async handleIncomingTransaction(transaction) {
         if (this.validateTransaction(transaction)) {
             this.transactions.push(transaction);
-            this.logger.log('Transaction added: ' + JSON .stringify(transaction));
+            this.logger.log('Transaction added: ' + JSON.stringify(transaction));
             await this.broadcastTransaction(transaction);
             this.addToBlockchain(transaction); // Add to blockchain after validation
         } else {
@@ -187,8 +189,19 @@ class InterplanetaryTransactionProtocol {
     }
 
     // List all integrated technologies
-    listIntegratedTechnologies() {
+    listIntegrated Technologies() {
         return this.emqs.listIntegratedTechnologies();
+    }
+
+    // Initiate a hyper-dimensional transaction
+    initiateHyperDimensionalTransaction(transactionDetails) {
+        this.hdtn.initiateTransaction(transactionDetails);
+    }
+
+    // Handle incoming hyper-dimensional transactions
+    async handleIncomingHyperDimensionalTransaction(transactionDetails) {
+        this.logger.log('Handling incoming hyper-dimensional transaction...');
+        this.hdtn.initiateTransaction(transactionDetails);
     }
 }
 
@@ -256,6 +269,15 @@ class InterdimensionalTransactionGateway extends InterplanetaryTransactionProtoc
         };
         itg.absorbExternalTechnology(alienTechnology);
         console.log('Integrated Technologies:', itg.listIntegratedTechnologies());
+
+        // Initiate a hyper-dimensional transaction
+        const hyperTransactionDetails = {
+            sender: 'PlanetC',
+            receiver: 'PlanetD',
+            amount: 200,
+            conditions: { condition: 'ifPlanetDIsReady' }
+        };
+        itg.initiateHyperDimensionalTransaction(hyperTransactionDetails);
     } catch (error) {
         console.error('Error:', error.message);
     }
