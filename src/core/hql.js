@@ -1,5 +1,3 @@
-// src/core/hql.js
-
 import TemporalTransactionRewind from './ttr';
 import AccessControl from './accessControl';
 import Transaction from './transaction';
@@ -9,6 +7,7 @@ import DimensionalCompressionEngine from './dce'; // Import the Dimensional Comp
 import GalacticEntropyReversalSystem from './gers'; // Import the Galactic Entropy Reversal System
 import CSRFProtection from './csrf_layer'; // Import CSRF Protection
 import InfiniteHorizonDataVortex from './ihdv'; // Import the Infinite Horizon Data Vortex
+import EternalResonanceContinuityField from './ercf'; // Import the ERCF
 
 class CosmicEntropyShield {
     constructor() {
@@ -59,11 +58,13 @@ class HolographicQuantumLedger {
         this.gers = new GalacticEntropyReversalSystem(); // Ensure GERS is instantiated
         this.csrfProtection = new CSRFProtection(); // Initialize CSRF Protection
         this.ihdv = new InfiniteHorizonDataVortex(); // Instantiate IHDV
+        this.erfc = new EternalResonanceContinuityField(); // Integrate ERCF
     }
 
     initializeHQL(darkMatterEnergyConverter) {
         this.gers.initializeGERS(darkMatterEnergyConverter);
-        console.log("Holographic Quantum Ledger initialized with Galactic Entropy Reversal System.");
+        this.erfc.activate(); // Activate the ERCF during initialization
+        console.log("Holographic Quantum Ledger initialized with Galactic Entropy Reversal System and ERCF.");
     }
 
     createTransaction(data, user, csrfToken) {
@@ -163,6 +164,16 @@ class HolographicQuantumLedger {
 
     queryIHDV(currentTime) {
         return this.ihdv.queryData(currentTime);
+    }
+
+    // Method to get the status of the ERCF
+    getContinuityFieldStatus() {
+        return this.erfc.getStatus();
+    }
+
+    // Method to protect against cosmic entropy using ERCF
+    protectAgainstEntropy(currentEntropyLevel) {
+        this.erfc.protectAgainstEntropy(currentEntropyLevel);
     }
 }
 
