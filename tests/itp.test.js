@@ -103,7 +103,8 @@ describe('InterplanetaryTransactionProtocol', () => {
         expect(itp.listIntegratedTechnologies()).toContainEqual(alienTechnology);
     });
 
-    test('should not absorb the same technology twice', () => const alienTechnology = {
+    test('should not absorb the same technology twice', () => {
+        const alienTechnology = {
             name: 'Alien Tech 1',
             protocols: {
                 communication: 'Quantum Entanglement Protocol',
