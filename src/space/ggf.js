@@ -1,4 +1,4 @@
-// ggf.js - Galactic Governance Framework
+// src/space/ggf.js - Galactic Governance Framework
 
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
@@ -10,7 +10,7 @@ class GalacticGovernanceFramework extends EventEmitter {
     constructor() {
         super();
         this.proposals = []; // Store proposals
-        this.votes = []; // Store votes
+        this.votes = new Map(); // Store votes as a map for quick access
         this.entities = new Set(); // Unique set of authorized entities
         this.logger = this.createLogger(); // Create a logger
         this.tachyonicCommunicationProtocol = null; // Placeholder for tachyonic communication protocol
@@ -24,6 +24,10 @@ class GalacticGovernanceFramework extends EventEmitter {
             log: (message) => {
                 const timestamp = new Date().toISOString();
                 console.log(`[${timestamp}] ${message}`);
+            },
+            error: (message) => {
+                const timestamp = new Date().toISOString();
+                console.error(`[${timestamp}] ERROR: ${message}`);
             }
         };
     }
@@ -33,7 +37,7 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.tachyonicCommunicationProtocol = tachyonicProtocol;
         this.tbpg.initializeTBPG(tachyonicProtocol); // Initialize TBPG with the protocol
         this.asgm.initializeASGM(); // Initialize ASGM
-        console.log("Galactic Governance Framework initialized with tachyonic protocol and ASGM.");
+        this.logger.log("Galactic Governance Framework initialized with tachyonic protocol and ASGM.");
     }
 
     // Register a new entity
@@ -81,12 +85,15 @@ class GalacticGovernanceFramework extends EventEmitter {
         }
 
         // Check if the entity has already voted
-        if (this.votes.find(v => v.proposalId === proposalId && v.entityId === entityId)) {
+        if (this.votes.has(proposalId) && this.votes.get(proposalId).has(entityId)) {
             throw new Error('Entity has already voted on this proposal');
         }
 
         proposal.votes += 1;
-        this.votes.push({ proposalId, entityId });
+        if (!this.votes.has(proposalId)) {
+            this.votes.set(proposalId, new Set());
+        }
+        this.votes.get(proposalId).add(entityId);
         this.logger.log(`Vote cast by ${entityId} on proposal ${proposalId}`);
         this.emit('voteCast', { proposalId, entityId });
 
@@ -113,7 +120,7 @@ class GalacticGovernanceFramework extends EventEmitter {
     getVotingResults(proposalId) {
         const proposal = this.getProposalById(proposalId);
         if (!proposal) {
-            throw new Error('Proposal not found');
+            throw new Error ('Proposal not found');
         }
         return {
             proposalId,
@@ -126,7 +133,6 @@ class GalacticGovernanceFramework extends EventEmitter {
     executeProposal(proposalId) {
         const proposal = this.getProposalById(proposalId);
         if (!proposal) throw new Error('Proposal not found');
-        }
         if (proposal.status !== 'approved') {
             throw new Error('Proposal must be approved before execution');
         }
@@ -148,7 +154,7 @@ class GalacticGovernanceFramework extends EventEmitter {
                 type: 'proposal',
                 proposals,
             });
-            console.log(`Proposal sent to ${node}:`, proposals);
+            this.logger.log(`Proposal sent to ${node}: ${JSON.stringify(proposals)}`);
         });
     }
 
