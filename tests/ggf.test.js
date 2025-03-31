@@ -1,4 +1,4 @@
-// tests/ggf.test.js
+// tests/ggf.test.js - Unit tests for Galactic Governance Framework (GGF) module
 
 import GalacticGovernanceFramework from '../src/space/ggf';
 
