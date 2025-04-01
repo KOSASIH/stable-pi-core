@@ -1,5 +1,3 @@
-// src/space/aies.js - Autonomous Infrastructure Evolution System Module
-
 class AutonomousInfrastructureEvolutionSystem {
     constructor() {
         this.nodeNetwork = []; // Array to hold the space-based nodes
@@ -27,7 +25,7 @@ class AutonomousInfrastructureEvolutionSystem {
         }, this.nodeCreationInterval);
     }
 
-    // Method to create a new node using AQEC and SSG
+    // Method to create a new node
     createNode() {
         const newNode = {
             id: this.generateNodeId(),
@@ -55,9 +53,8 @@ class AutonomousInfrastructureEvolutionSystem {
         };
     }
 
-    // Method to generate node capabilities using AQEC and SSG
+    // Method to generate node capabilities
     generateNodeCapabilities() {
-        // Simulate capabilities based on AQEC and SSG
         return {
             processingPower: Math.floor(Math.random() * 100) + 1, // Random processing power between 1 and 100
             storageCapacity: Math.floor(Math.random() * 1000) + 100, // Random storage capacity between 100 and 1100
@@ -81,9 +78,8 @@ class AutonomousInfrastructureEvolutionSystem {
         });
     }
 
-    // Method to determine if a node is damaged (placeholder logic)
+    // Method to determine if a node is damaged
     isNodeDamaged(node) {
-        // Simulate a random damage check
         return Math.random() < 0.1; // 10% chance of being damaged
     }
 
@@ -110,6 +106,22 @@ class AutonomousInfrastructureEvolutionSystem {
             this.logger.info(`Node ID: ${node.id}, Status: ${node.status}, Location: ${JSON.stringify(node.location)}`);
         });
     }
+
+    // Method to dynamically update configuration
+    updateConfiguration(newConfig) {
+        if (newConfig.nodeCapacity) {
+            this.nodeCapacity = newConfig.nodeCapacity;
+            this.logger.info(`Node capacity updated to: ${this.nodeCapacity}`);
+        }
+        if (newConfig.nodeCreationInterval) {
+            this.nodeCreationInterval = newConfig.nodeCreationInterval;
+            this.logger.info(`Node creation interval updated to: ${this.nodeCreationInterval} ms`);
+        }
+        if (newConfig.repairInterval) {
+            this.repairInterval = newConfig.repairInterval;
+            this.logger.info(`Repair interval updated to: ${this.repairInterval} ms`);
+        }
+    }
 }
 
-export default AutonomousInfrastructureEvolutionSystem;
+export default new AutonomousInfrastructureEvolutionSystem();
