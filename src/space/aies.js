@@ -122,6 +122,43 @@ class AutonomousInfrastructureEvolutionSystem {
             this.logger.info(`Repair interval updated to: ${this.repairInterval} ms`);
         }
     }
+
+    // Method to register a node created by SRNF
+    registerNode(node) {
+        if (!node || !node.id) {
+            throw new Error('Invalid node data for registration.');
+        }
+
+        // Check if the network is at capacity
+        if (this.nodeNetwork.length >= this.nodeCapacity) {
+            this.logger.warn("Node capacity reached. Cannot register new node.");
+            return;
+        }
+
+        this.nodeNetwork.push(node);
+        this.logger.info(`Node registered: ${JSON.stringify(node)}`);
+    }
+
+    // Method to update the status of a registered node
+    updateNodeStatus(nodeId, status) {
+        const node = this.nodeNetwork.find(n => n.id === nodeId);
+        if (!node) {
+            throw new Error('Node not found.');
+        }
+
+        node.status = status;
+        this.logger.info(`Node status updated: ${nodeId} is now ${status}`);
+    }
+
+    // Method to get information about a specific node
+    getNodeInfo(nodeId) {
+        const node = this.nodeNetwork.find(n => n.id === nodeId);
+        if (!node) {
+            throw new Error('Node not found.');
+        }
+
+        return node;
+    }
 }
 
 export default new AutonomousInfrastructureEvolutionSystem();
