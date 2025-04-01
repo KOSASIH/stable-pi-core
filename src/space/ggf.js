@@ -1,10 +1,9 @@
-// src/space/ggf.js - Galactic Governance Framework
-
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const EventEmitter = require('events');
 const TachyonBasedPredictiveGovernance = require('./tbpg'); // Import TBPG
 const AstroSentientGovernanceMatrix = require('./asgm'); // Import ASGM
+const AutonomousGalacticDiplomacyEngine = require('./agde'); // Import AGDE
 
 class GalacticGovernanceFramework extends EventEmitter {
     constructor() {
@@ -16,6 +15,7 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.tachyonicCommunicationProtocol = null; // Placeholder for tachyonic communication protocol
         this.tbpg = new TachyonBasedPredictiveGovernance(); // Initialize TBPG
         this.asgm = new AstroSentientGovernanceMatrix(); // Initialize ASGM
+        this.agde = new AutonomousGalacticDiplomacyEngine(); // Initialize AGDE
     }
 
     // Create a logger for logging events
@@ -37,7 +37,8 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.tachyonicCommunicationProtocol = tachyonicProtocol;
         this.tbpg.initializeTBPG(tachyonicProtocol); // Initialize TBPG with the protocol
         this.asgm.initializeASGM(); // Initialize ASGM
-        this.logger.log("Galactic Governance Framework initialized with tachyonic protocol and ASGM.");
+        this.agde.initialize(); // Initialize AGDE
+        this.logger.log("Galactic Governance Framework initialized with tachyonic protocol, ASGM, and AGDE.");
     }
 
     // Register a new entity
@@ -46,6 +47,7 @@ class GalacticGovernanceFramework extends EventEmitter {
             this.entities.add(entityId);
             this.logger.log(`Entity registered: ${entityId}`);
             this.emit('entityRegistered', entityId);
+            this.agde.registerEntity(entityId); // Register entity in AGDE
         } else {
             this.logger.log(`Entity already registered: ${entityId}`);
         }
@@ -120,7 +122,7 @@ class GalacticGovernanceFramework extends EventEmitter {
     getVotingResults(proposalId) {
         const proposal = this.getProposalById(proposalId);
         if (!proposal) {
-            throw new Error ('Proposal not found');
+            throw new Error('Proposal not found');
         }
         return {
             proposalId,
