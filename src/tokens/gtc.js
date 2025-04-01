@@ -14,7 +14,7 @@ class GalacticCoin {
         this.stableValueGTC = 314159; // 1 GTC = $314,159
         this.subunitRatio = 314159; // 1 GTC = 314,159 GU, 1 GU = $1
         this.balances = new Map(); // Balances in GTC
-        this.owner = "0xInitialDeployer"; // Replace with your address
+        this.owner = "spc-KOSASIH-owner"; // Replace with your address
         this.transactionFeePercentage = 0.01; // 1% transaction fee
         this.eventLog = []; // Event log for transactions
         this.bqil = new BioQuantumIntegrationLayer(); // Initialize BQIL
