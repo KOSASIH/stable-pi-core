@@ -1,7 +1,10 @@
+// src/core/stabilityManager.js - Advanced Stability Manager Module
+
 const { payment } = require('../core/payment');
 const { Logger } = require('../core/logger'); // Assuming a logger module exists
 const dotenv = require('dotenv');
 const AstroNeuralEconomicAmplifier = require('./anea'); // Import the ANEA class
+const SelfStabilizingEconomicResilienceEngine = require('./ssere'); // Import the SSERE class
 
 dotenv.config(); // Load environment variables
 
@@ -16,6 +19,7 @@ class StabilityManager {
         };
         this.logger = new Logger();
         this.anea = new AstroNeuralEconomicAmplifier(); // Initialize ANEA
+        this.ssere = new SelfStabilizingEconomicResilienceEngine(); // Initialize SSERE
     }
 
     async stabilize(currentPriceGTC) {
@@ -38,6 +42,10 @@ class StabilityManager {
             // Amplify liquidity using ANEA
             const amplifiedLiquidity = this.anea.amplifyLiquidity();
             this.logger.info(`Amplified Liquidity: ${amplifiedLiquidity}`);
+
+            // Stabilize values using SSERE
+            await this.ssere.stabilizeValues(currentPriceGTC);
+            this.logger.info("Values stabilized using SSERE.");
         } catch (error) {
             this.logger.error(`Error stabilizing GTC: ${error.message}`);
         }
