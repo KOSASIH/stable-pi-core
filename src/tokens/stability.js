@@ -1,10 +1,11 @@
-// src/core/stabilityManager.js - Advanced Stability Manager Module
+// src/tokens/stability.js
 
 const { payment } = require('../core/payment');
 const { Logger } = require('../core/logger'); // Assuming a logger module exists
 const dotenv = require('dotenv');
 const AstroNeuralEconomicAmplifier = require('./anea'); // Import the ANEA class
 const SelfStabilizingEconomicResilienceEngine = require('./ssere'); // Import the SSERE class
+const trlf = require('../core/trlf'); // Import the TRLF module
 
 dotenv.config(); // Load environment variables
 
@@ -20,6 +21,20 @@ class StabilityManager {
         this.logger = new Logger();
         this.anea = new AstroNeuralEconomicAmplifier(); // Initialize ANEA
         this.ssere = new SelfStabilizingEconomicResilienceEngine(); // Initialize SSERE
+
+        // Initialize TRLF for liquidity management
+        this.initializeTRLF();
+    }
+
+    initializeTRLF() {
+        // Initialize liquidity pools for different realities
+        trlf.initializeLiquidityPool('MainReality');
+        trlf.initializeLiquidityPool('ParallelReality1');
+        trlf.initializeLiquidityPool('ParallelReality2');
+
+        // Add initial liquidity to the main reality pool
+        trlf.addLiquidity('MainReality', this.liquidityPool.gtc, this.liquidityPool.usd / this.targetValueGTC);
+        this.logger.info(`Initialized TRLF with liquidity: ${this.liquidityPool.gtc} GTC and ${this.liquidityPool.usd} USD in MainReality.`);
     }
 
     async stabilize(currentPriceGTC) {
