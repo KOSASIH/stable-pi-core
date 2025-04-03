@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { createHash } from 'crypto';
 import { performance } from 'perf_hooks';
 import OmniCosmicSymbioticInterface from './ocsi'; // Import the OCSI module
+import AstroNeuralRealityForge from './anrf'; // Import the ANRF module
 
 class HyperluminalThoughtTransducer {
     constructor() {
@@ -92,6 +93,7 @@ class BioQuantumIntegrationLayer {
         this.htt = new HyperluminalThoughtTransducer(); // Initialize HTT
         this.cnsf = new CosmoNeuralSynchronizationField(); // Initialize CNSF
         this.ocsi = new OmniCosmicSymbioticInterface(); // Initialize OCSI
+        this.anrf = new AstroNeuralRealityForge(); // Initialize ANRF
     }
 
     // Method to add a valid bio-signal (for testing purposes)
@@ -114,7 +116,7 @@ class BioQuantumIntegrationLayer {
 
     // Method to validate the bio-signal
     async validateBioSignal(bioSignal) {
-        // Sim ulate bio-signal validation logic
+        // Simulate bio-signal validation logic
         return new Promise((resolve) => {
             setTimeout(() => {
                 const isValid = this.isValidBioSignal(bioSignal);
@@ -190,6 +192,26 @@ class BioQuantumIntegrationLayer {
     // Method to log current symbiotic relationships
     logSymbioticRelationships() {
         this.ocsi.logSymbioticRelationships();
+    }
+
+    // Method to create a new virtual reality using ANRF
+    createVirtualReality(name, parameters) {
+        return this.anrf.createVirtualReality(name, parameters);
+    }
+
+    // Method to simulate economy inthe virtual reality created by ANRF
+    simulateEconomy(virtualRealityName, economicParameters) {
+        return this.anrf.simulateEconomy(virtualRealityName, economicParameters);
+    }
+
+    // Method to manage user interactions within the virtual reality
+    manageUserInteractions(virtualRealityName, userActions) {
+        return this.anrf.manageUserInteractions(virtualRealityName, userActions);
+    }
+
+    // Method to destroy a virtual reality instance
+    destroyVirtualReality(virtualRealityName) {
+        return this.anrf.destroyVirtualReality(virtualRealityName);
     }
 }
 
