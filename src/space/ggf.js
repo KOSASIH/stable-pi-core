@@ -4,6 +4,7 @@ const EventEmitter = require('events');
 const TachyonBasedPredictiveGovernance = require('./tbpg'); // Import TBPG
 const AstroSentientGovernanceMatrix = require('./asgm'); // Import ASGM
 const AutonomousGalacticDiplomacyEngine = require('./agde'); // Import AGDE
+const HyperDimensionalGovernanceSynthesizer = require('./hdgs'); // Import HDGS
 
 class GalacticGovernanceFramework extends EventEmitter {
     constructor() {
@@ -16,6 +17,7 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.tbpg = new TachyonBasedPredictiveGovernance(); // Initialize TBPG
         this.asgm = new AstroSentientGovernanceMatrix(); // Initialize ASGM
         this.agde = new AutonomousGalacticDiplomacyEngine(); // Initialize AGDE
+        this.hdgs = new HyperDimensionalGovernanceSynthesizer(); // Initialize HDGS
     }
 
     // Create a logger for logging events
@@ -38,7 +40,7 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.tbpg.initializeTBPG(tachyonicProtocol); // Initialize TBPG with the protocol
         this.asgm.initializeASGM(); // Initialize ASGM
         this.agde.initialize(); // Initialize AGDE
-        this.logger.log("Galactic Governance Framework initialized with tachyonic protocol, ASGM, and AGDE.");
+        this.logger.log("Galactic Governance Framework initialized with tachyonic protocol, ASGM, AGDE, and HDGS.");
     }
 
     // Register a new entity
@@ -105,6 +107,11 @@ class GalacticGovernanceFramework extends EventEmitter {
             proposal.status = 'approved';
             this.logger.log(`Proposal approved: ${JSON.stringify(proposal)}`);
             this.emit('proposalApproved', proposal);
+            this.hdgs.proposeDecision({
+                id: proposal.id,
+                details: proposal.description,
+                dimensions: ['5D', '6D'], // Example dimensions
+            });
         }
     }
 
