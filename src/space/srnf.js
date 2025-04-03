@@ -1,6 +1,7 @@
 const { aies } = require('./aies'); // Assuming AIES is already available
 const { hql } = require('../core/hql');
 const { eqfc } = require('../space/eqfc'); // Eternal Quantum Flux Capacitor (assumed to exist)
+const CosmoQuantumMorphicAdaptor = require('./cqma'); // Import the CQMA class
 
 class SelfReplicatingNodeFabricator {
     constructor() {
@@ -11,6 +12,7 @@ class SelfReplicatingNodeFabricator {
         this.locations = ['Asteroid Belt', 'Mars Surface', 'Jupiter Orbit', 'Interstellar Void'];
         this.resourceTypes = ['silicon', 'iron', 'hydrogen', 'rare-earths'];
         this.energyConsumptionPerNode = 100; // Energy required per node replication
+        this.cqma = new CosmoQuantumMorphicAdaptor(); // Initialize CQMA
     }
 
     // Activate SRNF
@@ -73,11 +75,32 @@ class SelfReplicatingNodeFabricator {
             blueprint: this.replicationBlueprint
         };
 
+        // Adapt the new node based on the current cosmic environment
+        const currentEnvironment = this.determineCurrentEnvironment(location);
+        this.cqma.updateEnvironmentalConditions(currentEnvironment.type, currentEnvironment.conditions);
+
         // Synchronize with AIES and HQL
         await aies.registerNewNode(newNode);
         await hql.storeData(newNodeId, newNode);
         console.log(`New node replicated: ${newNodeId} at ${location}`);
         return true;
+    }
+
+    // Determine the current environment based on location
+    determineCurrentEnvironment(location) {
+        // Example logic to determine environment type and conditions
+        switch (location) {
+            case 'Asteroid Belt':
+                return { type: 'vacuum', conditions: { pressure: 'low', temperature: 'cold' } };
+            case 'Mars Surface':
+                return { type: 'nebula', conditions: { density: 0.1, gasComposition: 'carbon-dioxide' } };
+            case 'Jupiter Orbit':
+                return { type: 'supernova', conditions: { explosionIntensity: 'medium', radiationLevel: 3000 } };
+            case 'Interstellar Void':
+                return { type: 'dark matter', conditions: { darkMatterDensity: 'high', energyManipulationAbility: 'advanced' } };
+            default:
+                return { type: 'unknown', conditions: {} };
+        }
     }
 
     // Automatic replication cycle
