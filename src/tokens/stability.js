@@ -1,11 +1,10 @@
-// src/tokens/stability.js
-
 const { payment } = require('../core/payment');
 const { Logger } = require('../core/logger'); // Assuming a logger module exists
 const dotenv = require('dotenv');
 const AstroNeuralEconomicAmplifier = require('./anea'); // Import the ANEA class
 const SelfStabilizingEconomicResilienceEngine = require('./ssere'); // Import the SSERE class
 const trlf = require('../core/trlf'); // Import the TRLF module
+const OmniTemporalEconomicHarmonizer = require('./oteh'); // Import the OTEH class
 
 dotenv.config(); // Load environment variables
 
@@ -21,6 +20,7 @@ class StabilityManager {
         this.logger = new Logger();
         this.anea = new AstroNeuralEconomicAmplifier(); // Initialize ANEA
         this.ssere = new SelfStabilizingEconomicResilienceEngine(); // Initialize SSERE
+        this.oteh = new OmniTemporalEconomicHarmonizer(); // Initialize OTEH
 
         // Initialize TRLF for liquidity management
         this.initializeTRLF();
@@ -39,6 +39,9 @@ class StabilityManager {
 
     async stabilize(currentPriceGTC) {
         try {
+            // Synchronize economic values with OTEH
+            this.oteh.synchronizeEconomicValues('present', { GTC: currentPriceGTC, GU: this.targetValueGU, priceIndex: 1.0 });
+
             const adjustmentAmount = this.calculateAdjustment(currentPriceGTC);
             if (adjustmentAmount.gtc !== 0 || adjustmentAmount.usd !== 0) {
                 this.liquidityPool.gtc += adjustmentAmount.gtc;
