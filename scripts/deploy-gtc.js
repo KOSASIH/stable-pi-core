@@ -1,5 +1,3 @@
-// src/deployGTC.js
-
 const gtc = require('../src/tokens/gtc');
 const stability = require('../src/tokens/stability');
 const GalacticWallet = require('../src/tokens/wallet');
@@ -47,10 +45,7 @@ async function deployGTC() {
         await checkBalances(wallet1, wallet2);
 
         // Stabilize GTC price
-        const currentPriceGTC = await stability.getCurrentPriceGTC();
-        console.log(`Current price of GTC: $${currentPriceGTC.toFixed(2)}`);
-        await stability.stabilize(currentPriceGTC);
-        console.log("Stabilization process completed.");
+        await stabilizeGTC();
 
         // Initialize and activate SRNF
         await initializeSRNF();
@@ -91,6 +86,18 @@ async function checkBalances(wallet1, wallet2) {
         console.log(`Balance of ${wallet2.address}: ${balance2.GTC} GTC, ${balance2.GU} GU`);
     } catch (error) {
         console.error("Failed to check balances:", error.message);
+    }
+}
+
+// Function to stabilize GTC price
+async function stabilizeGTC() {
+    try {
+        const currentPriceGTC = await stability.getCurrentPriceGTC();
+        console.log(`Current price of GTC: $${currentPriceGTC.toFixed(2)}`);
+        await stability.stabilize(currentPriceGTC);
+        console.log("Stabilization process completed.");
+    } catch (error) {
+        console.error("Failed to stabilize GTC price:", error.message);
     }
 }
 
