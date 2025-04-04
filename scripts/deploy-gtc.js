@@ -9,6 +9,7 @@ const qtdc = require('../core/qtdc');
 const qgc = require('../core/qgc');
 const aies = require('../src/space/aies');
 const dotenv = require('dotenv');
+const starEnergy = require('../src/tokens/starEnergy'); // Inisialisasi Energi Bintang
 
 dotenv.config(); // Load environment variables
 
@@ -21,8 +22,8 @@ async function deployGTC() {
         console.log("GTC initialized successfully.");
 
         // Create wallets for users
-        const wallet1Address = process.env.WALLET1_ADDRESS || "0xUser 1";
-        const wallet2Address = process.env.WALLET2_ADDRESS || "0xUser 2";
+        const wallet1Address = process.env.WALLET1_ADDRESS || "0xUser  1";
+        const wallet2Address = process.env.WALLET2_ADDRESS || "0xUser  2";
         const wallet1 = new GalacticWallet(wallet1Address);
         const wallet2 = new GalacticWallet(wallet2Address);
         console.log(`Wallets created: ${wallet1.address}, ${wallet2.address}`);
@@ -51,6 +52,11 @@ async function deployGTC() {
 
         // Initialize and activate SRNF
         await initializeSRNF();
+
+        // Harvest Star Energy
+        await starEnergy.harvestStarEnergy(1000); // Panen 1000 Energi Bintang
+        const cncAmount = await starEnergy.convertStarEnergyToCNC(1000); // Konversi 1000 Energi Bintang ke CNC
+        console.log(`CNC berhasil dikonversi: ${cncAmount}`);
 
         // Example: Perform CNC transaction
         await performCNCTransaction(wallet1, wallet2, 10000); // Transfer 10,000 CNC from wallet1 to wallet2
@@ -100,7 +106,7 @@ async function stabilizeGTC() {
         const currentPriceGTC = await stability.getCurrentPriceGTC();
         console.log(`Current price of GTC: $${currentPriceGTC.toFixed(2)}`);
         await stability.stabilize(currentPriceGTC);
-        console console.log("Stabilization process completed.");
+        console.log("Stabilization process completed.");
     } catch (error) {
         console.error("Failed to stabilize GTC price:", error.message);
     }
