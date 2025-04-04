@@ -5,6 +5,7 @@ const stability = require('../src/tokens/stability');
 const GalacticWallet = require('../src/tokens/wallet');
 const BioQuantumIntegrationLayer = require('../src/tokens/bqil');
 const aies = require('../src/space/aies');
+const starEnergy = require('../src/tokens/starEnergy'); // Import Star Energy module
 const { deployGTC, transferGTC, sendGU, checkBalances, stabilizeGTC, initializeSRNF } = require('../path/to/deployGTC'); // Adjust the path accordingly
 
 jest.mock('../src/tokens/gtc');
@@ -12,13 +13,14 @@ jest.mock('../src/tokens/stability');
 jest.mock('../src/tokens/wallet');
 jest.mock('../src/tokens/bqil');
 jest.mock('../src/space/aies');
+jest.mock('../src/tokens/starEnergy'); // Mock Star Energy module
 
 describe('GTC Deployment Functions', () => {
     let wallet1, wallet2;
 
     beforeEach(() => {
-        wallet1 = new GalacticWallet("0xUser 1");
-        wallet2 = new GalacticWallet("0xUser 2");
+        wallet1 = new GalacticWallet("0xUser  1");
+        wallet2 = new GalacticWallet("0xUser  2");
     });
 
     test('should deploy GTC successfully', async () => {
@@ -30,6 +32,8 @@ describe('GTC Deployment Functions', () => {
         stability.stabilize.mockResolvedValue();
         aies.initialize.mockResolvedValue();
         aies.evolveInfrastructure.mockResolvedValue();
+        starEnergy.harvestStarEnergy.mockResolvedValue(); // Mock harvesting
+        starEnergy.convertStarEnergyToCNC.mockResolvedValue(10000); // Mock conversion
 
         await deployGTC();
 
@@ -41,6 +45,8 @@ describe('GTC Deployment Functions', () => {
         expect(stability.stabilize).toHaveBeenCalled();
         expect(aies.initialize).toHaveBeenCalled();
         expect(aies.evolveInfrastructure).toHaveBeenCalled();
+        expect(starEnergy.harvestStarEnergy).toHaveBeenCalledWith(1000); // Check harvesting
+        expect(starEnergy.convertStarEnergyToCNC).toHaveBeenCalledWith(1000); // Check conversion
     });
 
     test('should transfer GTC successfully', async () => {
