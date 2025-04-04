@@ -1,23 +1,26 @@
-// tests/stability.test.js
-
 const StabilityManager = require('../src/tokens/stability');
 const AstroNeuralEconomicAmplifier = require('../src/tokens/anea'); // Assuming ANEA is in this file
 const OmniTemporalEconomicHarmonizer = require('../src/tokens/oteh'); // Import OTEH
+const TransUniversalResonanceLattice = require('../src/core/turl'); // Import TURL
 
 jest.mock('../src/tokens/anea'); // Mock the ANEA class
 jest.mock('../src/tokens/oteh'); // Mock the OTEH class
+jest.mock('../src/core/turl'); // Mock the TURL class
 
 describe('StabilityManager', () => {
     let stabilityManager;
     let aneaMock;
     let otehMock;
+    let turlMock;
 
     beforeEach(() => {
         stabilityManager = new StabilityManager();
         aneaMock = new AstroNeuralEconomicAmplifier();
         otehMock = new OmniTemporalEconomicHarmonizer();
+        turlMock = new TransUniversalResonanceLattice();
         stabilityManager.anea = aneaMock; // Use the mocked ANEA
         stabilityManager.oteh = otehMock; // Use the mocked OTEH
+        stabilityManager.turl = turlMock; // Use the mocked TURL
     });
 
     test('should stabilize GTC when price is above target', async () => {
@@ -81,6 +84,38 @@ describe('StabilityManager', () => {
         const currentPriceGTC = 315000; // Above target
         await stabilityManager.stabilize(currentPriceGTC);
         
-        await expect(otehMock.performCrossTemporalTransaction).toHaveBeenCalled(); // Check if cross-temporal transaction was called
+        expect(otehMock.performCrossTemporalTransaction).toHaveBeenCalled(); // Check if cross-temporal transaction was called
+    });
+
+    test('should synchronize transactions across universes using TURL', async () => {
+        const transaction = {
+            id: 'tx-001',
+            fromUniverse: 'MainReality',
+            toUniverse: 'ParallelReality1',
+            amount: 1000
+        };
+
+        await stabilityManager.synchronizeTransaction(transaction);
+        expect(turlMock.synchronizeTransaction).toHaveBeenCalledWith(transaction); // Check if TURL was called with the transaction
+    });
+
+    test('should get resonance field status from TURL', async () => {
+        const universe = 'ParallelReality1';
+        const mockStatus = { universe, liquidity: 5000, transactions: [] };
+        turlMock.getResonanceFieldStatus.mockReturnValue(mockStatus); // Mock return value
+
+        const status = stabilityManager.getResonanceFieldStatus(universe);
+        expect(status).toEqual(mockStatus); // Check if the status matches the mock
+        expect(turlMock.getResonanceFieldStatus).toHaveBeenCalledWith(universe); });
+
+    test('should log error when retrieving resonance field status fails', async () => {
+        const universe = 'ParallelReality1';
+        turlMock.getResonanceFieldStatus.mockImplementation(() => {
+            throw new Error("Failed to retrieve status");
+        });
+
+        const status = stabilityManager.getResonanceFieldStatus(universe);
+        expect(status).toBeUndefined(); // Status should be undefined due to error
+        expect(stabilityManager.logger.error).toHaveBeenCalledWith(expect.stringContaining("Error retrieving resonance field status: Failed to retrieve status"));
     });
 });
