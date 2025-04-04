@@ -21,7 +21,7 @@ class StabilityManager {
         this.liquidityPool = {
             gtc: parseFloat(process.env.INITIAL_GTC) || 1000000, // Initial GTC reserve
             usd: parseFloat(process.env.INITIAL_USD) || 314159000000, // Initial USD reserve
-            cnc: 500000 // Initial CNC reserve (example)
+            cnc: 500000 // Initial CNC reserve
         };
         this.logger = new Logger();
         this.anea = new AstroNeuralEconomicAmplifier(); // Initialize ANEA
