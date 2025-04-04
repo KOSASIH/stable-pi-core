@@ -7,6 +7,8 @@ class StarEnergy {
     constructor() {
         this.balance = 0; // Stock of Star Energy
         this.logger = new Logger(); // Initialize logger
+        this.valuePerStarEnergy = 1000000; // Value of 1 Star Energy in USD
+        this.cncConversionRate = 0.1; // 1 CNC = 0.1 Star Energy
     }
 
     // Method to harvest Star Energy
@@ -30,7 +32,7 @@ class StarEnergy {
             if (amount <= 0 || amount > this.balance) {
                 throw new Error("Invalid amount for conversion.");
             }
-            const cncAmount = amount * 0.1; // 1 Star Energy = 0.1 CNC
+            const cncAmount = amount * this.cncConversionRate; // 1 Star Energy = 0.1 CNC
             this.balance -= amount;
             await CosmicNexusCoin.addCNC(cncAmount); // Assuming addCNC method exists in CNC module
             this.logger.info(`Successfully converted Star Energy to CNC: ${cncAmount}`);
@@ -44,6 +46,11 @@ class StarEnergy {
     // Method to get balance of Star Energy
     getBalance() {
         return this.balance;
+    }
+
+    // Method to get the monetary value of the Star Energy balance
+    getMonetaryValue() {
+        return this.balance * this.valuePerStarEnergy; // Calculate total value in USD
     }
 
     // Method to transfer Star Energy to another entity
