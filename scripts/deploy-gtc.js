@@ -1,3 +1,5 @@
+// src/deployGTC.js
+
 const gtc = require('../src/tokens/gtc');
 const stability = require('../src/tokens/stability');
 const GalacticWallet = require('../src/tokens/wallet');
