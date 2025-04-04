@@ -2,8 +2,10 @@
 
 const GalacticGovernanceFramework = require('../../src/space/ggf');
 const HyperDimensionalGovernanceSynthesizer = require('../../src/governance/hdgs'); // Import HDGS
+const AstroCosmicConsciousnessNetwork = require('../../src/space/accn'); // Import ACCN
 
 jest.mock('../../src/governance/hdgs'); // Mock the HDGS class
+jest.mock('../../src/space/accn'); // Mock the ACCN class
 
 describe('GalacticGovernanceFramework', () => {
     let ggf;
@@ -93,7 +95,7 @@ describe('GalacticGovernanceFramework', () => {
         const proposal = ggf.createProposal('Establish Trade Routes', 'Proposal to establish trade routes.', 'PlanetA');
         
         ggf.voteOnProposal(proposal.id, 'PlanetB');
-        const results = ggf.getVotingResults(proposal.id);
+        const results = ggf.getVotingResults(pro posal.id);
         
         expect(results).toEqual({
             proposalId: proposal.id,
@@ -130,5 +132,14 @@ describe('GalacticGovernanceFramework', () => {
         
         ggf.sendProposalsToNodes([proposal], ['Node1', 'Node2']);
         expect(mockProtocol.sendMessage).toHaveBeenCalledTimes(2);
+    });
+
+    test('should gather cosmic insights from ACCN', async () => {
+        const mockResponse = 'Cosmic alignment is favorable.';
+        AstroCosmicConsciousnessNetwork.prototype.communicate.mockResolvedValue(mockResponse); // Mock ACCN response
+
+        const insight = await ggf.gatherCosmicInsights('Pulsar A', 'What is the status of cosmic alignment?');
+        expect(insight).toBe(mockResponse);
+        expect(AstroCosmicConsciousnessNetwork.prototype.communicate).toHaveBeenCalledWith('Pulsar A', 'What is the status of cosmic alignment?');
     });
 });
