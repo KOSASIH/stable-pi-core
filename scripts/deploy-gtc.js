@@ -1,3 +1,5 @@
+// scripts/deploy-gtc.js
+
 const gtc = require('../src/tokens/gtc');
 const stability = require('../src/tokens/stability');
 const GalacticWallet = require('../src/tokens/wallet');
@@ -49,6 +51,9 @@ async function deployGTC() {
 
         // Initialize and activate SRNF
         await initializeSRNF();
+
+        // Example: Perform CNC transaction
+        await performCNCTransaction(wallet1, wallet2, 10000); // Transfer 10,000 CNC from wallet1 to wallet2
     } catch (error) {
         console.error("Error during GTC deployment:", error.message);
     }
@@ -82,8 +87,8 @@ async function checkBalances(wallet1, wallet2) {
         console.log(`Checking balances...`);
         const balance1 = await wallet1.checkBalance();
         const balance2 = await wallet2.checkBalance();
-        console.log(`Balance of ${wallet1.address}: ${balance1.GTC} GTC, ${balance1.GU} GU`);
-        console.log(`Balance of ${wallet2.address}: ${balance2.GTC} GTC, ${balance2.GU} GU`);
+        console.log(`Balance of ${wallet1.address}: ${balance1.GTC} GTC, ${balance1.GU} GU, ${balance1.CNC} CNC`);
+        console.log(`Balance of ${wallet2.address}: ${balance2.GTC} GTC, ${balance2.GU} GU, ${balance2.CNC} CNC`);
     } catch (error) {
         console.error("Failed to check balances:", error.message);
     }
@@ -95,7 +100,7 @@ async function stabilizeGTC() {
         const currentPriceGTC = await stability.getCurrentPriceGTC();
         console.log(`Current price of GTC: $${currentPriceGTC.toFixed(2)}`);
         await stability.stabilize(currentPriceGTC);
-        console.log("Stabilization process completed.");
+        console console.log("Stabilization process completed.");
     } catch (error) {
         console.error("Failed to stabilize GTC price:", error.message);
     }
@@ -113,6 +118,17 @@ async function initializeSRNF() {
         console.log("SRNF is now replicating nodes across the solar system...");
     } catch (error) {
         console.error("Failed to initialize or activate SRNF:", error.message);
+    }
+}
+
+// Function to perform CNC transaction
+async function performCNCTransaction(walletFrom, walletTo, amount) {
+    try {
+        console.log(`Performing CNC transaction of ${amount} from ${walletFrom.address} to ${walletTo.address}...`);
+        await GalacticWallet.transferCNC(walletFrom.address, walletTo.address, amount);
+        console.log(`Successfully transferred ${amount} CNC from ${walletFrom.address} to ${walletTo.address}.`);
+    } catch (error) {
+        console.error(`Failed to perform CNC transaction: ${error.message}`);
     }
 }
 
