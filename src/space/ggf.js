@@ -5,6 +5,7 @@ const TachyonBasedPredictiveGovernance = require('./tbpg'); // Import TBPG
 const AstroSentientGovernanceMatrix = require('./asgm'); // Import ASGM
 const AutonomousGalacticDiplomacyEngine = require('./agde'); // Import AGDE
 const HyperDimensionalGovernanceSynthesizer = require('./hdgs'); // Import HDGS
+const AstroCosmicConsciousnessNetwork = require('./accn'); // Import ACCN
 
 class GalacticGovernanceFramework extends EventEmitter {
     constructor() {
@@ -18,6 +19,7 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.asgm = new AstroSentientGovernanceMatrix(); // Initialize ASGM
         this.agde = new AutonomousGalacticDiplomacyEngine(); // Initialize AGDE
         this.hdgs = new HyperDimensionalGovernanceSynthesizer(); // Initialize HDGS
+        this.accn = new AstroCosmicConsciousnessNetwork(); // Initialize ACCN
     }
 
     // Create a logger for logging events
@@ -50,6 +52,7 @@ class GalacticGovernanceFramework extends EventEmitter {
             this.logger.log(`Entity registered: ${entityId}`);
             this.emit('entityRegistered', entityId);
             this.agde.registerEntity(entityId); // Register entity in AGDE
+            this.accn.connectEntity(entityId, 'entity'); // Connect entity to ACCN
         } else {
             this.logger.log(`Entity already registered: ${entityId}`);
         }
@@ -180,6 +183,13 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.logger.log(`ASGM decisions made: ${JSON.stringify(decisions)}`);
         return decisions;
     }
+
+    // Utilize ACCN to gather insights from cosmic entities
+    async gatherCosmicInsights(entityName, message) {
+        const response = await this.accn.communicate(entityName, message);
+        this.logger.log(`Cosmic insight from ${entityName}: ${response}`);
+        return response;
+    }
 }
 
 // Example usage
@@ -221,8 +231,7 @@ class GalacticGovernanceFramework extends EventEmitter {
         console.log('Proposal executed:', proposal);
     }
 
-    // Retrieve all proposals
-    const allProposals = ggf.getAllProposals();
+    // Retrieve all proposals const allProposals = ggf.getAllProposals();
     console.log('All proposals:', allProposals);
 
     // Send proposals to nodes
@@ -235,6 +244,10 @@ class GalacticGovernanceFramework extends EventEmitter {
     // Utilize ASGM for decision making
     const asgmDecisions = ggf.utilizeASGM();
     console.log('ASGM Decisions:', asgmDecisions);
+
+    // Gather cosmic insights from a cosmic entity
+    const cosmicInsight = await ggf.gatherCosmicInsights('Pulsar A', 'What is the status of cosmic alignment?');
+    console.log('Cosmic Insight:', cosmicInsight);
 })();
 
 module.exports = GalacticGovernanceFramework;
