@@ -1,4 +1,4 @@
-// src/tokens/stabilityManager.js
+// src/tokens/stability.js
 
 const { payment } = require('../core/payment');
 const { Logger } = require('../core/logger'); // Assuming a logger module exists
@@ -79,7 +79,7 @@ class StabilityManager {
         const priceDifference = currentPriceGTC - this.targetValueGTC;
         const adjustmentFactor = Math.sign(priceDifference) * Math.min(Math.abs(priceDifference) / 1000, 100); // Dynamic adjustment
         return {
-            gtc: adjustmentFactor *  1000,
+            gtc: adjustmentFactor * 1000,
             usd: adjustmentFactor * 1000 * this.targetValueGTC
         };
     }
