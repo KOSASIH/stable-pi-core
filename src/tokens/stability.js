@@ -1,3 +1,5 @@
+// src/tokens/stabilityManager.js
+
 const { payment } = require('../core/payment');
 const { Logger } = require('../core/logger'); // Assuming a logger module exists
 const dotenv = require('dotenv');
@@ -6,6 +8,7 @@ const SelfStabilizingEconomicResilienceEngine = require('./ssere'); // Import th
 const trlf = require('../core/trlf'); // Import the TRLF module
 const OmniTemporalEconomicHarmonizer = require('./oteh'); // Import the OTEH class
 const TransUniversalResonanceLattice = require('../core/turl'); // Import the TURL class
+const CosmicNexusCoin = require('./cnc'); // Import the CNC module
 
 dotenv.config(); // Load environment variables
 
@@ -16,7 +19,8 @@ class StabilityManager {
         this.subunitRatio = 314159; // 1 GTC = 314,159 GU
         this.liquidityPool = {
             gtc: parseFloat(process.env.INITIAL_GTC) || 1000000, // Initial GTC reserve
-            usd: parseFloat(process.env.INITIAL_USD) || 314159000000 // Initial USD reserve
+            usd: parseFloat(process.env.INITIAL_USD) || 314159000000, // Initial USD reserve
+            cnc: 500000 // Initial CNC reserve (example)
         };
         this.logger = new Logger();
         this.anea = new AstroNeuralEconomicAmplifier(); // Initialize ANEA
@@ -75,7 +79,7 @@ class StabilityManager {
         const priceDifference = currentPriceGTC - this.targetValueGTC;
         const adjustmentFactor = Math.sign(priceDifference) * Math.min(Math.abs(priceDifference) / 1000, 100); // Dynamic adjustment
         return {
-            gtc: adjustmentFactor * 1000,
+            gtc: adjustmentFactor *  1000,
             usd: adjustmentFactor * 1000 * this.targetValueGTC
         };
     }
@@ -85,13 +89,14 @@ class StabilityManager {
     }
 
     async checkLiquidity() {
-        this.logger.info(`Current Liquidity Pool: ${this.liquidityPool.gtc} GTC, ${this.liquidityPool.usd} USD`);
+        this.logger.info(`Current Liquidity Pool: ${this.liquidityPool.gtc} GTC, ${this.liquidityPool.usd} USD, ${this.liquidityPool.cnc} CNC`);
         return this.liquidityPool;
     }
 
     async resetLiquidity() {
         this.liquidityPool.gtc = parseFloat(process.env.INITIAL_GTC) || 1000000;
         this.liquidityPool.usd = parseFloat(process.env.INITIAL_USD) || 314159000000;
+        this.liquidityPool.cnc = 500000; // Reset CNC to initial value
         this.logger.info("Liquidity pool has been reset to initial values.");
     }
 
@@ -114,6 +119,31 @@ class StabilityManager {
         } catch (error) {
             this.logger.error(`Error retrieving resonance field status: ${error.message}`);
         }
+    }
+
+    // Method to perform a CNC transaction
+    async performCNCTransaction(amount, toAddress) {
+        if (amount <= 0) {
+            throw new Error("Transaction amount must be positive.");
+        }
+
+        if (this.liquidityPool.cnc < amount) {
+            throw new Error("Insufficient CNC in liquidity pool.");
+        }
+
+        try {
+            await CosmicNexusCoin.transferCNC(this.getUser Id(), toAddress, amount);
+            this.liquidityPool.cnc -= amount; // Update CNC balance
+            this.logger.info(`CNC Transaction of ${amount} to ${toAddress} completed. Remaining CNC: ${this.liquidityPool.cnc}`);
+        } catch (error) {
+            this.logger.error(`Error processing CNC transaction: ${error.message}`);
+            throw new Error('CNC transaction could not be completed.');
+        }
+    }
+
+    // Mock method to get user ID (for demonstration purposes)
+    getUser Id() {
+        return 'user123'; // Replace with actual user ID retrieval logic
     }
 }
 
