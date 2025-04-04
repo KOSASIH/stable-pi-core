@@ -3,33 +3,37 @@
 import axios from 'axios'; // For external API calls
 import { generateOTP, validateOTP } from './otpService'; // Import OTP service
 import CosmicNexusCoin from './cnc'; // Import the CNC module
+import { Logger } from '../core/logger'; // Assuming a logger module exists
 
 class Wallet {
     constructor() {
         this.balance = 0; // User's balance in the wallet
+        this.starEnergyBalance = 0; // User's balance of Star Energy
         this.transactions = []; // Array to hold transaction history
         this.isBioSignalAuthenticated = false; // Flag for bio-signal authentication
         this.isAuthenticated = false; // Flag for overall authentication
+        this.logger = new Logger(); // Initialize logger
     }
 
     // Method to authenticate using traditional methods (e.g., password)
     authenticate(password) {
-        console.log("Authenticating with password...");
+        this.logger.info("Authenticating with password...");
         // Implement traditional authentication logic
         // Assume authentication is successful for this example
         this.isAuthenticated = true;
+        this.logger.info("Authentication successful using password.");
         return true;
     }
 
     // Method to authenticate using Bio-Quantum Integration Layer
     async authenticateWithBQIL(bioSignal) {
-        console.log("Authenticating with Bio-Quantum Integration Layer...");
+        this.logger.info("Authenticating with Bio-Quantum Integration Layer...");
         const isValid = await this.validateBioSignal(bioSignal);
         if (!isValid) {
             throw new Error("Bio-signal authentication failed.");
         }
         this.isBioSignalAuthenticated = true; // Set authentication flag
-        console.log("Authentication successful using BQIL.");
+        this.logger.info("Authentication successful using BQIL.");
         return true;
     }
 
@@ -68,13 +72,32 @@ class Wallet {
             await CosmicNexusCoin.transferCNC(this.getUser Id(), toAddress, amount);
             this.balance -= amount; // Update wallet balance
             this.transactions.push({ amount, to: toAddress, timestamp: new Date() }); // Record transaction
-            console.log(`CNC Transaction of ${amount} to ${toAddress} completed. New balance: ${this.balance}`);
+            this.logger.info(`CNC Transaction of ${amount} to ${toAddress} completed. New balance: ${this.balance}`);
             this.sendNotification(`CNC Transaction of ${amount} to ${toAddress} completed successfully.`);
             return this.balance;
         } catch (error) {
-            console.error('Error processing CNC transaction:', error);
+            this.logger.error('Error processing CNC transaction:', error);
             throw new Error('CNC transaction could not be completed.');
         }
+    }
+
+    // Method to add Star Energy to wallet
+    async addStarEnergy(amount) {
+        try {
+            if (amount <= 0) {
+                throw new Error("Amount must be positive.");
+            }
+            this.starEnergyBalance += amount;
+            this.logger.info(`Star Energy successfully added to wallet: ${amount}`);
+        } catch (error) {
+            this.logger.error(`Failed to add Star Energy to wallet: ${error.message}`);
+            throw error; // Rethrow error for further handling
+        }
+    }
+
+    // Method to get balance of Star Energy in wallet
+    getStarEnergyBalance() {
+        return this.starEnergyBalance;
     }
 
     // Method to get transaction history
@@ -85,7 +108,7 @@ class Wallet {
     // Method to reset bio-signal authentication
     resetBioSignalAuthentication() {
         this.isBioSignalAuthenticated = false;
-        console.log("Bio-signal authentication reset.");
+        this.logger.info("Bio-signal authentication reset.");
     }
 
     // Method to display wallet balance
@@ -95,25 +118,31 @@ class Wallet {
 
     // Method to send notifications (mock implementation)
     sendNotification(message) {
-        console.log(`Notification: ${message}`);
+        this.logger.info(`Notification: ${message}`);
         // Here you could integrate with a real notification service
     }
 
     // Method to generate and validate OTP for additional security
     async generateAndValidateOTP(userInput) {
         const otp = generateOTP(); // Generate OTP
-        console.log(`Your OTP is: ${otp}`); // In a real application, send this via SMS or email
+        this.logger.info(`Your OTP is: ${otp}`); // In a real application, send this via SMS or email
 
         const isValid = await validateOTP(userInput, otp);
         if (!isValid) {
             throw new Error("Invalid OTP.");
         }
-        console.log("OTP validated successfully.");
+        this.logger.info("OTP validated successfully.");
     }
 
     // Mock method to get user ID (for demonstration purposes)
-    getUser Id() {
+    getUser  Id() {
         return 'user123'; // Replace with actual user ID retrieval logic
+    }
+
+    // Method to set balance (for testing purposes)
+    setBalance(amount) {
+        this.balance = amount;
+        this.logger.info(`Balance set to: ${this.balance}`);
     }
 }
 
