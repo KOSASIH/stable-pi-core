@@ -6,6 +6,7 @@ const AstroSentientGovernanceMatrix = require('./asgm'); // Import ASGM
 const AutonomousGalacticDiplomacyEngine = require('./agde'); // Import AGDE
 const HyperDimensionalGovernanceSynthesizer = require('./hdgs'); // Import HDGS
 const AstroCosmicConsciousnessNetwork = require('./accn'); // Import ACCN
+const CosmoFractalGovernanceAmplifier = require('./cfga'); // Import CFGA
 
 class GalacticGovernanceFramework extends EventEmitter {
     constructor() {
@@ -20,6 +21,7 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.agde = new AutonomousGalacticDiplomacyEngine(); // Initialize AGDE
         this.hdgs = new HyperDimensionalGovernanceSynthesizer(); // Initialize HDGS
         this.accn = new AstroCosmicConsciousnessNetwork(); // Initialize ACCN
+        this.cfga = new CosmoFractalGovernanceAmplifier(); // Initialize CFGA
     }
 
     // Create a logger for logging events
@@ -190,6 +192,27 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.logger.log(`Cosmic insight from ${entityName}: ${response}`);
         return response;
     }
+
+    // Amplify governance using CFGA
+    async amplifyGovernance() {
+        await this.cfga.amplifyGovernance();
+        const structures = this.cfga.getGovernanceStructures();
+        this.logger.log(`Governance amplified. Structures created: ${JSON.stringify(structures)}`);
+        return structures;
+    }
+
+    // Evaluate governance efficiency using CFGA
+    evaluateGovernanceEfficiency() {
+        const efficiency = this.cfga.evaluateGovernanceEfficiency();
+        this.logger.log(`Governance efficiency evaluated: ${efficiency}`);
+        return efficiency;
+    }
+
+    // Adjust governance structures using CFGA
+    adjustGovernanceStructures() {
+        this.cfga.adjustGovernanceStructures();
+        this.logger.log('Governance structures adjusted.');
+    }
 }
 
 // Example usage
@@ -231,7 +254,8 @@ class GalacticGovernanceFramework extends EventEmitter {
         console.log('Proposal executed:', proposal);
     }
 
-    // Retrieve all proposals const allProposals = ggf.getAllProposals();
+    // Retrieve all proposals
+    const allProposals = ggf.getAllProposals();
     console.log('All proposals:', allProposals);
 
     // Send proposals to nodes
@@ -248,6 +272,18 @@ class GalacticGovernanceFramework extends EventEmitter {
     // Gather cosmic insights from a cosmic entity
     const cosmicInsight = await ggf.gatherCosmicInsights('Pulsar A', 'What is the status of cosmic alignment?');
     console.log('Cosmic Insight:', cosmicInsight);
+
+    // Amplify governance using CFGA
+    const governanceStructures = await ggf.amplifyGovernance();
+    console .log('Governance Structures:', governanceStructures);
+
+    // Evaluate governance efficiency
+    const efficiency = ggf.evaluateGovernanceEfficiency();
+    console.log('Governance Efficiency:', efficiency);
+
+    // Adjust governance structures
+    ggf.adjustGovernanceStructures();
+    console.log('Governance structures have been adjusted.');
 })();
 
 module.exports = GalacticGovernanceFramework;
