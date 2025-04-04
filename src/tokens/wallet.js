@@ -2,10 +2,11 @@
 
 import axios from 'axios'; // For external API calls
 import { generateOTP, validateOTP } from './otpService'; // Import OTP service
+import CosmicNexusCoin from './cnc'; // Import the CNC module
 
 class Wallet {
     constructor() {
-        this.balance = 0; // User's balance
+        this.balance = 0; // User's balance in the wallet
         this.transactions = []; // Array to hold transaction history
         this.isBioSignalAuthenticated = false; // Flag for bio-signal authentication
         this.isAuthenticated = false; // Flag for overall authentication
@@ -43,8 +44,8 @@ class Wallet {
         });
     }
 
-    // Method to perform a transaction
-    async performTransaction(amount, bioSignal) {
+    // Method to perform a CNC transaction
+    async performCNCTransaction(amount, toAddress, bioSignal) {
         // Authenticate using BQIL before performing the transaction
         await this.authenticateWithBQIL(bioSignal);
         
@@ -62,25 +63,17 @@ class Wallet {
             throw new Error(`Transaction amount exceeds the limit of ${maxTransactionLimit}.`);
         }
 
-        // Simulate external API call to process the transaction
+        // Perform the CNC transfer
         try {
-            const response = await axios.post('https://api.example.com/process-transaction', {
-                amount,
-                userId: this.getUser Id(), // Assume a method to get user ID
-            });
-
-            if (response.data.success) {
-                this.balance += amount; // Update balance
-                this.transactions.push({ amount, timestamp: new Date() }); // Record transaction
-                console.log(`Transaction of ${amount} completed. New balance: ${this.balance}`);
-                this.sendNotification(`Transaction of ${amount} completed successfully.`);
-                return this.balance;
-            } else {
-                throw new Error('Transaction processing failed.');
-            }
+            await CosmicNexusCoin.transferCNC(this.getUser Id(), toAddress, amount);
+            this.balance -= amount; // Update wallet balance
+            this.transactions.push({ amount, to: toAddress, timestamp: new Date() }); // Record transaction
+            console.log(`CNC Transaction of ${amount} to ${toAddress} completed. New balance: ${this.balance}`);
+            this.sendNotification(`CNC Transaction of ${amount} to ${toAddress} completed successfully.`);
+            return this.balance;
         } catch (error) {
-            console.error('Error processing transaction:', error);
-            throw new Error('Transaction could not be completed.');
+            console.error('Error processing CNC transaction:', error);
+            throw new Error('CNC transaction could not be completed.');
         }
     }
 
