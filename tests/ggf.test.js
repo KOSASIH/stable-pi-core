@@ -3,9 +3,11 @@
 const GalacticGovernanceFramework = require('../../src/space/ggf');
 const HyperDimensionalGovernanceSynthesizer = require('../../src/governance/hdgs'); // Import HDGS
 const AstroCosmicConsciousnessNetwork = require('../../src/space/accn'); // Import ACCN
+const CosmoFractalGovernanceAmplifier = require('../../src/governance/cfga'); // Import CFGA
 
 jest.mock('../../src/governance/hdgs'); // Mock the HDGS class
 jest.mock('../../src/space/accn'); // Mock the ACCN class
+jest.mock('../../src/governance/cfga'); // Mock the CFGA class
 
 describe('GalacticGovernanceFramework', () => {
     let ggf;
@@ -95,7 +97,7 @@ describe('GalacticGovernanceFramework', () => {
         const proposal = ggf.createProposal('Establish Trade Routes', 'Proposal to establish trade routes.', 'PlanetA');
         
         ggf.voteOnProposal(proposal.id, 'PlanetB');
-        const results = ggf.getVotingResults(pro posal.id);
+        const results = ggf.getVotingResults(proposal.id);
         
         expect(results).toEqual({
             proposalId: proposal.id,
@@ -141,5 +143,25 @@ describe('GalacticGovernanceFramework', () => {
         const insight = await ggf.gatherCosmicInsights('Pulsar A', 'What is the status of cosmic alignment?');
         expect(insight).toBe(mockResponse);
         expect(AstroCosmicConsciousnessNetwork.prototype.communicate).toHaveBeenCalledWith('Pulsar A', 'What is the status of cosmic alignment?');
+    });
+
+    // New tests for CFGA integration
+    test('should amplify governance using CFGA', async () => {
+        await ggf.amplifyGovernance();
+        expect(CosmoFractalGovernanceAmplifier.prototype.amplifyGovernance).toHaveBeenCalled();
+    });
+
+    test('should evaluate governance efficiency using CFGA', () => {
+        const mockEfficiency = 75; // Mock efficiency value
+        CosmoFractalGovernanceAmplifier.prototype.evaluateGovernanceEfficiency.mockReturnValue(mockEfficiency);
+        
+        const efficiency = ggf.evaluateGovernanceEfficiency();
+        expect(efficiency).toBe(mockEfficiency);
+        expect(CosmoFractalGovernanceAmplifier.prototype.evaluateGovernanceEfficiency).toHaveBeenCalled();
+    });
+
+    test('should adjust governance structures using CFGA', () => {
+        ggf.adjustGovernanceStructures();
+        expect(CosmoFractalGovernanceAmplifier.prototype.adjustGovernanceStructures).toHaveBeenCalled();
     });
 });
