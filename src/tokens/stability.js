@@ -9,6 +9,7 @@ const trlf = require('../core/trlf'); // Import the TRLF module
 const OmniTemporalEconomicHarmonizer = require('./oteh'); // Import the OTEH class
 const TransUniversalResonanceLattice = require('../core/turl'); // Import the TURL class
 const CosmicNexusCoin = require('./cnc'); // Import the CNC module
+const StarEnergy = require('./starEnergy'); // Import the Star Energy module
 
 dotenv.config(); // Load environment variables
 
@@ -75,6 +76,27 @@ class StabilityManager {
         }
     }
 
+    // Method to stabilize Star Energy and CNC
+    async stabilizeStarEnergyAndCNC() {
+        try {
+            const starEnergyBalance = StarEnergy.getBalance(); // Get Star Energy balance
+            const cncBalance = this.liquidityPool.cnc; // Get CNC balance from liquidity pool
+            this.logger.info(`Star Energy: ${starEnergyBalance}, CNC: ${cncBalance}`);
+
+            // Implement stabilization logic for Star Energy and CNC
+            // Example: Adjust CNC based on Star Energy balance
+            if (starEnergyBalance > 1000) { // Example threshold
+                const adjustment = starEnergyBalance * 0.1; // Example adjustment factor
+                this.liquidityPool.cnc += adjustment; // Increase CNC based on Star Energy
+                this.logger.info(`Adjusted CNC by ${adjustment} based on Star Energy balance.`);
+            } else {
+                this.logger.info("No adjustment needed for CNC based on Star Energy balance.");
+            }
+        } catch (error) {
+            this.logger.error(`Failed to stabilize Star Energy and CNC: ${error.message}`);
+        }
+    }
+
     calculateAdjustment(currentPriceGTC) {
         const priceDifference = currentPriceGTC - this.targetValueGTC;
         const adjustmentFactor = Math.sign(priceDifference) * Math.min(Math.abs(priceDifference) / 1000, 100); // Dynamic adjustment
@@ -132,7 +154,7 @@ class StabilityManager {
         }
 
         try {
-            await CosmicNexusCoin.transferCNC(this.getUser Id(), toAddress, amount);
+            await CosmicNexusCoin.transferCNC(this.getUser  Id(), toAddress, amount);
             this.liquidityPool.cnc -= amount; // Update CNC balance
             this.logger.info(`CNC Transaction of ${amount} to ${toAddress} completed. Remaining CNC: ${this.liquidityPool.cnc}`);
         } catch (error) {
@@ -142,7 +164,7 @@ class StabilityManager {
     }
 
     // Mock method to get user ID (for demonstration purposes)
-    getUser Id() {
+    getUser   Id() {
         return 'user123'; // Replace with actual user ID retrieval logic
     }
 }
