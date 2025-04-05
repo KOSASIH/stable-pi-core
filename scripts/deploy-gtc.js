@@ -1,15 +1,19 @@
-// scripts/deploy-gtc.js
-
+const qnha = require('../src/space/qnha');
+const tcrb = require('../src/space/tcrb');
+const aqdf = require('../src/core/aqdf');
+const osg = require('../src/space/ggf');
+const esc = require('../src/core/esc');
+const cnsn = require('../src/tokens/bqil');
+const GalacticWallet = require('../src/tokens/wallet');
 const gtc = require('../src/tokens/gtc');
 const stability = require('../src/tokens/stability');
-const GalacticWallet = require('../src/tokens/wallet');
 const BioQuantumIntegrationLayer = require('../src/tokens/bqil');
 const gwmp = require('../core/gwmp');
 const qtdc = require('../core/qtdc');
 const qgc = require('../core/qgc');
 const aies = require('../src/space/aies');
 const dotenv = require('dotenv');
-const starEnergy = require('../src/tokens/starEnergy'); // Inisialisasi Energi Bintang
+const starEnergy = require('../src/tokens/starEnergy'); // Initialize Star Energy
 
 dotenv.config(); // Load environment variables
 
@@ -22,8 +26,8 @@ async function deployGTC() {
         console.log("GTC initialized successfully.");
 
         // Create wallets for users
-        const wallet1Address = process.env.WALLET1_ADDRESS || "0xUser  1";
-        const wallet2Address = process.env.WALLET2_ADDRESS || "0xUser  2";
+        const wallet1Address = process.env.WALLET1_ADDRESS || "0xUser 1";
+        const wallet2Address = process.env.WALLET2_ADDRESS || "0xUser 2";
         const wallet1 = new GalacticWallet(wallet1Address);
         const wallet2 = new GalacticWallet(wallet2Address);
         console.log(`Wallets created: ${wallet1.address}, ${wallet2.address}`);
@@ -54,12 +58,15 @@ async function deployGTC() {
         await initializeSRNF();
 
         // Harvest Star Energy
-        await starEnergy.harvestStarEnergy(1000); // Panen 1000 Energi Bintang
-        const cncAmount = await starEnergy.convertStarEnergyToCNC(1000); // Konversi 1000 Energi Bintang ke CNC
-        console.log(`CNC berhasil dikonversi: ${cncAmount}`);
+        await starEnergy.harvestStarEnergy(1000); // Harvest 1000 Star Energy
+        const cncAmount = await starEnergy.convertStarEnergyToCNC(1000); // Convert 1000 Star Energy to CNC
+        console.log(`CNC successfully converted: ${cncAmount}`);
 
         // Example: Perform CNC transaction
         await performCNCTransaction(wallet1, wallet2, 10000); // Transfer 10,000 CNC from wallet1 to wallet2
+
+        // Additional features
+        await additionalDeploymentFeatures();
     } catch (error) {
         console.error("Error during GTC deployment:", error.message);
     }
@@ -135,6 +142,23 @@ async function performCNCTransaction(walletFrom, walletTo, amount) {
         console.log(`Successfully transferred ${amount} CNC from ${walletFrom.address} to ${walletTo.address}.`);
     } catch (error) {
         console.error(`Failed to perform CNC transaction: ${error.message}`);
+    }
+}
+
+// Function for additional deployment features
+async function additionalDeploymentFeatures() {
+    try {
+        console.log("Executing additional deployment features...");
+        // Add any additional features or functionalities here
+        await qnha.harvestFromNebula("Nebula Carina");
+        await tcrb.transferToParallelUniverse(100, "CNC");
+        await aqdf.simulateTimeline();
+        await osg.manageVoting();
+        await esc.generateEnergy();
+        await cnsn.transferWithMindControl(10, "0xUser 1");
+        console.log("Additional deployment features executed successfully.");
+    } catch (error) {
+        console.error("Error executing additional deployment features:", error.message);
     }
 }
 
