@@ -1,13 +1,13 @@
-// tests/ggf.test.js
-
 const GalacticGovernanceFramework = require('../../src/space/ggf');
 const HyperDimensionalGovernanceSynthesizer = require('../../src/governance/hdgs'); // Import HDGS
 const AstroCosmicConsciousnessNetwork = require('../../src/space/accn'); // Import ACCN
 const CosmoFractalGovernanceAmplifier = require('../../src/governance/cfga'); // Import CFGA
+const OmniSpectralGovernanceMatrix = require('../../src/space/ggf').OmniSpectralGovernanceMatrix; // Import OSGM
 
 jest.mock('../../src/governance/hdgs'); // Mock the HDGS class
 jest.mock('../../src/space/accn'); // Mock the ACCN class
 jest.mock('../../src/governance/cfga'); // Mock the CFGA class
+jest.mock('../../src/space/ggf'); // Mock the OSGM class
 
 describe('GalacticGovernanceFramework', () => {
     let ggf;
@@ -156,12 +156,37 @@ describe('GalacticGovernanceFramework', () => {
         CosmoFractalGovernanceAmplifier.prototype.evaluateGovernanceEfficiency.mockReturnValue(mockEfficiency);
         
         const efficiency = ggf.evaluateGovernanceEfficiency();
-        expect(efficiency).toBe(mockEfficiency);
+        expect(efficiency).to be(mockEfficiency);
         expect(CosmoFractalGovernanceAmplifier.prototype.evaluateGovernanceEfficiency).toHaveBeenCalled();
     });
 
     test('should adjust governance structures using CFGA', () => {
         ggf.adjustGovernanceStructures();
         expect(CosmoFractalGovernanceAmplifier.prototype.adjustGovernanceStructures).toHaveBeenCalled();
+    });
+
+    test('should manage voting through OSGM', async () => {
+        const proposal = ggf.createProposal('Intergalactic Peace Treaty', 'Proposal for a peace treaty between galaxies.', 'PlanetA');
+        ggf.registerEntity('PlanetB');
+        await ggf.voteOnProposal(proposal.id, 'PlanetB');
+        expect(OmniSpectralGovernanceMatrix.prototype.manageVoting).toHaveBeenCalledWith(proposal);
+    });
+
+    test('should throw an error if trying to vote on a non-existent proposal', async () => {
+        expect(async () => {
+            await ggf.voteOnProposal('non-existent-id', 'PlanetA');
+        }).rejects.toThrow('Proposal not found');
+    });
+
+    test('should handle multiple votes correctly', async () => {
+        ggf.registerEntity('PlanetA');
+        ggf.registerEntity('PlanetB');
+        const proposal = ggf.createProposal('Establish Trade Routes', 'Proposal to establish trade routes.', 'PlanetA');
+        
+        await ggf.voteOnProposal(proposal.id, 'PlanetA');
+        await ggf.voteOnProposal(proposal.id, 'PlanetB');
+        
+        expect(proposal.votes).toBe(2);
+        expect(proposal.status).toBe('approved');
     });
 });
