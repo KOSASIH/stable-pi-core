@@ -8,6 +8,14 @@ const HyperDimensionalGovernanceSynthesizer = require('./hdgs'); // Import HDGS
 const AstroCosmicConsciousnessNetwork = require('./accn'); // Import ACCN
 const CosmoFractalGovernanceAmplifier = require('./cfga'); // Import CFGA
 
+class OmniSpectralGovernanceMatrix {
+    async manageVoting(proposal) {
+        console.log("Managing DAO voting across dimensions...");
+        // Implement advanced voting logic here
+        // This could include multi-dimensional voting, consensus mechanisms, etc.
+    }
+}
+
 class GalacticGovernanceFramework extends EventEmitter {
     constructor() {
         super();
@@ -22,6 +30,7 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.hdgs = new HyperDimensionalGovernanceSynthesizer(); // Initialize HDGS
         this.accn = new AstroCosmicConsciousnessNetwork(); // Initialize ACCN
         this.cfga = new CosmoFractalGovernanceAmplifier(); // Initialize CFGA
+        this.osgm = new OmniSpectralGovernanceMatrix(); // Initialize OSGM
     }
 
     // Create a logger for logging events
@@ -83,7 +92,7 @@ class GalacticGovernanceFramework extends EventEmitter {
     }
 
     // Vote on a proposal
-    voteOnProposal(proposalId, entityId) {
+    async voteOnProposal(proposalId, entityId) {
         if (!this.entities.has(entityId)) {
             throw new Error('Unauthorized voter');
         }
@@ -105,6 +114,9 @@ class GalacticGovernanceFramework extends EventEmitter {
         this.votes.get(proposalId).add(entityId);
         this.logger.log(`Vote cast by ${entityId} on proposal ${proposalId}`);
         this.emit('voteCast', { proposalId, entityId });
+
+        // Manage voting through OSGM
+        await this.osgm.manageVoting(proposal);
 
         // Check if the proposal has reached a consensus (dynamic quorum)
         const quorum = Math.ceil(this.entities.size / 2); // Simple majority
@@ -209,7 +221,7 @@ class GalacticGovernanceFramework extends EventEmitter {
     }
 
     // Adjust governance structures using CFGA
-    adjustGovernanceStructures() {
+    adjust GovernanceStructures() {
         this.cfga.adjustGovernanceStructures();
         this.logger.log('Governance structures adjusted.');
     }
@@ -238,8 +250,8 @@ class GalacticGovernanceFramework extends EventEmitter {
 
     // Voting on the proposal
     try {
-        ggf.voteOnProposal(proposal.id, 'PlanetB');
-        ggf.voteOnProposal(proposal.id, 'PlanetC');
+        await ggf.voteOnProposal(proposal.id, 'PlanetB');
+        await ggf.voteOnProposal(proposal.id, 'PlanetC');
     } catch (error) {
         console.error(error.message);
     }
@@ -275,7 +287,7 @@ class GalacticGovernanceFramework extends EventEmitter {
 
     // Amplify governance using CFGA
     const governanceStructures = await ggf.amplifyGovernance();
-    console .log('Governance Structures:', governanceStructures);
+    console.log('Governance Structures:', governanceStructures);
 
     // Evaluate governance efficiency
     const efficiency = ggf.evaluateGovernanceEfficiency();
