@@ -17,5 +17,5 @@ unittest2==1.1.0          # For unit testing (if using unittest2 for compatibili
 # Add any other libraries that are required for your project here
 
 # Development tools
-black==21.7b0             # For code formatting
+black==24.3.0             # For code formatting
 flake8==3.9.2             # For linting Python code
