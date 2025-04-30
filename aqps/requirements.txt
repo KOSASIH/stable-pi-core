@@ -1,6 +1,6 @@
 # Core dependencies
 requests==2.28.1               # For making HTTP requests to the satellite and blockchain APIs
-pycryptodome==3.14.1           # For encryption and decryption using AES
+pycryptodome==3.19.1           # For encryption and decryption using AES
 Flask==2.2.2                   # (Optional) For creating a web interface if needed
 numpy==1.23.5                  # For numerical operations, if needed for data processing
 
