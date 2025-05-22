@@ -305,3 +305,4 @@ class NetworkManager extends EventEmitter {
 }
 
 module.exports = NetworkManager;
+
