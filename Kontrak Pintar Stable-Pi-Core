@@ -1,0 +1,94 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+contract StablePiCore is ERC20, Ownable, ReentrancyGuard {
+    uint256 public constant TARGET_PRICE = 314159; // Target price in cents (e.g., $314.159)
+    uint256 public constant SCALING_FACTOR = 10**18;
+    uint256 public reserveBalance; // Total reserves in the system (in Wei)
+    uint256 public totalMintedSupply; // Total Pi Coins minted
+
+    mapping(address => uint256) public userReserves;
+
+    event SupplyAdjusted(uint256 newSupply);
+    event ReserveAdded(address indexed user, uint256 amount);
+    event ReserveWithdrawn(address indexed user, uint256 amount);
+
+    constructor() ERC20("StablePi", "STPI") {
+        // Initial supply (can be zero if minting is dynamic)
+        _mint(msg.sender, 1000 * SCALING_FACTOR);
+    }
+
+    // Modifier to ensure only active users can interact with reserves
+    modifier onlyPositiveBalance(address user) {
+        require(userReserves[user] > 0, "No reserves found");
+        _;
+    }
+
+    /**
+     * @dev Adjust the total supply dynamically to maintain the pegged price.
+     */
+    function adjustSupply(uint256 marketPrice) external onlyOwner nonReentrant {
+        require(marketPrice > 0, "Invalid market price");
+
+        if (marketPrice > TARGET_PRICE) {
+            // Oversupply: Reduce supply to increase value
+            uint256 excessSupply = totalSupply() * (marketPrice - TARGET_PRICE) / marketPrice;
+            _burn(address(this), excessSupply);
+        } else if (marketPrice < TARGET_PRICE) {
+            // Undersupply: Mint additional tokens
+            uint256 neededSupply = totalSupply() * (TARGET_PRICE - marketPrice) / TARGET_PRICE;
+            _mint(address(this), neededSupply);
+        }
+
+        emit SupplyAdjusted(totalSupply());
+    }
+
+    /**
+     * @dev Add reserves to the system.
+     */
+    function addReserves() external payable {
+        require(msg.value > 0, "Invalid amount");
+
+        reserveBalance += msg.value;
+        userReserves[msg.sender] += msg.value;
+
+        emit ReserveAdded(msg.sender, msg.value);
+    }
+
+    /**
+     * @dev Withdraw user reserves.
+     */
+    function withdrawReserves(uint256 amount) external nonReentrant onlyPositiveBalance(msg.sender) {
+        require(amount > 0 && amount <= userReserves[msg.sender], "Invalid withdrawal amount");
+
+        userReserves[msg.sender] -= amount;
+        reserveBalance -= amount;
+
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Transfer failed");
+
+        emit ReserveWithdrawn(msg.sender, amount);
+    }
+
+    /**
+     * @dev Fallback function to accept ETH.
+     */
+    receive() external payable {
+        addReserves();
+    }
+
+    /**
+     * @dev Transfer tokens with additional logging for security and debugging.
+     */
+    function transfer(address recipient, uint256 amount) public override returns (bool) {
+        require(balanceOf(msg.sender) >= amount, "Insufficient balance");
+        require(recipient != address(0), "Invalid recipient");
+
+        bool success = super.transfer(recipient, amount);
+        return success;
+    }
+}
